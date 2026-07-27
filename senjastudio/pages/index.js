@@ -257,7 +257,7 @@ export default function Home() {
         <div className="hero-right" aria-hidden="true">
           <img
             id="heroParallax"
-            src="/dan-photo.png"
+            src="/images/dan-photo.png"
             alt="Dan Senja — founder of Senja Studio, mortgage broker website design specialist"
             loading="eager"
           />
@@ -278,7 +278,6 @@ export default function Home() {
                 <span dangerouslySetInnerHTML={{ __html: t.replace(' — ', ' <span style="opacity:0.4">—</span> ') }} />
               </div>
             ))}
-            {/* Duplicate for seamless loop */}
             {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £2,500 — fraction of agency cost'].map((t, i) => (
               <div key={`b${i}`} className="trust-strip-item">
                 <span className="trust-strip-icon">✦</span>
@@ -365,7 +364,7 @@ export default function Home() {
       {/* ── MEET DAN ─────────────────────────────────── */}
       <section className="meet-dan" id="about">
         <div className="meet-dan-img-wrap">
-          <img src="/dan-photo-about.png" alt="Dan Senja — founder of Senja Studio" className="meet-dan-img" loading="lazy" />
+          <img src="/images/dan-photo-about.png" alt="Dan Senja — founder of Senja Studio" className="meet-dan-img" loading="lazy" />
           <div className="meet-dan-img-tag">Dan Senja · Founder</div>
         </div>
         <div className="meet-dan-content">
@@ -410,7 +409,7 @@ export default function Home() {
         <p className="section-label">Transparent pricing</p>
         <h2 className="section-heading">No hidden fees. No surprises.<br /><em>Just results.</em></h2>
 
-        <div style={{ textAlign: 'center', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)', textAlign: 'left' }}>
+        <div style={{ textAlign: 'left', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)' }}>
           <strong style={{ color: 'var(--navy)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
         </div>
 
