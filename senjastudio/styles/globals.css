@@ -822,12 +822,15 @@ nav {
   border: 1px solid var(--border);
   max-width: 860px;
   margin: 0 auto;
+  align-items: stretch;
 }
 .pricing-card {
   background: var(--cream);
   padding: 48px 40px;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .pricing-card.featured { background: var(--royal); }
 .pricing-badge {
@@ -876,6 +879,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 9px;
+  flex: 1;
 }
 .pricing-features li {
   font-size: 0.78rem;
