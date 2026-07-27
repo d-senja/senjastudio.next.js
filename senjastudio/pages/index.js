@@ -275,13 +275,13 @@ export default function Home() {
             {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £2,500 — fraction of agency cost'].map((t, i) => (
               <div key={i} className="trust-strip-item">
                 <span className="trust-strip-icon">✦</span>
-                <span dangerouslySetInnerHTML={{ __html: t.replace(' — ', ' <span style="opacity:0.4">—</span> ') }} />
+                <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
               </div>
             ))}
             {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £2,500 — fraction of agency cost'].map((t, i) => (
               <div key={`b${i}`} className="trust-strip-item">
                 <span className="trust-strip-icon">✦</span>
-                <span dangerouslySetInnerHTML={{ __html: t.replace(' — ', ' <span style="opacity:0.4">—</span> ') }} />
+                <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
               </div>
             ))}
           </div>
