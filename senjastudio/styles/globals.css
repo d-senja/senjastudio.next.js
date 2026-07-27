@@ -20,6 +20,22 @@
   --serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --serif2: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Inter', system-ui, sans-serif;
+
+  /* Spacing scale (8px base) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-15: 120px;
+
+  /* Standard section padding */
+  --section-padding: var(--space-10) var(--space-6);
+  --section-padding-large: var(--space-15) var(--space-6);
 }
 
 html { scroll-behavior: smooth; }
@@ -439,7 +455,7 @@ nav {
 
 /* SECTIONS */
 .section {
-  padding: 100px 48px;
+  padding: var(--section-padding-large);
 }
 .section-label {
   display: flex;
