@@ -886,6 +886,40 @@ export default function Layout({ children, title, description, canonical, modalO
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        {/* JSON-LD Structured Data */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "LocalBusiness",
+              "name": "Senja Studio",
+              "url": "https://senjastudio.co.uk",
+              "email": "dan@senjastudio.co.uk",
+              "description": "Elite high-converting website design exclusively for independent mortgage brokers worldwide. Delivered in 7 days from £2,500.",
+              "founder": {"@type": "Person", "name": "Dan Senja"},
+              "areaServed": "Worldwide",
+              "address": {"@type": "PostalAddress", "addressLocality": "Nottingham", "addressCountry": "GB"},
+              "priceRange": "££"
+            },
+            {
+              "@type": "Service",
+              "name": "Mortgage Broker Website Design UK",
+              "provider": {"@type": "LocalBusiness", "name": "Senja Studio"},
+              "description": "High-converting websites designed exclusively for independent mortgage brokers worldwide. Compliance-ready, mobile-first, delivered in 7 days.",
+              "offers": {"@type": "Offer", "price": "2500", "priceCurrency": "GBP"},
+              "areaServed": "Worldwide"
+            },
+            {
+              "@type": "FAQPage",
+              "mainEntity": [
+                {"@type": "Question","name": "How much does a mortgage broker website cost?","acceptedAnswer": {"@type": "Answer","text": "Senja Studio offers three tiers: Homepage Build at £1,500 (5 days), Full Website at £2,500 (7 days), and Bespoke builds from £3,500. All include the Care Plan — first month free, then £150/month. Payment is 50% upfront (non-refundable) and 50% on delivery."}},
+                {"@type": "Question","name": "How long does it take to build a mortgage broker website?","acceptedAnswer": {"@type": "Answer","text": "Homepage builds are delivered in 5 working days. Full website builds are delivered in 7 working days. Bespoke builds have a timeline agreed per project."}},
+                {"@type": "Question","name": "Do you build websites for new mortgage brokers?","acceptedAnswer": {"@type": "Answer","text": "Yes — Senja Studio builds websites for both established brokers and those just starting out. A professional, conversion-focused site from day one means you look established immediately."}},
+                {"@type": "Question","name": "Are your websites FCA compliant?","acceptedAnswer": {"@type": "Answer","text": "Yes. All websites include FCA authorisation badges, compliant disclaimer copy, and are structured to meet FCA financial promotion guidelines."}}
+              ]
+            }
+          ]
+        }) }} />
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-NNZY23RH3M" />
         <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NNZY23RH3M');` }} />

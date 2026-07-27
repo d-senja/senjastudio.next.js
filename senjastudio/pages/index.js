@@ -782,6 +782,100 @@ function WebsiteScoreQuiz() {
   )
 }
 
+// ── ROI CALCULATOR ────────────────────────────────────────────
+function ROICalculator() {
+  const [fee, setFee] = useState(850)
+  const [cases, setCases] = useState(2)
+  const [convRate, setConvRate] = useState(35)
+
+  const month1 = fee * cases
+  const year1 = month1 * 12
+  const payback = Math.ceil(2500 / fee)
+  const enquiries = Math.ceil(1 / (convRate / 100))
+
+  return (
+    <section className="section" id="roi" style={{ background: 'var(--cream)' }}>
+      <p className="section-label">Your return on investment</p>
+      <h2 className="section-heading">
+        What does one extra case<br />a month <em>actually mean?</em>
+      </h2>
+      <p style={{ textAlign: 'center', color: 'var(--muted)', fontSize: '0.85rem', maxWidth: '520px', margin: '0 auto 48px', lineHeight: 1.8 }}>
+        Adjust the sliders to match your business — and see what consistent online lead generation could add to your revenue.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '940px', margin: '0 auto' }}>
+        {/* SLIDERS */}
+        <div style={{ background: 'var(--white)', padding: '40px 36px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '28px' }}>
+            <span style={{ fontSize: '0.9rem', color: 'var(--gold)' }}>☆</span>
+            <span style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--navy)' }}>Your Numbers</span>
+          </div>
+
+          <div style={{ marginBottom: '28px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <label style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Average proc fee per case</label>
+              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--navy)' }}>£{fee}</span>
+            </div>
+            <input type="range" min="300" max="2000" step="50" value={fee} onChange={(e) => setFee(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--navy)', cursor: 'pointer' }} />
+          </div>
+
+          <div style={{ marginBottom: '28px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <label style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Extra cases this site generates / month</label>
+              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--navy)' }}>{cases}</span>
+            </div>
+            <input type="range" min="1" max="10" step="1" value={cases} onChange={(e) => setCases(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--navy)', cursor: 'pointer' }} />
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <label style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Website enquiry → case conversion rate</label>
+              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--navy)' }}>{convRate}%</span>
+            </div>
+            <input type="range" min="10" max="80" step="5" value={convRate} onChange={(e) => setConvRate(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--navy)', cursor: 'pointer' }} />
+          </div>
+        </div>
+
+        {/* RESULTS */}
+        <div style={{ background: 'var(--cream)', display: 'flex', flexDirection: 'column', gap: '1px' }}>
+          <div style={{ background: 'var(--white)', padding: '24px 28px', flex: 1 }}>
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Extra revenue — Month 1</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--navy)', lineHeight: 1 }}>£{month1.toLocaleString()}</div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>From cases that wouldn't have found you without this site</div>
+          </div>
+          <div style={{ background: 'var(--white)', padding: '24px 28px', flex: 1 }}>
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Extra revenue — Year 1</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--navy)', lineHeight: 1 }}>£{year1.toLocaleString()}</div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>Compounding as your Google visibility grows over time</div>
+          </div>
+          <div style={{ background: 'var(--white)', borderLeft: '3px solid var(--gold)', padding: '24px 28px', flex: 1 }}>
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '8px' }}>Cases needed to cover the site cost</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--gold)', lineHeight: 1 }}>{payback}{payback === 3 ? '–4' : payback === 2 ? '–3' : ''}</div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>At your proc fee — typically achieved in the first few weeks</div>
+          </div>
+          <div style={{ background: 'var(--white)', padding: '24px 28px', flex: 1 }}>
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Enquiries needed to get your first case</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--navy)', lineHeight: 1 }}>{enquiries}</div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>At your current conversion rate</div>
+          </div>
+        </div>
+      </div>
+
+      {/* BOTTOM CTA BAR */}
+      <div style={{ maxWidth: '940px', margin: '1px auto 0', background: 'var(--navy)', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+        <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, margin: 0 }}>
+          <strong style={{ color: 'var(--white)' }}>Your site is live in 7 days.</strong> A single well-placed case more than justifies the investment. Ready to see what's possible?
+        </p>
+        <button className="btn-gold" onClick={() => document.dispatchEvent(new Event('openModal'))} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+          Book a free call with Dan →
+        </button>
+      </div>
+      <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '0.7rem', color: 'var(--muted)' }}>
+        Conservative estimate — excludes referral uplift, repeat clients, and Google ranking gains over time.
+      </p>
+    </section>
+  )
+}
+
 // ── LEAD MAGNET SECTION ───────────────────────────────────────
 function LeadMagnetSection() {
   const [email, setEmail] = useState('')
@@ -1173,6 +1267,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ── ROI CALCULATOR ───────────────────────────── */}
+      <ROICalculator />
 
       {/* ── SOCIAL TRUST ─────────────────────────────── */}
       <div className="social-trust">
