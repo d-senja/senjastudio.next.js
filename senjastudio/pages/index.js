@@ -1384,6 +1384,96 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FULL AI STACK ────────────────────────────── */}
+      <section style={{ background: 'linear-gradient(135deg, var(--navy) 0%, #1a2847 100%)', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
+        {/* Decorative elements */}
+        <div style={{ position: 'absolute', top: '0', right: '0', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '0', left: '0', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <div style={{ display: 'inline-block', padding: '8px 20px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '30px', marginBottom: '24px' }}>
+              <span style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', fontWeight: 600 }}>Premium Package</span>
+            </div>
+            <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4.5vw,3rem)', fontWeight: 600, color: 'var(--white)', marginBottom: '20px', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+              The Full AI Stack
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, maxWidth: '700px', margin: '0 auto' }}>
+              Every AI agent working together — lead capture, customer support, appointment setting, outreach automation, inbound and outbound calling. <strong style={{ color: 'var(--white)' }}>The complete mortgage broker AI system.</strong>
+            </p>
+          </div>
+
+          <div style={{ background: 'rgba(255,255,255,0.03)', border: '2px solid rgba(212,175,55,0.3)', borderRadius: '16px', padding: '56px 48px', position: 'relative', boxShadow: '0 30px 90px rgba(0,0,0,0.4), 0 0 1px rgba(212,175,55,0.5) inset' }}>
+            {/* Top accent line */}
+            <div style={{ position: 'absolute', top: '0', left: '10%', right: '10%', height: '2px', background: 'linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%)' }} />
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: '56px', alignItems: 'center', marginBottom: '48px' }}>
+              {/* Left: What's included */}
+              <div>
+                <h3 style={{ fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold-light)', marginBottom: '24px', fontWeight: 500 }}>Includes All 6 AI Agents:</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {[
+                    'AI Lead Capture Chatbot',
+                    'AI Customer Support Agent',
+                    'AI Appointment Setting Agent',
+                    'Automated AI Outreach System',
+                    'AI Inbound Phone Caller',
+                    'AI Outbound Phone Caller'
+                  ].map((name, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ width: '6px', height: '6px', background: 'var(--gold)', borderRadius: '50%', flexShrink: 0 }} />
+                      <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div style={{ width: '1px', height: '100%', background: 'linear-gradient(180deg, transparent 0%, rgba(212,175,55,0.3) 50%, transparent 100%)' }} />
+
+              {/* Right: Pricing */}
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>Setup Fee</div>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£4,999</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--gold)', fontWeight: 500 }}>Save £3,000 vs buying separately</div>
+                </div>
+
+                <div style={{ paddingTop: '32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>Monthly</div>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£499<span style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.5)' }}>/mo</span></div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--gold)', fontWeight: 500 }}>Save £120/month vs buying separately</div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div style={{ textAlign: 'center', paddingTop: '48px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <button
+                className="btn-gold"
+                onClick={openModal}
+                style={{
+                  fontSize: '0.85rem',
+                  padding: '18px 48px',
+                  boxShadow: '0 8px 24px rgba(212,175,55,0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => e.target.style.boxShadow = '0 12px 32px rgba(212,175,55,0.4)'}
+                onMouseOut={(e) => e.target.style.boxShadow = '0 8px 24px rgba(212,175,55,0.3)'}
+              >
+                Book a Call to Discuss the Full Stack →
+              </button>
+              <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '16px', lineHeight: 1.7 }}>
+                Not every broker needs all six agents. We'll help you choose the right stack for your business on the call.
+              </p>
+            </div>
+
+            {/* Bottom accent line */}
+            <div style={{ position: 'absolute', bottom: '0', left: '10%', right: '10%', height: '2px', background: 'linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%)' }} />
+          </div>
+        </div>
+      </section>
+
       {/* ── PROCESS ──────────────────────────────────── */}
       <section className="section" id="process" style={{ background: 'var(--cream2)' }}>
         <div className="section-gold-line" />
