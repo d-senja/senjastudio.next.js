@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Layout from '../components/Layout'
 import Link from 'next/link'
+import RotatingCarousel from '../components/RotatingCarousel'
 
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
@@ -1135,16 +1136,8 @@ export default function Home() {
         <h2 className="section-heading" id="offer-heading">
           Everything your site needs to <em>win clients.</em>
         </h2>
-        <div className="grid-3col" style={{ maxWidth: '1100px', margin: '0 auto 36px' }}>
-          {OFFER_ITEMS.map((item, i) => (
-            <div key={i} className="offer-item">
-              <div className="offer-num">{item.num}</div>
-              <h3 className="offer-title">{item.title}</h3>
-              <p className="offer-body">{item.body}</p>
-            </div>
-          ))}
-        </div>
-        <div style={{ textAlign: 'center' }}>
+        <RotatingCarousel items={OFFER_ITEMS} />
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
           <button className="btn-gold" onClick={openModal}>See What We'd Build for You</button>
         </div>
       </section>
