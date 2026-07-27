@@ -2618,6 +2618,17 @@ input:focus, textarea:focus {
 [data-theme="dark"] .btn-ghost { color: rgba(232,224,216,0.6) !important; border-color: rgba(232,224,216,0.2) !important; }
 [data-theme="dark"] .btn-ghost:hover { color: #D4A84C !important; border-color: #D4A84C !important; }
 
+/* BLOG ARTICLES DARK MODE */
+[data-theme="dark"] .article-wrap { background: #0F0B1E !important; }
+[data-theme="dark"] .article h2 { color: #F2EDE8 !important; }
+[data-theme="dark"] .article h3 { color: #F2EDE8 !important; }
+[data-theme="dark"] .article p { color: #B8B0BC !important; }
+[data-theme="dark"] .article ul,
+[data-theme="dark"] .article ol { color: #B8B0BC !important; }
+[data-theme="dark"] .highlight-box { background: rgba(201,168,76,0.08) !important; }
+[data-theme="dark"] .highlight-box p { color: #F2EDE8 !important; }
+[data-theme="dark"] .back-to-blog { color: #E2C46A !important; }
+
 /* SS4: Marquee trust bar - text in marquee */
 [data-theme="dark"] .trust-marquee .trust-strip-item { color: rgba(232,224,216,0.55) !important; }
 [data-theme="dark"] .trust-strip-item strong { color: rgba(232,224,216,0.9) !important; }
