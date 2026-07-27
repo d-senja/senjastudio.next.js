@@ -2227,17 +2227,17 @@ input:focus, textarea:focus {
   --cream2: #1A1428;
   --cream3: #221B36;
   --white: #1C1630;
-  --navy: #E8E0D8;
-  --navy-light: #C0B8CC;
+  --navy: #F2EDE8;
+  --navy-light: #D4CCD8;
   --royal: #070512;
-  --muted: #9A92A4;
+  --muted: #B8B0BC;
   --border: rgba(201,168,76,0.12);
-  --gold: #D4A84C;
-  --gold-light: #E2C46A;
+  --gold: #E2C46A;
+  --gold-light: #F0D88A;
 }
 
 /* BASE */
-[data-theme="dark"] body { background: #0F0B1E !important; color: #E8E0D8; }
+[data-theme="dark"] body { background: #0F0B1E !important; color: #F2EDE8; }
 
 /* NAV */
 [data-theme="dark"] nav { background: rgba(7,5,18,0.97) !important; border-bottom-color: rgba(201,168,76,0.15) !important; }
