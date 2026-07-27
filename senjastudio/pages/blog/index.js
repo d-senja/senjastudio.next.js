@@ -60,8 +60,9 @@ export default function Blog() {
       </div>
 
       {/* Posts Grid */}
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '64px 48px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px,1fr))', gap: '2px', background: 'var(--border)', border: '1px solid var(--border)' }}>
+      <div style={{ background: 'var(--cream)', paddingBottom: '80px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '64px 48px 0' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px,1fr))', gap: '2px', background: 'var(--border)', border: '1px solid var(--border)' }}>
           {posts.map(post => (
             <article key={post.slug} className="blog-card">
               <div className="blog-card-image" style={{ background: 'var(--navy)', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
@@ -82,6 +83,7 @@ export default function Blog() {
               </div>
             </article>
           ))}
+          </div>
         </div>
       </div>
     </Layout>
