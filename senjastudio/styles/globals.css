@@ -559,9 +559,13 @@ nav {
 .niche-card {
   padding: 36px 28px;
   background: rgba(255,255,255,0.02);
-  transition: background 0.2s;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
-.niche-card:hover { background: rgba(255,255,255,0.04); }
+.niche-card:hover {
+  background: rgba(255,255,255,0.05);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
 .niche-icon { font-size: 1.25rem; margin-bottom: 14px; display: block; }
 .niche-card h3 {
   font-family: var(--serif);
