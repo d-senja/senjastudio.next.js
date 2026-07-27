@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <Layout title="Page Not Found">
       <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '40px 20px', background: 'var(--royal)' }}>
-        <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(6rem,15vw,10rem)', fontWeight: 700, color: 'transparent', WebkitTextStroke: '1px rgba(201,168,76,0.3)', lineHeight: 1, marginBottom: '8px', letterSpacing: '-0.04em' }}>
+        <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(6rem,15vw,10rem)', fontWeight: 700, color: 'transparent', WebkitTextStroke: '1px var(--gold)', opacity: 0.3, lineHeight: 1, marginBottom: '8px', letterSpacing: '-0.04em' }}>
           404
         </div>
         <div style={{ width: '60px', height: '2px', background: 'var(--gold)', margin: '24px auto', opacity: 0.5 }} />
