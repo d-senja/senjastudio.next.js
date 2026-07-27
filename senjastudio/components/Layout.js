@@ -161,13 +161,6 @@ function Nav({ openModal }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Allow any page to open the modal via custom event
-  useEffect(() => {
-    const handler = () => setModalOpen(true)
-    document.addEventListener('openModal', handler)
-    return () => document.removeEventListener('openModal', handler)
-  }, [])
-
   const toggleDark = () => {
     const next = !dark
     setDark(next)

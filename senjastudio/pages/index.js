@@ -210,6 +210,172 @@ function StickyCompare({ openModal }) {
   )
 }
 
+// ── AI AUDIT SECTION ──────────────────────────────────────────
+function AuditSection() {
+  const [url, setUrl] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!url) return
+
+    setLoading(true)
+    setError('')
+    setResult(null)
+
+    try {
+      const res = await fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.audit) {
+        setResult(data.audit)
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.')
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <section className="section" id="audit" style={{ background: 'var(--cream)', borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '780px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🤖</div>
+          <p className="section-label">Free AI Website Audit</p>
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: 'var(--navy)', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
+            Get an instant conversion audit<br />of <em style={{ color: 'var(--gold)' }}>your broker site</em>
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: 'var(--muted)', lineHeight: 1.8, maxWidth: '580px', margin: '0 auto' }}>
+            Enter your website URL and our AI will analyze your homepage for the 5 biggest conversion issues — CTA clarity, trust signals, FCA compliance, mobile UX, and more. <strong style={{ color: 'var(--navy)' }}>2 free audits per day.</strong>
+          </p>
+        </div>
+
+        {!result ? (
+          <form onSubmit={handleSubmit} style={{ maxWidth: '560px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', flexWrap: 'wrap' }}>
+              <input
+                type="url"
+                placeholder="https://yourmortgagebrokersite.co.uk"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                required
+                disabled={loading}
+                style={{
+                  flex: '1',
+                  minWidth: '280px',
+                  padding: '16px 20px',
+                  fontSize: '0.9rem',
+                  border: '1px solid var(--border)',
+                  background: 'var(--white)',
+                  color: 'var(--navy)',
+                  borderRadius: '4px',
+                  outline: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
+              />
+              <button
+                type="submit"
+                disabled={loading || !url}
+                className="btn-primary"
+                style={{
+                  opacity: loading || !url ? 0.5 : 1,
+                  cursor: loading || !url ? 'not-allowed' : 'pointer',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {loading ? 'Analyzing...' : 'Audit My Site →'}
+              </button>
+            </div>
+
+            {error && (
+              <div style={{
+                padding: '16px 20px',
+                background: '#fff5f5',
+                border: '1px solid #feb2b2',
+                borderRadius: '4px',
+                fontSize: '0.85rem',
+                color: '#c53030',
+                lineHeight: 1.6
+              }}>
+                {error}
+              </div>
+            )}
+
+            <p style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: '12px', lineHeight: 1.6, textAlign: 'center' }}>
+              Rate limit: 2 audits per IP per 24 hours. For unlimited audits and a personal review, <button onClick={(e) => { e.preventDefault(); document.dispatchEvent(new Event('openModal')) }} style={{ background: 'none', border: 'none', color: 'var(--gold)', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit' }}>book a free call</button>.
+            </p>
+          </form>
+        ) : (
+          <div style={{ background: 'var(--white)', border: '1px solid var(--border)', borderRadius: '8px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', gap: '16px', flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', fontWeight: 500, marginBottom: '8px' }}>✓ Audit Complete</div>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '4px' }}>Your Website Audit Results</h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>{url}</p>
+              </div>
+              <button
+                onClick={() => { setResult(null); setUrl(''); setError('') }}
+                style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--navy)',
+                  background: 'none',
+                  border: '1px solid var(--border)',
+                  padding: '10px 16px',
+                  cursor: 'pointer',
+                  borderRadius: '4px',
+                  transition: 'all 0.2s ease',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseOver={(e) => { e.target.style.borderColor = 'var(--gold)'; e.target.style.color = 'var(--gold)' }}
+                onMouseOut={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.color = 'var(--navy)' }}
+              >
+                ← New Audit
+              </button>
+            </div>
+
+            <div style={{
+              fontSize: '0.88rem',
+              color: 'var(--navy)',
+              lineHeight: 1.85,
+              whiteSpace: 'pre-wrap',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+            }}>
+              {result}
+            </div>
+
+            <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginBottom: '16px' }}>
+                Want a deeper, personalized review of your site with specific recommendations?
+              </p>
+              <button
+                className="btn-gold"
+                onClick={() => document.dispatchEvent(new Event('openModal'))}
+              >
+                Book a Free 30-Minute Call with Dan
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
 // ── LEAD MAGNET SECTION ───────────────────────────────────────
 function LeadMagnetSection() {
   const [email, setEmail] = useState('')
@@ -671,6 +837,9 @@ export default function Home() {
 
       {/* ── LEAD MAGNET ──────────────────────────────── */}
       <LeadMagnetSection />
+
+      {/* ── AI AUDIT ─────────────────────────────────── */}
+      <AuditSection />
 
       {/* ── FINAL CTA ────────────────────────────────── */}
       <section className="cta-final" id="cta">
