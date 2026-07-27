@@ -178,9 +178,10 @@ a, button { transition: all 0.22s ease; }
 section { transition: background 0.3s ease; }
 
 /* GOLD BORDER on focus (accessibility + luxury) */
-a:focus-visible, button:focus-visible {
-  outline: 1.5px solid var(--gold);
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.15);
 }
 
 /* REFINED SCROLLBAR */
