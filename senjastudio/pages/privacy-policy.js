@@ -9,6 +9,7 @@ const sections = [
   { title: 'Cookies', content: 'We use cookies to analyse site traffic and improve your experience. Analytics cookies are only set after you provide consent via our cookie banner. You can decline cookies and the site will continue to function. Essential cookies (required for the site to function) are set regardless of consent.' },
   { title: 'Third parties', content: 'We use Google Analytics for website analytics, Formspree for form processing, and Calendly for booking management. Each of these services has its own privacy policy governing how they process data on our behalf.' },
   { title: 'Your rights', content: 'Under UK GDPR, you have the right to access, correct, or delete your personal data. You have the right to object to processing and to data portability. To exercise any of these rights, contact us at dan@senjastudio.co.uk. You also have the right to lodge a complaint with the Information Commissioner\'s Office (ICO) at ico.org.uk.' },
+  { title: 'Governing law', content: 'This privacy policy is governed by the laws of England and Wales.' },
   { title: 'Contact', content: 'For any privacy-related queries, contact Dan Senja at dan@senjastudio.co.uk.' },
 ]
 
