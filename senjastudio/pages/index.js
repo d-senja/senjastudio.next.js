@@ -233,7 +233,7 @@ export default function Home() {
           <ActivityFeed />
 
           <h1 className="hero-headline" id="hero-heading">
-            The mortgage broker website<br />that turns visitors into <Typewriter />
+            The mortgage broker website <br />that turns visitors into <Typewriter />
           </h1>
 
           <p className="hero-sub">
@@ -294,7 +294,7 @@ export default function Home() {
       <section className="section why-niche" id="why-niche">
         <p className="section-label">Why we build exclusively for mortgage brokers</p>
         <h2 className="section-heading" id="niche-heading">
-          The most effective mortgage broker website design<br />comes from <em>deep specialism.</em>
+          The most effective mortgage broker website design <br />comes from <em>deep specialism.</em>
         </h2>
         <div className="niche-grid">
           {NICHE_CARDS.map((card, i) => (
