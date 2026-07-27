@@ -1042,14 +1042,14 @@ footer {
   flex-wrap: wrap;
   gap: 1rem;
 }
-.footer-logo { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.footer-logo { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
 .footer-logo span { color: var(--gold); }
 .footer-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.footer-email { font-size: 0.72rem; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; letter-spacing: 0.04em; }
+.footer-email { font-size: 0.72rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; letter-spacing: 0.04em; }
 .footer-email:hover { color: var(--gold); }
-.footer-link { font-size: 0.68rem; color: rgba(255,255,255,0.25); text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
-.footer-link:hover { color: rgba(255,255,255,0.5); }
-.footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
+.footer-link { font-size: 0.68rem; color: rgba(255,255,255,0.4); text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
+.footer-link:hover { color: rgba(255,255,255,0.7); }
+.footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
 
 /* BACK TO TOP */
 .back-to-top {
