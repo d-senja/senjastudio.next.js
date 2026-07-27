@@ -24,7 +24,7 @@ export default function Examples() {
         <div style={{ border: '1px solid var(--border)', background: 'var(--white)', marginBottom: '48px', overflow: 'hidden' }}>
           <div style={{ aspectRatio: '16/9', background: 'var(--navy)', overflow: 'hidden', position: 'relative' }}>
             <img
-              src="/whitfield-preview.png"
+              src="/images/whitfield-preview.png"
               alt="Whitfield Mortgage Advisory — mortgage broker website design by Senja Studio"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
             />
