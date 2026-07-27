@@ -588,9 +588,14 @@ nav {
 .who-card {
   background: var(--cream);
   padding: 40px 36px;
-  transition: background 0.2s;
+  transition: background 0.3s ease, transform 0.3s ease, border-left 0.3s ease, box-shadow 0.3s ease;
 }
-.who-card:hover { background: var(--cream2); border-left: 2px solid var(--gold); }
+.who-card:hover {
+  background: var(--cream2);
+  border-left: 3px solid var(--gold);
+  transform: translateX(4px);
+  box-shadow: -4px 4px 16px rgba(0, 0, 0, 0.08);
+}
 .who-card-icon { font-size: 1.25rem; margin-bottom: 12px; display: block; }
 .who-card-title {
   font-family: var(--serif);
