@@ -1055,6 +1055,125 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FCA COMPLIANCE ───────────────────────────── */}
+      <section className="section" id="compliance" style={{ background: 'var(--navy)' }}>
+        <p className="section-label" style={{ color: 'var(--gold-light)' }}>Regulatory compliance — built in, not bolted on</p>
+        <h2 className="section-heading" style={{ color: 'var(--white)' }}>
+          Most agencies hand you a site<br />and leave you to <em style={{ color: 'var(--gold-light)' }}>figure out compliance yourself.</em>
+        </h2>
+        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.45)', fontSize: '0.88rem', maxWidth: '600px', margin: '0 auto 56px', lineHeight: 1.85 }}>
+          We don't. Every site we build includes a standard compliance checklist delivered as part of the handover. Here's what's covered — and why it matters for your FCA authorisation.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '1px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.06)', maxWidth: '1000px', margin: '0 auto 56px' }}>
+          <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginBottom: '10px' }}>Required by FCA</div>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>FCA Authorisation Statement</h3>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.85 }}>
+              Every regulated mortgage broker site must display their authorisation statement and registration number — required by the FCA (UK), ASIC (Australia), CFPB/state regulators (USA), and equivalent bodies worldwide. We build a compliant placeholder into the footer of every page and flag it before going live.
+            </p>
+          </div>
+          <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginBottom: '10px' }}>Financial Promotions Rules</div>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>Fair, Clear & Not Misleading</h3>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.85 }}>
+              FCA rules require all financial promotions to be fair, clear and not misleading. We write copy with this in mind — no outcome guarantees, no rate promises, no "we'll definitely get you a mortgage" language. We flag any problematic claims in client-supplied copy before they go live on a regulated site.
+            </p>
+          </div>
+          <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginBottom: '10px' }}>Data Privacy</div>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>GDPR-Compliant Lead Capture</h3>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.85 }}>
+              Any lead capture form requires a privacy policy, explicit consent language, and compliant data handling. We build every form with the correct consent checkboxes, privacy policy links, and compliant copy. Your clients are responsible for their own GDPR compliance — but we make sure the forms we build don't create problems from the start.
+            </p>
+          </div>
+          <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginBottom: '10px' }}>UK Law</div>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>Cookie Consent & Accessibility</h3>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.85 }}>
+              UK law requires a genuine cookie consent banner with real accept and reject options — not a fake banner that ignores user preference. We also build with accessibility in mind: good colour contrast, descriptive alt text, and keyboard-navigable forms. Financial services sites are increasingly expected to meet WCAG standards.
+            </p>
+          </div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <button className="btn-gold" onClick={openModal}>Book a Free Call — See the Compliance Checklist</button>
+        </div>
+      </section>
+
+      {/* ── BROKER-SPECIFIC FEATURES ────────────────────── */}
+      <section className="section" id="broker-features" style={{ background: 'var(--white)' }}>
+        <p className="section-label">Built for mortgage brokers specifically</p>
+        <h2 className="section-heading">
+          Things a generic agency<br />would never think to <em>include.</em>
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="offer-item">
+            <div className="offer-num">→</div>
+            <h3 className="offer-title">Live Mortgage Rate Display</h3>
+            <p className="offer-body">A live rate ticker showing 2-year fixed, 5-year fixed, and tracker rates — updated regularly. Visitors see real numbers immediately, not a static page. Generic agencies would never think to include this. We build it in as standard.</p>
+          </div>
+          <div className="offer-item">
+            <div className="offer-num">→</div>
+            <h3 className="offer-title">Lender Panel Credibility Block</h3>
+            <p className="offer-body">A "whole of market access to 90+ lenders" trust signal — because the breadth of your panel is one of the biggest reasons clients choose an independent broker over a bank. We make this visible and prominent, not buried in the footer.</p>
+          </div>
+          <div className="offer-item">
+            <div className="offer-num">→</div>
+            <h3 className="offer-title">48-Hour DIP Promise Display</h3>
+            <p className="offer-body">Decision in Principle timelines matter to buyers who are under pressure. If you offer a fast DIP, we make that a visible selling point — not just a line in a paragraph, but a stat that stands out in your credentials bar.</p>
+          </div>
+          <div className="offer-item">
+            <div className="offer-num">→</div>
+            <h3 className="offer-title">Complex Case Positioning</h3>
+            <p className="offer-body">Most brokers want more self-employed and complex case clients — but their websites speak only to first-time buyers. We segment the copy and CTAs so complex case clients see themselves specifically addressed and feel confident enough to book.</p>
+          </div>
+          <div className="offer-item">
+            <div className="offer-num">→</div>
+            <h3 className="offer-title">£0 Broker Fee Prominence</h3>
+            <p className="offer-body">If you charge no broker fee, that's one of your biggest conversion advantages — and most broker sites bury it. We put it in your stats grid, your hero section, and your CTA copy so visitors see it before they even think about going elsewhere.</p>
+          </div>
+          <div className="offer-item">
+            <div className="offer-num">→</div>
+            <h3 className="offer-title">Google Reviews Done Properly</h3>
+            <p className="offer-body">Most broker sites either don't show reviews at all or dump them in a row at the bottom. We surface your best review prominently in the hero, use your star rating and count as trust signals in multiple places, and make the social proof work for you throughout the page.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── AGENCY COMPARISON ────────────────────────── */}
+      <section className="section" id="why">
+        <p className="section-label">Why Senja Studio</p>
+        <h2 className="section-heading">
+          What you actually get vs<br /><em>a typical agency.</em>
+        </h2>
+        <div style={{ maxWidth: '860px', margin: '0 auto', border: '1px solid var(--border)', overflow: 'hidden' }} role="table" aria-label="Senja Studio vs typical agency comparison">
+          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', background: 'var(--royal)' }} role="row">
+            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader"></div>
+            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader">Typical Agency</div>
+            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold-light)' }} role="columnheader">Senja Studio</div>
+          </div>
+          {[
+            ['Price', '£3,000 – £8,000', 'From £2,500'],
+            ['Delivery time', '6 – 12 weeks', '7 days standard'],
+            ['Mortgage broker expertise', 'Generic agency', '100% specialist niche'],
+            ['Compliance-ready copy', 'Extra cost, if at all', 'Included as standard'],
+            ['Built to convert', 'Built to look good', 'Every decision = more calls'],
+            ['Payment structure', 'Full payment upfront', '50% upfront, 50% on delivery'],
+            ['Who builds your site', 'Junior passed your brief', 'Dan, personally, every build'],
+            ['Regulatory authorisation statement', 'Left to you to figure out', 'Built in, checked before launch'],
+            ['GDPR-compliant forms', 'Generic forms, no consent copy', 'Consent language built in'],
+            ['Cookie consent banner', 'Fake banner or none at all', 'Real accept/reject, legally compliant'],
+            ['Financial promotion copy review', 'Not their problem', 'We flag compliance risks before launch'],
+            ['Lock-in contract', 'Long retainer required', 'You own everything. No lock-in.']
+          ].map(([feature, bad, good], i) => (
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', borderTop: '1px solid var(--border)', background: 'var(--white)' }} role="row">
+              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--navy)', fontWeight: 400, borderRight: '1px solid var(--border)', lineHeight: 1.5 }} role="cell">{feature}</div>
+              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: '#C0392B', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✕</span> {bad}</div>
+              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: '#1E7D4A', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✓</span> {good}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── SOCIAL TRUST ─────────────────────────────── */}
       <div className="social-trust">
         <div className="social-trust-inner">
