@@ -370,6 +370,471 @@ function ScrollProgress() {
   return <div className="scroll-progress" style={{ width: `${width}%` }} />
 }
 
+// ── EXIT INTENT POPUP 1: LEAD MAGNET ──────────────────────────
+function ExitIntentLeadMagnet() {
+  const [show, setShow] = useState(false)
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+  useEffect(() => {
+    // Don't show if already shown this session or user has submitted any form
+    if (typeof window === 'undefined') return
+    if (sessionStorage.getItem('exitIntent1Shown')) return
+    if (sessionStorage.getItem('formSubmitted')) return
+
+    let triggered = false
+
+    const handleMouseLeave = (e) => {
+      if (triggered) return
+      if (e.clientY <= 10) {
+        triggered = true
+        setShow(true)
+        sessionStorage.setItem('exitIntent1Shown', 'true')
+      }
+    }
+
+    document.addEventListener('mouseleave', handleMouseLeave)
+    return () => document.removeEventListener('mouseleave', handleMouseLeave)
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!email) return
+
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/lead-magnet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'exit-intent' })
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        setSuccess(true)
+        sessionStorage.setItem('formSubmitted', 'true')
+        if (data.downloadUrl) {
+          window.location.href = data.downloadUrl
+        }
+        setTimeout(() => setShow(false), 3000)
+      }
+    } catch (err) {
+      // Silent fail
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (!show) return null
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.75)',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        animation: 'fadeIn 0.3s ease'
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) setShow(false) }}
+    >
+      <div style={{
+        background: 'var(--navy)',
+        maxWidth: '520px',
+        width: '100%',
+        borderRadius: '8px',
+        padding: '40px 32px',
+        position: 'relative',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
+      }}>
+        <button
+          onClick={() => setShow(false)}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            background: 'none',
+            border: 'none',
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '4px',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.background = 'rgba(255,255,255,0.1)'
+            e.target.style.color = 'var(--white)'
+          }}
+          onMouseOut={(e) => {
+            e.target.style.background = 'none'
+            e.target.style.color = 'rgba(255,255,255,0.5)'
+          }}
+        >
+          ×
+        </button>
+
+        {success ? (
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
+            <h3 style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '1.5rem',
+              fontWeight: 500,
+              color: 'var(--white)',
+              marginBottom: '12px'
+            }}>
+              Check your inbox!
+            </h3>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+              Your free guide is on its way.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div style={{ fontSize: '2rem', marginBottom: '16px', textAlign: 'center' }}>📋</div>
+            <h3 style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '1.8rem',
+              fontWeight: 500,
+              color: 'var(--white)',
+              marginBottom: '12px',
+              textAlign: 'center',
+              lineHeight: 1.3
+            }}>
+              Before you go —<br />get the <em style={{ color: 'var(--gold-light)' }}>free guide</em>
+            </h3>
+            <p style={{
+              fontSize: '0.9rem',
+              color: 'rgba(255,255,255,0.6)',
+              marginBottom: '28px',
+              textAlign: 'center',
+              lineHeight: 1.7
+            }}>
+              5 things your broker site is costing you right now — and the exact fix for each one.
+            </p>
+
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '16px 20px',
+                  fontSize: '0.9rem',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: 'var(--white)',
+                  borderRadius: '4px',
+                  marginBottom: '12px',
+                  outline: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
+              />
+
+              <button
+                type="submit"
+                disabled={loading || !email}
+                className="btn-gold"
+                style={{
+                  width: '100%',
+                  opacity: loading || !email ? 0.5 : 1,
+                  cursor: loading || !email ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {loading ? 'Sending...' : 'Get the Free Guide →'}
+              </button>
+
+              <p style={{
+                fontSize: '0.7rem',
+                color: 'rgba(255,255,255,0.35)',
+                marginTop: '12px',
+                textAlign: 'center',
+                lineHeight: 1.6
+              }}>
+                No spam. Unsubscribe anytime.
+              </p>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── EXIT INTENT POPUP 2: OBJECTION CAPTURE ────────────────────
+function ExitIntentObjection() {
+  const [show, setShow] = useState(false)
+  const [selectedReason, setSelectedReason] = useState('')
+  const [additionalFeedback, setAdditionalFeedback] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+  const reasons = [
+    { value: 'not-ready', label: 'Not ready yet' },
+    { value: 'price', label: 'Price' },
+    { value: 'think-about-it', label: 'Want to think about it' },
+    { value: 'browsing', label: 'Just browsing' }
+  ]
+
+  useEffect(() => {
+    // Don't show if already shown this session or user has submitted any form
+    if (typeof window === 'undefined') return
+    if (sessionStorage.getItem('exitIntent2Shown')) return
+    if (sessionStorage.getItem('formSubmitted')) return
+    if (sessionStorage.getItem('exitIntent1Shown')) return // Don't show if popup 1 already shown
+
+    let triggered = false
+
+    const handleMouseLeave = (e) => {
+      if (triggered) return
+      if (e.clientY <= 10) {
+        triggered = true
+        setShow(true)
+        sessionStorage.setItem('exitIntent2Shown', 'true')
+      }
+    }
+
+    // Delay this listener so popup 1 gets priority
+    const timer = setTimeout(() => {
+      document.addEventListener('mouseleave', handleMouseLeave)
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!selectedReason) return
+
+    setLoading(true)
+
+    try {
+      await fetch('https://formspree.io/f/xgogpkzq', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Exit Intent Objection Captured',
+          source: 'exit-intent-objection',
+          reason: selectedReason,
+          additionalFeedback: additionalFeedback || 'None provided'
+        })
+      })
+
+      setSuccess(true)
+      sessionStorage.setItem('formSubmitted', 'true')
+      setTimeout(() => setShow(false), 2500)
+    } catch (err) {
+      // Silent fail
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (!show) return null
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.75)',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        animation: 'fadeIn 0.3s ease'
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) setShow(false) }}
+    >
+      <div style={{
+        background: 'var(--navy)',
+        maxWidth: '520px',
+        width: '100%',
+        borderRadius: '8px',
+        padding: '40px 32px',
+        position: 'relative',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
+      }}>
+        <button
+          onClick={() => setShow(false)}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            background: 'none',
+            border: 'none',
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '4px',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.background = 'rgba(255,255,255,0.1)'
+            e.target.style.color = 'var(--white)'
+          }}
+          onMouseOut={(e) => {
+            e.target.style.background = 'none'
+            e.target.style.color = 'rgba(255,255,255,0.5)'
+          }}
+        >
+          ×
+        </button>
+
+        {success ? (
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🙏</div>
+            <h3 style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '1.5rem',
+              fontWeight: 500,
+              color: 'var(--white)',
+              marginBottom: '12px'
+            }}>
+              Thanks for the feedback!
+            </h3>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+              We appreciate you taking the time to let us know.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div style={{ fontSize: '2rem', marginBottom: '16px', textAlign: 'center' }}>💬</div>
+            <h3 style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '1.8rem',
+              fontWeight: 500,
+              color: 'var(--white)',
+              marginBottom: '12px',
+              textAlign: 'center',
+              lineHeight: 1.3
+            }}>
+              What stopped you from<br /><em style={{ color: 'var(--gold-light)' }}>booking a call today?</em>
+            </h3>
+            <p style={{
+              fontSize: '0.85rem',
+              color: 'rgba(255,255,255,0.5)',
+              marginBottom: '28px',
+              textAlign: 'center',
+              lineHeight: 1.6
+            }}>
+              Your feedback helps us improve. This is anonymous.
+            </p>
+
+            <form onSubmit={handleSubmit}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+                {reasons.map(reason => (
+                  <button
+                    key={reason.value}
+                    type="button"
+                    onClick={() => setSelectedReason(reason.value)}
+                    style={{
+                      padding: '14px 20px',
+                      fontSize: '0.9rem',
+                      fontWeight: 500,
+                      border: selectedReason === reason.value ? '2px solid var(--gold)' : '1px solid rgba(255,255,255,0.2)',
+                      background: selectedReason === reason.value ? 'rgba(226,196,106,0.1)' : 'rgba(255,255,255,0.05)',
+                      color: selectedReason === reason.value ? 'var(--gold-light)' : 'rgba(255,255,255,0.7)',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      textAlign: 'left'
+                    }}
+                    onMouseOver={(e) => {
+                      if (selectedReason !== reason.value) {
+                        e.target.style.background = 'rgba(255,255,255,0.08)'
+                        e.target.style.borderColor = 'rgba(255,255,255,0.3)'
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      if (selectedReason !== reason.value) {
+                        e.target.style.background = 'rgba(255,255,255,0.05)'
+                        e.target.style.borderColor = 'rgba(255,255,255,0.2)'
+                      }
+                    }}
+                  >
+                    {selectedReason === reason.value && '✓ '}{reason.label}
+                  </button>
+                ))}
+              </div>
+
+              <textarea
+                placeholder="Anything else you'd like us to know? (optional)"
+                value={additionalFeedback}
+                onChange={(e) => setAdditionalFeedback(e.target.value)}
+                disabled={loading}
+                rows={3}
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  fontSize: '0.85rem',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: 'var(--white)',
+                  borderRadius: '4px',
+                  marginBottom: '16px',
+                  outline: 'none',
+                  resize: 'vertical',
+                  fontFamily: 'inherit',
+                  lineHeight: 1.6
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
+              />
+
+              <button
+                type="submit"
+                disabled={loading || !selectedReason}
+                className="btn-gold"
+                style={{
+                  width: '100%',
+                  opacity: loading || !selectedReason ? 0.5 : 1,
+                  cursor: loading || !selectedReason ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {loading ? 'Sending...' : 'Submit Feedback'}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ── LAYOUT ────────────────────────────────────────────────────
 export default function Layout({ children, title, description, canonical, modalOpen: modalOpenProp, onModalClose }) {
   const [modalOpen, setModalOpen] = useState(false)
@@ -437,6 +902,8 @@ export default function Layout({ children, title, description, canonical, modalO
       <WhatsAppWidget visible={scrolled} />
       <BackToTop visible={scrolled} />
       <CookieBar />
+      <ExitIntentLeadMagnet />
+      <ExitIntentObjection />
     </>
   )
 }
