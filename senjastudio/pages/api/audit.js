@@ -39,7 +39,7 @@ export default async function handler(req, res) {
   if (!checkRateLimit(ip)) {
     return res.status(429).json({
       error:
-        'You've used your 2 free audits for today. Book a call for a full manual review — calendly.com/dan-senjastudio/lets-talk',
+        "You've used your 2 free audits for today. Book a call for a full manual review — calendly.com/dan-senjastudio/lets-talk",
     });
   }
 
