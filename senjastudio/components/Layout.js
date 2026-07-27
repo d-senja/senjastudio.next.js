@@ -238,6 +238,37 @@ function Nav({ openModal }) {
 
 // ── FOOTER ────────────────────────────────────────────────────
 function Footer() {
+  const [locationsOpen, setLocationsOpen] = useState(false)
+
+  const ukLocations = [
+    { name: 'London', slug: 'mortgage-broker-website-design-london' },
+    { name: 'Manchester', slug: 'mortgage-broker-website-design-manchester' },
+    { name: 'Birmingham', slug: 'mortgage-broker-website-design-birmingham' },
+    { name: 'Leeds', slug: 'mortgage-broker-website-design-leeds' },
+    { name: 'Bristol', slug: 'mortgage-broker-website-design-bristol' },
+    { name: 'Edinburgh', slug: 'mortgage-broker-website-design-edinburgh' },
+    { name: 'Glasgow', slug: 'mortgage-broker-website-design-glasgow' },
+    { name: 'Liverpool', slug: 'mortgage-broker-website-design-liverpool' },
+    { name: 'Sheffield', slug: 'mortgage-broker-website-design-sheffield' },
+    { name: 'Nottingham', slug: 'mortgage-broker-website-design-nottingham' },
+    { name: 'Cardiff', slug: 'mortgage-broker-website-design-cardiff' },
+    { name: 'Newcastle', slug: 'mortgage-broker-website-design-newcastle' }
+  ]
+
+  const internationalLocations = [
+    { name: 'USA', slug: 'mortgage-broker-website-design-usa' },
+    { name: 'Australia', slug: 'mortgage-broker-website-design-australia' },
+    { name: 'Dubai', slug: 'mortgage-broker-website-design-dubai' },
+    { name: 'Canada', slug: 'mortgage-broker-website-design-canada' },
+    { name: 'New Zealand', slug: 'mortgage-broker-website-design-new-zealand' },
+    { name: 'Singapore', slug: 'mortgage-broker-website-design-singapore' },
+    { name: 'Hong Kong', slug: 'mortgage-broker-website-design-hong-kong' },
+    { name: 'Ireland', slug: 'mortgage-broker-website-design-ireland' },
+    { name: 'South Africa', slug: 'mortgage-broker-website-design-south-africa' },
+    { name: 'Germany', slug: 'mortgage-broker-website-design-germany' },
+    { name: 'France', slug: 'mortgage-broker-website-design-france' }
+  ]
+
   return (
     <footer>
       <div className="footer-left">
@@ -254,6 +285,105 @@ function Footer() {
         <Link href="/terms" className="footer-link">Terms</Link>
         <a href="mailto:dan@senjastudio.co.uk" className="footer-link">dan@senjastudio.co.uk</a>
       </div>
+
+      {/* Locations Section */}
+      <div style={{ width: '100%', marginTop: '32px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <button
+          onClick={() => setLocationsOpen(!locationsOpen)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: '0.75rem',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            cursor: 'pointer',
+            fontWeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            margin: '0 auto 16px',
+            padding: '8px 16px',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseOver={(e) => e.target.style.color = 'var(--gold)'}
+          onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.5)'}
+        >
+          <span>{locationsOpen ? '▼' : '▶'}</span>
+          <span>We Build for Brokers in {ukLocations.length + internationalLocations.length} Markets</span>
+        </button>
+
+        {locationsOpen && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px', maxWidth: '1100px', margin: '0 auto' }}>
+            {/* UK Locations */}
+            <div>
+              <h4 style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '16px', fontWeight: 500 }}>
+                United Kingdom
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {ukLocations.map(loc => (
+                  <Link
+                    key={loc.slug}
+                    href={`/${loc.slug}`}
+                    style={{
+                      fontSize: '0.82rem',
+                      color: 'rgba(255,255,255,0.5)',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      paddingLeft: '12px',
+                      borderLeft: '2px solid transparent'
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.color = 'var(--white)'
+                      e.target.style.borderLeftColor = 'var(--gold)'
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.color = 'rgba(255,255,255,0.5)'
+                      e.target.style.borderLeftColor = 'transparent'
+                    }}
+                  >
+                    {loc.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* International Locations */}
+            <div>
+              <h4 style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '16px', fontWeight: 500 }}>
+                International
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {internationalLocations.map(loc => (
+                  <Link
+                    key={loc.slug}
+                    href={`/${loc.slug}`}
+                    style={{
+                      fontSize: '0.82rem',
+                      color: 'rgba(255,255,255,0.5)',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      paddingLeft: '12px',
+                      borderLeft: '2px solid transparent'
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.color = 'var(--white)'
+                      e.target.style.borderLeftColor = 'var(--gold)'
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.color = 'rgba(255,255,255,0.5)'
+                      e.target.style.borderLeftColor = 'transparent'
+                    }}
+                  >
+                    {loc.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div style={{ width: '100%', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: '0.68rem', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>
         Senja Studio is not authorised and regulated by the FCA. This website is for marketing purposes only. © {new Date().getFullYear()} Senja Studio. All rights reserved.
       </div>
