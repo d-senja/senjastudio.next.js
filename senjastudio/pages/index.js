@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 
 // ── DATA ──────────────────────────────────────────────────────
+// Homepage for Senja Studio - mortgage broker website design
 const NICHE_CARDS = [
   { icon: '🧠', title: 'We know how mortgage clients think', body: 'Self-employed clients, complex cases, first-time buyers — we know what each one needs to see before they book a call. That knowledge is built into every layout, every CTA, every line of copy.' },
   { icon: '📋', title: 'FCA compliance built in from the start', body: 'Regulatory compliance built in from day one — authorisation statements, GDPR/privacy-compliant forms, cookie consent, financial promotion-safe copy. A generic agency hands you a site and leaves you to figure it out.' },
