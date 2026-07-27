@@ -60,8 +60,7 @@ const FAQS = [
 ]
 
 const ADDONS = [
-  { icon: '🤖', tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: '+ £75/month' },
-  { icon: '📋', tag: 'Add-on', title: 'Smart Lead Qualification Forms', body: "Multi-step forms that guide visitors through their mortgage situation before they book. You get better-qualified leads.", price: '£400', monthly: 'Included in Care Plan' },
+  { icon: '🤖', tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: 'Included in Care Plan' },
   { icon: '💬', tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '£1,200', monthly: '+ £100/month' },
   { icon: '📅', tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '£1,000', monthly: '+ £100/month' },
   { icon: '📤', tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '£1,500', monthly: '+ £150/month' },
