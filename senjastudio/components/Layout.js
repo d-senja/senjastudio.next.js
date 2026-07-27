@@ -419,10 +419,10 @@ export default function Layout({ children, title, description, canonical, modalO
         <meta property="og:type" content="website" />
         <meta property="og:title" content={siteTitle} />
         <meta property="og:description" content={siteDesc} />
-        <meta property="og:image" content="https://senjastudio.co.uk/og-image.png" />
+        <meta property="og:image" content="https://senjastudio.co.uk/images/og-image.png" />
         <meta property="og:site_name" content="Senja Studio" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://senjastudio.co.uk/og-image.png" />
+        <meta name="twitter:image" content="https://senjastudio.co.uk/images/og-image.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
         <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
