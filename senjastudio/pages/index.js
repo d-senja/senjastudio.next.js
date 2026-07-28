@@ -6,19 +6,19 @@ import RotatingCarousel from '../components/RotatingCarousel'
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
 const NICHE_CARDS = [
-  { icon: '🧠', title: 'We know how mortgage clients think', body: 'Self-employed clients, complex cases, first-time buyers — we know what each one needs to see before they book a call. That knowledge is built into every layout, every CTA, every line of copy.' },
-  { icon: '📋', title: 'FCA compliance built in from the start', body: 'Regulatory compliance built in from day one — authorisation statements, GDPR/privacy-compliant forms, cookie consent, financial promotion-safe copy. A generic agency hands you a site and leaves you to figure it out.' },
-  { icon: '🏆', title: "We've studied what actually converts", body: "We've analysed conversion patterns across mortgage broker sites specifically — not restaurant sites, not e-commerce. We know what makes a broker's phone ring and what makes visitors bounce." },
-  { icon: '⚡', title: 'No briefing from scratch', body: "A generic agency needs weeks to understand your industry before they can even begin. We already understand it. That's why we deliver in 7 days and a generic agency takes 3 months." },
-  { icon: '🎯', title: 'Segmented pathways for each client type', body: 'The biggest leak in most broker sites is one generic CTA for every type of client. We build segmented pathways — self-employed, complex cases, first-time buyers — so each visitor feels directly spoken to.' },
-  { icon: '📈', title: 'Specialists outperform generalists', body: "You wouldn't use a general solicitor for a complex mortgage dispute. You wouldn't use a general web agency for a mortgage broker website. Specialism matters." },
+  { icon: '◆', title: 'We know how mortgage clients think', body: 'Self-employed clients, complex cases, first-time buyers — we know what each one needs to see before they book a call. That knowledge is built into every layout, every CTA, every line of copy.' },
+  { icon: '▪', title: 'FCA compliance built in from the start', body: 'Regulatory compliance built in from day one — authorisation statements, GDPR/privacy-compliant forms, cookie consent, financial promotion-safe copy. A generic agency hands you a site and leaves you to figure it out.' },
+  { icon: '◆', title: "We've studied what actually converts", body: "We've analysed conversion patterns across mortgage broker sites specifically — not restaurant sites, not e-commerce. We know what makes a broker's phone ring and what makes visitors bounce." },
+  { icon: '▸', title: 'No briefing from scratch', body: "A generic agency needs weeks to understand your industry before they can even begin. We already understand it. That's why we deliver in 7 days and a generic agency takes 3 months." },
+  { icon: '◆', title: 'Segmented pathways for each client type', body: 'The biggest leak in most broker sites is one generic CTA for every type of client. We build segmented pathways — self-employed, complex cases, first-time buyers — so each visitor feels directly spoken to.' },
+  { icon: '▴', title: 'Specialists outperform generalists', body: "You wouldn't use a general solicitor for a complex mortgage dispute. You wouldn't use a general web agency for a mortgage broker website. Specialism matters." },
 ]
 
 const WHO_CARDS = [
-  { icon: '🚀', title: 'Brokers Just Starting Out', body: "Your first impression is everything. Starting with a professional, FCA-compliant site from day one means you look established immediately — and clients choose you over brokers who've been going for years but haven't invested online." },
-  { icon: '🏠', title: 'Established Brokers Leaking Leads', body: "You're getting traffic but not enough enquiries. Your current site looks dated, loads slowly, and doesn't speak to the client types you actually want. A conversion-first rebuild pays for itself within weeks." },
-  { icon: '📊', title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build sites with segmented CTAs that speak directly to them so they self-identify and book rather than bounce." },
-  { icon: '📣', title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. A properly built mortgage broker landing page can double or triple your return on ad spend." },
+  { icon: '▸', title: 'Brokers Just Starting Out', body: "Your first impression is everything. Starting with a professional, FCA-compliant site from day one means you look established immediately — and clients choose you over brokers who've been going for years but haven't invested online." },
+  { icon: '■', title: 'Established Brokers Leaking Leads', body: "You're getting traffic but not enough enquiries. Your current site looks dated, loads slowly, and doesn't speak to the client types you actually want. A conversion-first rebuild pays for itself within weeks." },
+  { icon: '▴', title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build sites with segmented CTAs that speak directly to them so they self-identify and book rather than bounce." },
+  { icon: '◆', title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. A properly built mortgage broker landing page can double or triple your return on ad spend." },
 ]
 
 const OFFER_ITEMS = [
@@ -61,12 +61,12 @@ const FAQS = [
 ]
 
 const ADDONS = [
-  { icon: '🤖', tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: 'Included in Care Plan' },
-  { icon: '💬', tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '£1,200', monthly: '+ £100/month' },
-  { icon: '📅', tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '£1,000', monthly: '+ £100/month' },
-  { icon: '📤', tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '£1,500', monthly: '+ £150/month' },
-  { icon: '📞', tag: 'Add-on', title: 'AI Inbound Phone Caller', body: "An AI voice agent that answers your business calls when you're unavailable — qualifying the enquiry, capturing details, and booking a callback.", price: '£1,500', monthly: '+ £120/month' },
-  { icon: '🔊', tag: 'Add-on', title: 'AI Outbound Phone Caller', body: "An AI voice agent that proactively calls leads from your pipeline — following up on enquiries and booking appointments.", price: '£2,000', monthly: '+ £150/month' },
+  { icon: '◆', tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: 'Included in Care Plan' },
+  { icon: '▪', tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '£1,200', monthly: '+ £100/month' },
+  { icon: '▪', tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '£1,000', monthly: '+ £100/month' },
+  { icon: '▸', tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '£1,500', monthly: '+ £150/month' },
+  { icon: '▪', tag: 'Add-on', title: 'AI Inbound Phone Caller', body: "An AI voice agent that answers your business calls when you're unavailable — qualifying the enquiry, capturing details, and booking a callback.", price: '£1,500', monthly: '+ £120/month' },
+  { icon: '▸', tag: 'Add-on', title: 'AI Outbound Phone Caller', body: "An AI voice agent that proactively calls leads from your pipeline — following up on enquiries and booking appointments.", price: '£2,000', monthly: '+ £150/month' },
 ]
 
 const BLOG_POSTS = [
@@ -150,14 +150,14 @@ function getSlots() {
 
 function ActivityFeed() {
   const activities = [
-    { icon: '🛠️', text: 'Currently building a broker site for a new client' },
-    { icon: '✍️', text: 'Writing conversion copy for a homepage build' },
-    { icon: '📞', text: 'Following up with brokers who booked calls this week' },
-    { icon: '🎨', text: 'Designing a segmented CTA layout for a broker' },
-    { icon: '🚀', text: 'Preparing a finished site for launch' },
-    { icon: '🤖', text: 'Setting up an AI lead capture chatbot for a client' },
-    { icon: '📊', text: 'Reviewing analytics for a recently launched site' },
-    { icon: '⚡', text: 'Optimising mobile speed on a live broker site' },
+    { icon: '▪', text: 'Currently building a broker site for a new client' },
+    { icon: '▸', text: 'Writing conversion copy for a homepage build' },
+    { icon: '◆', text: 'Following up with brokers who booked calls this week' },
+    { icon: '▴', text: 'Designing a segmented CTA layout for a broker' },
+    { icon: '▸', text: 'Preparing a finished site for launch' },
+    { icon: '◆', text: 'Setting up an AI lead capture chatbot for a client' },
+    { icon: '▴', text: 'Reviewing analytics for a recently launched site' },
+    { icon: '▸', text: 'Optimising mobile speed on a live broker site' },
   ]
 
   const d = new Date()
@@ -541,7 +541,7 @@ function WebsiteScoreQuiz() {
                   flexShrink: 0,
                   marginTop: '2px'
                 }}>
-                  {answers[q.id] ? '✅' : '❌'}
+                  {answers[q.id] ? '✓' : '✗'}
                 </div>
                 <div style={{
                   fontSize: '0.85rem',
@@ -625,7 +625,7 @@ function WebsiteScoreQuiz() {
     <section className="section" id="website-quiz" style={{ background: 'var(--navy)' }}>
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>📊</div>
+          <div style={{ fontSize: '2.5rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
           <p className="section-label" style={{ color: 'var(--gold-light)' }}>5-Question Website Score</p>
           <h2 style={{
             fontFamily: 'var(--serif)',
@@ -922,7 +922,7 @@ function LeadMagnetSection() {
     return (
       <section className="section" style={{ background: 'var(--navy)', textAlign: 'center' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
+          <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
           <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: 'var(--white)', marginBottom: '12px', lineHeight: 1.3 }}>
             Check your inbox
           </h2>
