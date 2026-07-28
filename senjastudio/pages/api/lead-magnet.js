@@ -73,7 +73,7 @@ export default async function handler(req, res) {
       const pdfBuffer = fs.readFileSync(pdfPath);
       const pdfBase64 = pdfBuffer.toString('base64');
 
-      await fetch('https://api.resend.com/emails', {
+      const emailRes = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,8 +106,14 @@ export default async function handler(req, res) {
           }]
         }),
       });
+
+      const emailData = await emailRes.json();
+      if (!emailRes.ok) {
+        console.error('Resend API error:', emailRes.status, emailData);
+      }
     } catch (e) {
       // Email failed — still return success, Formspree captured the lead
+      console.error('Failed to send email:', e.message);
     }
   }
 
