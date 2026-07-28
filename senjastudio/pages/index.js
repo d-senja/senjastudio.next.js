@@ -1134,7 +1134,7 @@ export default function Home() {
       {/* ── WHAT'S INCLUDED ──────────────────────────── */}
       <section className="section" id="offer">
         <p className="section-label">What's included</p>
-        <h2 className="section-heading" id="offer-heading">
+        <h2 className="section-heading fade-in-up" id="offer-heading">
           Everything your site needs to <em>win clients.</em>
         </h2>
         <RotatingCarousel items={OFFER_ITEMS} />

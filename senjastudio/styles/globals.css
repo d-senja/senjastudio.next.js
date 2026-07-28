@@ -102,7 +102,7 @@ a, button { transition: all 0.22s ease; }
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-12px);
   }
 }
 
@@ -468,7 +468,7 @@ nav {
   padding-top: 24px;
   border-top: 1px solid var(--border);
 }
-.trust-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.05em; }
+.trust-stars { color: var(--gold); font-size: 1rem; letter-spacing: 0.05em; }
 .trust-text { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
 .trust-text strong { color: var(--navy); font-weight: 500; }
 
@@ -903,7 +903,7 @@ nav {
   transition: background 0.2s;
 }
 .testi-card:hover { background: var(--cream); }
-.testi-stars { color: var(--gold); font-size: 0.82rem; letter-spacing: 0.06em; margin-bottom: 16px; }
+.testi-stars { color: var(--gold); font-size: 1rem; letter-spacing: 0.06em; margin-bottom: 16px; }
 .testi-quote {
   font-family: var(--serif2);
   font-size: 1.14rem;
@@ -1181,14 +1181,15 @@ footer {
 .upsell-icon { font-size: 1.25rem; margin-bottom: 12px; display: block; }
 .upsell-tag {
   display: inline-block;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--gold);
-  border: 1px solid rgba(184,146,42,0.3);
-  padding: 2px 7px;
+  border: 1px solid rgba(184,146,42,0.4);
+  padding: 3px 9px;
   margin-bottom: 10px;
+  background: rgba(201,168,76,0.08);
 }
 .upsell-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--navy); margin-bottom: 8px; }
 .upsell-sub { font-size: 0.78rem; color: var(--muted); line-height: 1.8; }
@@ -1769,6 +1770,8 @@ footer {
 .pricing-card.featured {
   position: relative;
   overflow: hidden;
+  transform: scale(1.03);
+  box-shadow: 0 12px 36px rgba(15,11,30,0.15), 0 0 0 1px rgba(201,168,76,0.15);
 }
 .pricing-card.featured::before {
   content: '';
@@ -1868,12 +1871,12 @@ footer {
   width: 7px; height: 7px;
   background: #2ECC71;
   border-radius: 50%;
-  animation: livePulse 2s ease-in-out infinite;
+  animation: livePulse 2.5s ease-in-out infinite;
   flex-shrink: 0;
 }
 @keyframes livePulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,204,113,0.5); }
-  50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(46,204,113,0); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,204,113,0.6); }
+  50% { opacity: 0.75; box-shadow: 0 0 0 6px rgba(46,204,113,0); }
 }
 .live-label {
   font-size: 0.62rem;
