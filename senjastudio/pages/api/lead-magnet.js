@@ -4,6 +4,9 @@
 // Set FORMSPREE_ID and RESEND_API_KEY in Vercel env vars
 // PDF hosted at: /downloads/5-things-broker-site-guide.pdf (put in public/downloads/)
 
+import fs from 'fs';
+import path from 'path';
+
 const rateLimitMap = new Map();
 const RATE_LIMIT = 1;
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 1 download per IP per day
@@ -65,6 +68,11 @@ export default async function handler(req, res) {
   // ── 2. Send PDF via Resend ──────────────────────────────────
   if (resendKey) {
     try {
+      // Read PDF from filesystem and encode to base64
+      const pdfPath = path.join(process.cwd(), 'public', 'downloads', '5-things-broker-site-guide.pdf');
+      const pdfBuffer = fs.readFileSync(pdfPath);
+      const pdfBase64 = pdfBuffer.toString('base64');
+
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -80,11 +88,11 @@ export default async function handler(req, res) {
               <p style="font-size: 17px;">Hi${name ? ` ${name}` : ''},</p>
               <p style="font-size: 15px; line-height: 1.7;">Thanks for downloading the guide. Your copy is attached.</p>
               <p style="font-size: 15px; line-height: 1.7;">
-                Inside you'll find the 5 most common reasons broker sites lose enquiries — and the exact fix for each one. 
+                Inside you'll find the 5 most common reasons broker sites lose enquiries — and the exact fix for each one.
                 Most of these take under an hour to address once you know what to look for.
               </p>
               <p style="font-size: 15px; line-height: 1.7;">
-                If you want me to look at your specific site and tell you what's costing you the most, 
+                If you want me to look at your specific site and tell you what's costing you the most,
                 <a href="https://calendly.com/dan-senjastudio/lets-talk" style="color: #C9A84C;">book a free 20-minute call here</a>.
               </p>
               <p style="font-size: 15px; margin-top: 2rem;">Dan<br>
@@ -92,12 +100,10 @@ export default async function handler(req, res) {
               </p>
             </div>
           `,
-          // Attach PDF — file must be base64 encoded
-          // Uncomment and update path once PDF is in public/downloads/
-          // attachments: [{
-          //   filename: '5-things-broker-site-guide.pdf',
-          //   content: '<base64-encoded-pdf>',
-          // }]
+          attachments: [{
+            filename: '5-things-broker-site-guide.pdf',
+            content: pdfBase64,
+          }]
         }),
       });
     } catch (e) {
