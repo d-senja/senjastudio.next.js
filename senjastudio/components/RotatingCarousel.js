@@ -5,8 +5,79 @@ export default function RotatingCarousel({ items }) {
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [startRotation, setStartRotation] = useState(0)
+  const [dimensions, setDimensions] = useState({
+    radius: 450,
+    cardWidth: 320,
+    cardHeight: 420,
+    containerHeight: 650,
+    fontSize: {
+      number: '4rem',
+      title: '1.35rem',
+      body: '0.88rem'
+    },
+    padding: '40px 32px',
+    dragSensitivity: 0.5
+  })
   const requestRef = useRef()
   const containerRef = useRef(null)
+
+  // Responsive dimensions
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth
+
+      if (width < 480) {
+        // Mobile
+        setDimensions({
+          radius: 280,
+          cardWidth: 260,
+          cardHeight: 340,
+          containerHeight: 480,
+          fontSize: {
+            number: '2.8rem',
+            title: '1.1rem',
+            body: '0.8rem'
+          },
+          padding: '28px 24px',
+          dragSensitivity: 0.7
+        })
+      } else if (width < 768) {
+        // Tablet
+        setDimensions({
+          radius: 360,
+          cardWidth: 290,
+          cardHeight: 380,
+          containerHeight: 550,
+          fontSize: {
+            number: '3.4rem',
+            title: '1.2rem',
+            body: '0.84rem'
+          },
+          padding: '32px 28px',
+          dragSensitivity: 0.6
+        })
+      } else {
+        // Desktop
+        setDimensions({
+          radius: 450,
+          cardWidth: 320,
+          cardHeight: 420,
+          containerHeight: 650,
+          fontSize: {
+            number: '4rem',
+            title: '1.35rem',
+            body: '0.88rem'
+          },
+          padding: '40px 32px',
+          dragSensitivity: 0.5
+        })
+      }
+    }
+
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
 
   // Auto-rotation
   useEffect(() => {
@@ -30,7 +101,7 @@ export default function RotatingCarousel({ items }) {
   const handleMove = (clientX) => {
     if (!isDragging) return
     const delta = clientX - startX
-    const rotationDelta = delta * 0.5
+    const rotationDelta = delta * dimensions.dragSensitivity
     setRotation(startRotation + rotationDelta)
   }
 
@@ -39,20 +110,22 @@ export default function RotatingCarousel({ items }) {
   }
 
   // Calculate card positions
-  const radius = 450
   const angleStep = 360 / items.length
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 480
 
   return (
     <div
       ref={containerRef}
       style={{
-        perspective: '1800px',
+        perspective: `${dimensions.radius * 4}px`,
         width: '100%',
-        height: '650px',
+        height: `${dimensions.containerHeight}px`,
         position: 'relative',
         cursor: isDragging ? 'grabbing' : 'grab',
         userSelect: 'none',
-        touchAction: 'none'
+        touchAction: 'none',
+        maxWidth: '100%',
+        overflow: 'hidden'
       }}
       onMouseDown={(e) => handleStart(e.clientX)}
       onMouseMove={(e) => handleMove(e.clientX)}
@@ -63,22 +136,24 @@ export default function RotatingCarousel({ items }) {
       onTouchEnd={handleEnd}
     >
       {/* Instruction text */}
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        fontSize: '0.7rem',
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        color: 'var(--gold)',
-        fontWeight: 500,
-        zIndex: 100,
-        pointerEvents: 'none',
-        opacity: 0.6
-      }}>
-        ← Drag to rotate →
-      </div>
+      {!isMobile && (
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '0.7rem',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'var(--gold)',
+          fontWeight: 500,
+          zIndex: 100,
+          pointerEvents: 'none',
+          opacity: 0.6
+        }}>
+          ← Drag to rotate →
+        </div>
+      )}
 
       <div
         style={{
@@ -92,12 +167,12 @@ export default function RotatingCarousel({ items }) {
       >
         {items.map((item, index) => {
           const angle = angleStep * index
-          const x = Math.sin((angle * Math.PI) / 180) * radius
-          const z = Math.cos((angle * Math.PI) / 180) * radius
+          const x = Math.sin((angle * Math.PI) / 180) * dimensions.radius
+          const z = Math.cos((angle * Math.PI) / 180) * dimensions.radius
           const cardRotation = -angle
 
           // Calculate distance from front for depth effect
-          const normalizedZ = (z + radius) / (radius * 2)
+          const normalizedZ = (z + dimensions.radius) / (dimensions.radius * 2)
           const scale = 0.7 + normalizedZ * 0.3
           const opacity = 0.4 + normalizedZ * 0.6
 
@@ -108,8 +183,8 @@ export default function RotatingCarousel({ items }) {
                 position: 'absolute',
                 left: '50%',
                 top: '50%',
-                width: '320px',
-                height: '420px',
+                width: `${dimensions.cardWidth}px`,
+                height: `${dimensions.cardHeight}px`,
                 transform: `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) rotateY(${cardRotation}deg) scale(${scale})`,
                 transformStyle: 'preserve-3d',
                 backfaceVisibility: 'hidden',
@@ -123,13 +198,13 @@ export default function RotatingCarousel({ items }) {
                   height: '100%',
                   background: 'linear-gradient(135deg, var(--navy) 0%, #1a2847 100%)',
                   borderRadius: '12px',
-                  padding: '40px 32px',
+                  padding: dimensions.padding,
                   boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(255,255,255,0.1) inset',
                   border: '1px solid rgba(212,175,55,0.15)',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
-                  gap: '20px',
+                  gap: isMobile ? '14px' : '20px',
                   position: 'relative',
                   overflow: 'hidden'
                 }}
@@ -139,8 +214,8 @@ export default function RotatingCarousel({ items }) {
                   position: 'absolute',
                   top: '0',
                   right: '0',
-                  width: '80px',
-                  height: '80px',
+                  width: isMobile ? '60px' : '80px',
+                  height: isMobile ? '60px' : '80px',
                   background: 'linear-gradient(135deg, transparent 0%, rgba(212,175,55,0.08) 100%)',
                   borderBottomLeftRadius: '100%'
                 }} />
@@ -148,7 +223,7 @@ export default function RotatingCarousel({ items }) {
                 {/* Item number */}
                 <div style={{
                   fontFamily: 'var(--serif)',
-                  fontSize: '4rem',
+                  fontSize: dimensions.fontSize.number,
                   fontWeight: 700,
                   color: 'var(--gold)',
                   opacity: 0.15,
@@ -161,11 +236,11 @@ export default function RotatingCarousel({ items }) {
                 {/* Title */}
                 <h3 style={{
                   fontFamily: 'var(--serif)',
-                  fontSize: '1.35rem',
+                  fontSize: dimensions.fontSize.title,
                   fontWeight: 500,
                   color: 'var(--white)',
                   lineHeight: 1.3,
-                  marginTop: '-10px',
+                  marginTop: isMobile ? '-6px' : '-10px',
                   textShadow: '0 2px 8px rgba(0,0,0,0.2)'
                 }}>
                   {item.title}
@@ -173,15 +248,15 @@ export default function RotatingCarousel({ items }) {
 
                 {/* Divider */}
                 <div style={{
-                  width: '60px',
+                  width: isMobile ? '50px' : '60px',
                   height: '2px',
                   background: 'linear-gradient(90deg, var(--gold) 0%, transparent 100%)',
-                  marginTop: '-10px'
+                  marginTop: isMobile ? '-6px' : '-10px'
                 }} />
 
                 {/* Body text */}
                 <p style={{
-                  fontSize: '0.88rem',
+                  fontSize: dimensions.fontSize.body,
                   color: 'rgba(255,255,255,0.75)',
                   lineHeight: 1.7,
                   flex: 1
@@ -211,8 +286,8 @@ export default function RotatingCarousel({ items }) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '200px',
-        height: '200px',
+        width: isMobile ? '150px' : '200px',
+        height: isMobile ? '150px' : '200px',
         background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)',
         borderRadius: '50%',
         pointerEvents: 'none',
