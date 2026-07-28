@@ -2773,7 +2773,7 @@ input:focus, textarea:focus {
 /* RESPONSIVE — MOBILE */
 @media (max-width: 640px) {
   .hero-left { padding: 88px 20px 40px; }
-  .hero-headline { font-size: 2rem; }
+  .hero-headline { font-size: max(2rem, 16px); /* Ensure minimum 16px */ }
   .hero-right { min-height: 280px; }
   .niche-grid { grid-template-columns: 1fr; }
   .offer-grid { grid-template-columns: 1fr; }
@@ -2781,13 +2781,14 @@ input:focus, textarea:focus {
   .upsell-grid { grid-template-columns: 1fr; }
   .compare-header { grid-template-columns: 1.2fr 1fr 1fr; }
   .compare-row { grid-template-columns: 1.2fr 1fr 1fr; }
-  .compare-cell { padding: 10px 10px; font-size: 0.7rem; }
-  .compare-header-cell { padding: 12px 10px; font-size: 0.58rem; }
+  .compare-cell { padding: 10px 10px; font-size: max(0.7rem, 16px); /* Ensure minimum 16px */ }
+  .compare-header-cell { padding: 12px 10px; font-size: max(0.58rem, 16px); /* Ensure minimum 16px */ }
   .section { padding: 56px 20px; }
-  .section-heading { padding: 0 4px !important; }
+  .section-heading { padding: 0 4px !important; font-size: max(1.8rem, 16px); /* Ensure minimum 16px */ }
   .section-label { text-align: center !important; display: block; }
-  footer { padding: 20px; flex-direction: column; text-align: center; }
-  .footer-right { justify-content: center; }
+  footer { padding: 20px; flex-direction: column; text-align: center; gap: 16px; }
+  .footer-right { justify-content: center; gap: 16px; }
+  .footer-link { min-height: 44px; display: inline-flex; align-items: center; padding: 8px; }
   .social-trust { padding: 48px 20px; }
   .social-trust-inner { flex-direction: column; text-align: center; }
   .trust-badges { justify-content: center; }
@@ -2799,22 +2800,27 @@ input:focus, textarea:focus {
   /* Pricing cards mobile */
   .pricing-card { padding: 24px 20px; }
   .pricing-price { font-size: 2.8rem; }
-  .pricing-features { font-size: 0.78rem; }
+  .pricing-features { font-size: max(0.78rem, 16px); /* Ensure minimum 16px */ }
   .pricing-features li { padding: 5px 0; }
   /* Qualify modal mobile */
   .qualify-box { margin: 10px; max-height: 85vh; }
   .qualify-header { padding: 20px 20px 16px; }
   .qualify-body { padding: 20px; }
-  .qualify-title { font-size: 1.2rem; }
+  .qualify-title { font-size: max(1.2rem, 16px); /* Ensure minimum 16px */ }
+  /* Quiz buttons full-width on mobile */
+  .quiz-opt { width: 100%; min-height: 44px; font-size: max(0.8rem, 16px); /* Ensure minimum 16px */ }
   /* ROI calculator mobile */
   .live-bar-inner { flex-direction: column; gap: 6px; }
   .live-rates { flex-wrap: wrap; gap: 10px; }
   /* Section headings */
-  .section-heading { font-size: 1.8rem; }
+  .section-heading { font-size: max(1.8rem, 16px); /* Ensure minimum 16px */ }
   /* Upsell cards */
   .upsell-card { padding: 24px 20px; }
   /* Activity feed */
   .activity-feed-wrap { max-width: 100%; }
+  /* Ensure all buttons and touch targets are at least 44px */
+  .btn-primary, .btn-gold, .btn-ghost { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .faq-q { min-height: 44px; }
 }
 
 /* ── RESPONSIVE GRIDS ──────────────────────────────────────── */
