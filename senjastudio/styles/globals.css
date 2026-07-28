@@ -2834,4 +2834,81 @@ input:focus, textarea:focus {
 @media (max-width: 640px) {
   .grid-3col { grid-template-columns: 1fr; }
   .grid-2col { grid-template-columns: 1fr; }
+
+  /* Comparison table mobile - stack to single column card layout */
+  #why > div[role="table"] {
+    border: none !important;
+  }
+  #why > div[role="table"] > div[role="row"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    margin-bottom: 12px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+  #why > div[role="table"] > div[role="row"]:first-child {
+    display: none !important; /* Hide header row on mobile */
+  }
+  #why > div[role="table"] > div[role="row"] > div[role="cell"] {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 14px 16px !important;
+    font-size: 0.85rem !important;
+  }
+  #why > div[role="table"] > div[role="row"] > div[role="cell"]:last-child {
+    border-bottom: none !important;
+  }
+  #why > div[role="table"] > div[role="row"] > div[role="cell"]:first-child {
+    background: var(--cream) !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    color: var(--navy) !important;
+  }
+
+  /* ROI Calculator mobile - stack grid vertically */
+  #roi > div > div[style*="grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  #roi > div > div[style*="grid"] > div:first-child {
+    padding: 28px 20px !important;
+  }
+  #roi > div > div[style*="grid"] > div:last-child {
+    gap: 1px !important;
+  }
+  #roi > div > div[style*="grid"] > div:last-child > div {
+    padding: 20px 18px !important;
+  }
+  #roi > div > div[style*="grid"] > div:last-child > div > div:first-child {
+    font-size: 0.54rem !important;
+  }
+  #roi > div > div[style*="grid"] > div:last-child > div > div:nth-child(2) {
+    font-size: 2rem !important; /* Scale down large revenue numbers */
+  }
+  #roi > div > div[style*="grid"] > div:last-child > div > div:last-child {
+    font-size: 0.75rem !important;
+  }
+  #roi label {
+    font-size: 0.82rem !important;
+  }
+  #roi input[type="range"] + div + div label {
+    font-size: 0.82rem !important;
+  }
+
+  /* ROI bottom CTA bar - stack on mobile */
+  #roi > div + div[style*="background: var(--navy)"] {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 16px !important;
+    padding: 20px 20px !important;
+  }
+  #roi > div + div[style*="background: var(--navy)"] > p {
+    font-size: 0.82rem !important;
+  }
+  #roi > div + div[style*="background: var(--navy)"] > button {
+    width: 100% !important;
+  }
 }
