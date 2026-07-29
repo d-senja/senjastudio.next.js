@@ -48,7 +48,7 @@ export default function Blog() {
   return (
     <Layout
       title="Mortgage Broker Website Design Blog"
-      description="Expert guides on mortgage broker website design, FCA compliance, and conversion optimisation."
+      description="Mortgage broker website design guides, FCA compliance tips, and conversion strategies from Senja Studio."
       canonical="/blog"
     >
       {/* Hero */}

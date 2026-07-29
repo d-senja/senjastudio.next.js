@@ -30,7 +30,7 @@ export default function Glossary() {
   return (
     <Layout
       title="Mortgage Broker Website Glossary"
-      description="Clear definitions of mortgage broker website terms — from segmented CTAs to FCA compliance and conversion rate optimisation."
+      description="Complete mortgage broker website glossary — key terms every independent broker needs to know."
       canonical="/glossary"
     >
       <div style={{ background: 'var(--navy)', padding: '72px 48px 64px', textAlign: 'center' }}>

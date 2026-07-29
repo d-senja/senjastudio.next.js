@@ -5,7 +5,7 @@ export default function Examples() {
   return (
     <Layout
       title="Mortgage Broker Website Examples"
-      description="See live mortgage broker website examples built by Senja Studio. High-converting, FCA-compliant, delivered in 7 days from £2,500."
+      description="See mortgage broker websites built by Senja Studio — conversion-first, FCA-compliant, delivered in 7 days."
       canonical="/examples"
     >
       {/* Hero */}

@@ -1038,7 +1038,7 @@ export default function Home() {
   return (
     <Layout
       title={null}
-      description="High-converting websites built exclusively for independent mortgage brokers worldwide. Conversion-focused, mobile-first, delivered in 7 days from £2,500."
+      description="Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent brokers worldwide. Delivered in 7 days from £2,500."
       canonical="/"
       modalOpen={modalOpen}
       onModalClose={() => setModalOpen(false)}
