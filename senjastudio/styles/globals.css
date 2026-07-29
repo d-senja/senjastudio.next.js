@@ -2969,3 +2969,29 @@ input:focus, textarea:focus {
 [data-theme="dark"] .carousel-card p {
   color: rgba(255,255,255,0.75);
 }
+
+/* ── GLOBAL DARK MODE TEXT VISIBILITY FIXES ────────────────── */
+/* Fix low-opacity body text across all pages */
+[data-theme="dark"] p[style*="rgba(255,255,255,0.45)"],
+[data-theme="dark"] p[style*="rgba(255,255,255,0.4)"],
+[data-theme="dark"] div[style*="rgba(255,255,255,0.4)"],
+[data-theme="dark"] span[style*="rgba(255,255,255,0.4)"] {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+/* Fix location page body text */
+[data-theme="dark"] section[style*="background: var(--navy)"] p[style*="font-size: 0.9rem"],
+[data-theme="dark"] section[style*="background: var(--royal)"] p[style*="font-size: 0.9rem"] {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+/* Fix stat labels */
+[data-theme="dark"] div[style*="rgba(255,255,255,0.25)"] {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+/* Fix all muted text colors */
+[data-theme="dark"] p[style*="color: var(--muted)"],
+[data-theme="dark"] div[style*="color: var(--muted)"] {
+  color: rgba(232,224,216,0.85) !important;
+}
