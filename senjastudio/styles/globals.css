@@ -2748,7 +2748,7 @@ input:focus, textarea:focus {
 }
 
 #lead-magnet {
-  background: linear-gradient(to bottom, var(--navy) 0%, rgba(15,11,30,0.98) 100%) !important;
+  background: var(--royal) !important;
 }
 
 /* Dark mode section transition adjustments */
