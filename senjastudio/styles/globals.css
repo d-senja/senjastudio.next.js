@@ -472,6 +472,9 @@ nav::after {
   text-transform: uppercase;
   position: relative;
   overflow: hidden;
+  padding: 6px 14px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(201,168,76,0.3);
 }
 
 /* Shimmer animation that sweeps every 4 seconds */
@@ -493,10 +496,6 @@ nav::after {
   100% {
     left: 100%;
   }
-}
-  padding: 6px 14px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 12px rgba(201,168,76,0.3);
 }
 .hero-headline {
   font-family: var(--serif);

@@ -1,4 +1,5 @@
 import Layout from '../components/Layout'
+import Link from 'next/link'
 
 // ── EXPANDED LOCATIONS OBJECT ─────────────────────────────────
 // 23 location-specific landing pages for mortgage broker website design
