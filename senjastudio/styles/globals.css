@@ -500,6 +500,26 @@ nav {
 .section {
   padding: var(--section-padding-large);
   background: var(--cream);
+  position: relative;
+}
+
+/* Smooth section transitions */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(15,11,30,0.02) 0%, transparent 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.section[style*="background: var(--navy)"]::before,
+.section[style*="background: var(--royal)"]::before {
+  display: none;
 }
 
 /* BLOG ARTICLES */
@@ -2655,6 +2675,37 @@ input:focus, textarea:focus {
 
 /* Feature symbols visibility fix */
 [data-theme="dark"] .offer-num { opacity: 0.18 !important; }
+
+/* ── SECTION TRANSITION POLISH ─────────────────────────────── */
+/* Add subtle gradient blending between light and dark sections */
+#audit::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(15,11,30,0.015) 100%);
+  pointer-events: none;
+}
+
+#website-quiz {
+  background: linear-gradient(to bottom, rgba(15,11,30,0.98) 0%, var(--navy) 100%) !important;
+}
+
+#roi::before {
+  opacity: 1 !important;
+  height: 120px;
+}
+
+#lead-magnet {
+  background: linear-gradient(to bottom, var(--navy) 0%, rgba(15,11,30,0.98) 100%) !important;
+}
+
+/* Dark mode section transition adjustments */
+[data-theme="dark"] #audit::after {
+  background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.02) 100%);
+}
 
 /* SS5: Sticky comparison bar - prices and labels */
 [data-theme="dark"] .sticky-compare { background: #070512 !important; border-bottom-color: rgba(201,168,76,0.2) !important; }
