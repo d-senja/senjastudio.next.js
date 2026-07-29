@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Layout from '../components/Layout'
 import Link from 'next/link'
-import RotatingCarousel from '../components/RotatingCarousel'
+import CardStackCarousel from '../components/CardStackCarousel'
 
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
@@ -1149,7 +1149,7 @@ export default function Home() {
         <h2 className="section-heading fade-in-up" id="offer-heading" style={{ color: '#FFFFFF' }}>
           Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h2>
-        <RotatingCarousel items={OFFER_ITEMS} />
+        <CardStackCarousel items={OFFER_ITEMS} />
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
           <button className="btn-gold" onClick={openModal}>See What We'd Build for You</button>
         </div>
