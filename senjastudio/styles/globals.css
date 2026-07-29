@@ -3124,6 +3124,23 @@ input:focus, textarea:focus {
   color: #FFFFFF !important;
 }
 
+/* Force carousel section to always be dark navy */
+#offer {
+  background: var(--navy) !important;
+}
+
+#offer .section-label {
+  color: var(--gold-light) !important;
+}
+
+#offer .section-heading {
+  color: #FFFFFF !important;
+}
+
+#offer .section-heading em {
+  color: var(--gold-light) !important;
+}
+
 /* ── GLOBAL DARK MODE TEXT VISIBILITY FIXES ────────────────── */
 /* Fix low-opacity body text across all pages */
 [data-theme="dark"] p[style*="rgba(255,255,255,0.45)"],
