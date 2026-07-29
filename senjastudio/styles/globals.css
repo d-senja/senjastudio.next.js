@@ -897,6 +897,36 @@ nav {
   border: 1px solid rgba(255,255,255,0.06);
   margin-top: 32px;
 }
+.meet-dan-stat {
+  padding: 18px 14px;
+  text-align: center;
+  background: rgba(255,255,255,0.02);
+}
+.meet-dan-stat-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.meet-dan-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+/* Light mode visibility fix */
+[data-theme="light"] .meet-dan-stat-num {
+  color: var(--gold) !important;
+}
+[data-theme="light"] .meet-dan-stat-label {
+  color: rgba(255,255,255,0.75) !important;
+}
+
 .dan-stat { padding: 18px 14px; text-align: center; background: rgba(255,255,255,0.02); }
 .dan-stat-num {
   font-family: var(--serif);
