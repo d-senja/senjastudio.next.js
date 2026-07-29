@@ -895,6 +895,7 @@ function ROICalculator() {
 function LeadMagnetSection() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -910,7 +911,7 @@ function LeadMagnetSection() {
       const res = await fetch('/api/lead-magnet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name })
+        body: JSON.stringify({ email, name, phone })
       })
 
       const data = await res.json()
@@ -1000,6 +1001,30 @@ function LeadMagnetSection() {
               onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
               onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
             />
+            <div>
+              <input
+                type="tel"
+                placeholder="Mobile number (optional) — get a text when your guide lands"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                disabled={loading}
+                style={{
+                  padding: '16px 20px',
+                  fontSize: '0.9rem',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: 'var(--white)',
+                  borderRadius: '4px',
+                  outline: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
+              />
+              <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', marginTop: '6px', lineHeight: 1.4 }}>
+                UK numbers only. One text, no spam.
+              </p>
+            </div>
           </div>
 
           <button

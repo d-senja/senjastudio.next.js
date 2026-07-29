@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, duplicate: true });
   }
 
-  const { email, name, source, pdf } = req.body;
+  const { email, name, phone, source, pdf } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required.' });
 
   const formId = process.env.FORMSPREE_ID || 'xgogpkzq';
@@ -79,6 +79,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         email,
         name: name || 'Not provided',
+        phone: phone || 'Not provided',
         source: leadSource,
         _subject: `New ${leadSource} download — ${email}`,
       }),
