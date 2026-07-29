@@ -689,12 +689,14 @@ nav {
   box-shadow: -4px 4px 16px rgba(0, 0, 0, 0.08);
 }
 .who-card-icon { font-size: 1.25rem; margin-bottom: 12px; display: block; }
-.who-card-title {
+.who-card h3 {
   font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 300;
+  font-size: 1.3rem;
+  font-weight: 500;
   color: var(--navy);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 .who-card-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.85; }
 .who-card-desc strong { color: var(--navy); font-weight: 500; }
@@ -728,12 +730,15 @@ nav {
 }
 .offer-item h3 {
   font-family: var(--serif);
-  font-size: 1.15rem;
-  font-weight: 400;
+  font-size: 1.2rem;
+  font-weight: 500;
   color: var(--navy);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
-.offer-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.85; }
+.offer-item p { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--muted); line-height: 1.85; }
+.who-card p { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--muted); line-height: 1.85; }
 
 /* WORK */
 .work { background: var(--white); }
