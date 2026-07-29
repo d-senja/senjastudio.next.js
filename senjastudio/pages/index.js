@@ -1144,9 +1144,9 @@ export default function Home() {
       </section>
 
       {/* ── WHAT'S INCLUDED ──────────────────────────── */}
-      <section className="section" id="offer" style={{ background: 'var(--navy)' }}>
+      <section className="section scroll-reveal-text" id="offer" style={{ background: 'var(--navy)' }}>
         <p className="section-label" style={{ color: 'var(--gold-light)' }}>What's included</p>
-        <h2 className="section-heading fade-in-up" id="offer-heading" style={{ color: '#FFFFFF' }}>
+        <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF' }}>
           Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h2>
         <CardStackCarousel items={OFFER_ITEMS} />
@@ -1156,7 +1156,7 @@ export default function Home() {
       </section>
 
       {/* ── FCA COMPLIANCE ───────────────────────────── */}
-      <section className="section" id="compliance" style={{ background: 'var(--navy)' }}>
+      <section className="section scroll-reveal-text" id="compliance" style={{ background: 'var(--navy)' }}>
         <p className="section-label" style={{ color: 'var(--gold-light)' }}>Regulatory compliance — built in, not bolted on</p>
         <h2 className="section-heading" style={{ color: 'var(--white)' }}>
           Most agencies hand you a site<br />and leave you to <em style={{ color: 'var(--gold-light)' }}>figure out compliance yourself.</em>
@@ -1200,12 +1200,12 @@ export default function Home() {
       </section>
 
       {/* ── BROKER-SPECIFIC FEATURES ────────────────────── */}
-      <section className="section" id="broker-features" style={{ background: 'var(--white)' }}>
+      <section className="section scroll-reveal-text" id="broker-features" style={{ background: 'var(--white)' }}>
         <p className="section-label">Built for mortgage brokers specifically</p>
         <h2 className="section-heading">
           Things a generic agency<br />would never think to <em>include.</em>
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1100px', margin: '0 auto' }}>
+        <div className="scroll-reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1100px', margin: '0 auto' }}>
           <div className="offer-item">
             <div className="offer-num">→</div>
             <h3 className="offer-title">Live Mortgage Rate Display</h3>
@@ -1339,16 +1339,16 @@ export default function Home() {
       </section>
 
       {/* ── PRICING ──────────────────────────────────── */}
-      <section className="section pricing" id="pricing">
+      <section className="section pricing scroll-reveal-text" id="pricing">
         <div className="section-gold-line" />
         <p className="section-label">Transparent pricing</p>
         <h2 className="section-heading">No hidden fees. No surprises.<br /><em>Just results.</em></h2>
 
-        <div style={{ textAlign: 'left', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)' }}>
+        <div className="scroll-reveal" style={{ textAlign: 'left', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)' }}>
           <strong style={{ color: 'var(--navy)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
         </div>
 
-        <div style={{ display: 'flex', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1060px', margin: '0 auto' }}>
+        <div className="scroll-reveal-stagger" style={{ display: 'flex', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1060px', margin: '0 auto' }}>
           {[
             { title: 'Homepage Build', price: '£1,500', delivery: 'Delivered in 5 working days', featured: false, features: ['High-converting homepage only', 'Segmented CTAs — self-employed, FTB, complex', 'Google review integration', 'FCA statement and compliance copy', 'GDPR-compliant lead form + cookie consent', 'Mobile-first, fast-loading', '1 round of revisions', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
             { title: 'Full Website', price: '£2,500', delivery: 'Delivered in 7 working days', featured: true, features: ['Homepage + About + Services + Contact', 'Segmented CTAs for each client type', 'Google review integration and social proof', 'Compliance-ready copy and regulatory badges', 'GDPR forms on every page + cookie consent', 'WhatsApp widget and booking integration', 'Mobile-first, fast-loading, SEO ready', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },

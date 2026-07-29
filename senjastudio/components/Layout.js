@@ -625,6 +625,37 @@ function ScrollProgress() {
   return <div className="scroll-progress" style={{ width: `${width}%` }} />
 }
 
+// ── SCROLL REVEAL OBSERVER ────────────────────────────────────
+function ScrollRevealObserver() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            // Only animate once - stop observing after visible
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    )
+
+    // Observe all elements with scroll-reveal classes
+    const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-stagger, .scroll-reveal-text')
+    revealElements.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
+  return null
+}
+
 // ── EXIT INTENT POPUP 1: LEAD MAGNET ──────────────────────────
 function ExitIntentLeadMagnet() {
   const [show, setShow] = useState(false)
@@ -1182,6 +1213,7 @@ export default function Layout({ children, title, description, canonical, modalO
       </Head>
 
       <ScrollProgress />
+      <ScrollRevealObserver />
       <Nav openModal={() => setModalOpen(true)} />
 
       <main>{children}</main>

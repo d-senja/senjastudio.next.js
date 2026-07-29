@@ -3237,3 +3237,76 @@ input:focus, textarea:focus {
 [data-theme="dark"] div[style*="color: var(--muted)"] {
   color: rgba(232,224,216,0.85) !important;
 }
+
+/* ── SCROLL REVEAL ANIMATIONS ──────────────────────────────── */
+/* Elements start invisible and shifted down */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* When element is visible, fade in and rise */
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animations for grid children */
+.scroll-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 500ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 600ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 700ms; opacity: 1; transform: translateY(0); }
+.scroll-reveal-stagger.is-visible > *:nth-child(9) { transition-delay: 800ms; opacity: 1; transform: translateY(0); }
+
+/* Headings, subheadings, and body copy stagger */
+.scroll-reveal-text .section-heading {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-text .section-label {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-text p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-text.is-visible .section-label {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0ms;
+}
+
+.scroll-reveal-text.is-visible .section-heading {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 100ms;
+}
+
+.scroll-reveal-text.is-visible p {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 200ms;
+}
