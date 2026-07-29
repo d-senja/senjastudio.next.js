@@ -1400,7 +1400,7 @@ export default function Home() {
       </section>
 
       {/* ── FULL AI STACK ────────────────────────────── */}
-      <section style={{ background: 'linear-gradient(135deg, var(--navy) 0%, #1a2847 100%)', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
+      <section id="full-ai-stack" style={{ background: 'var(--royal)', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
         {/* Decorative elements */}
         <div style={{ position: 'absolute', top: '0', right: '0', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '0', left: '0', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
