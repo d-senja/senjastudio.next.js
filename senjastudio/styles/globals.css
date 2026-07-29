@@ -2735,6 +2735,14 @@ input:focus, textarea:focus {
 [data-theme="light"] .dark-toggle { border-color: var(--border); color: var(--muted); }
 .dark-toggle:hover { border-color: var(--gold); color: var(--gold); }
 
+/* Light mode Meet Dan section fix */
+[data-theme="light"] .meet-dan-content p {
+  color: rgba(255,255,255,0.85) !important;
+}
+[data-theme="light"] .meet-dan-content p strong {
+  color: var(--white) !important;
+}
+
 /* ── BEFORE/AFTER SLIDER SIZING ────────────────────────────── */
 .ba-slider { aspect-ratio: 16/7; }
 .ba-before img, .ba-after img {
