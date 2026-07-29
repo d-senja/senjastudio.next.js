@@ -1506,7 +1506,6 @@ export default function Home() {
             <details key={i} className="faq-item">
               <summary className="faq-q">
                 {item.q}
-                <span className="faq-icon">+</span>
               </summary>
               <div className="faq-a">{item.a}</div>
             </details>
