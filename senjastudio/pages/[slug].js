@@ -446,7 +446,7 @@ export default function LocationPage({ location, slug }) {
         <div style={{ border: '1px solid var(--border)' }}>
           {faqs.map((faq, i) => (
             <details key={i} className="faq-item">
-              <summary className="faq-q">{faq.q}<span className="faq-icon">+</span></summary>
+              <summary className="faq-q">{faq.q}</summary>
               <div className="faq-a">{faq.a}</div>
             </details>
           ))}
