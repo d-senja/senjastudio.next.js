@@ -1414,7 +1414,7 @@ export default function Home() {
               The Full AI Stack
             </h2>
             <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, maxWidth: '700px', margin: '0 auto' }}>
-              Every AI agent working together — lead capture, customer support, appointment setting, outreach automation, inbound and outbound calling. <strong style={{ color: 'var(--white)' }}>The complete mortgage broker AI system.</strong>
+              Every AI agent working together — lead capture, customer support, appointment setting, outreach automation, inbound and outbound calling. <strong style={{ color: 'rgba(255,255,255,0.85)' }}>The complete mortgage broker AI system.</strong>
             </p>
           </div>
 
