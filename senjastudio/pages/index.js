@@ -1061,7 +1061,7 @@ export default function Home() {
 
           <div className="hero-actions">
             <button className="btn-primary" onClick={openModal}>Book Your Free Call</button>
-            <a href="#work" className="btn-ghost">See Our Work →</a>
+            <a href="/examples" className="btn-ghost">See Our Work →</a>
           </div>
 
           <div className="hero-trust">
