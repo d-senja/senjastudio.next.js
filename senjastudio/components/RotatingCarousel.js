@@ -193,14 +193,12 @@ export default function RotatingCarousel({ items }) {
               }}
             >
               <div
+                className="carousel-card"
                 style={{
                   width: '100%',
                   height: '100%',
-                  background: 'linear-gradient(135deg, var(--navy) 0%, #1a2847 100%)',
                   borderRadius: '12px',
                   padding: dimensions.padding,
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(255,255,255,0.1) inset',
-                  border: '1px solid rgba(212,175,55,0.15)',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',

@@ -2927,3 +2927,34 @@ input:focus, textarea:focus {
     width: 100% !important;
   }
 }
+
+/* ── ROTATING CAROUSEL ──────────────────────────────────────── */
+.carousel-card {
+  background: linear-gradient(135deg, #FAFAF8 0%, #F5F3F0 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 0 1px rgba(15,11,30,0.1) inset;
+  border: 1px solid rgba(15,11,30,0.08);
+}
+
+.carousel-card h3 {
+  color: var(--navy);
+  text-shadow: none;
+}
+
+.carousel-card p {
+  color: rgba(15,11,30,0.7);
+}
+
+[data-theme="dark"] .carousel-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a2847 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(255,255,255,0.1) inset;
+  border: 1px solid rgba(212,175,55,0.15);
+}
+
+[data-theme="dark"] .carousel-card h3 {
+  color: var(--white);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] .carousel-card p {
+  color: rgba(255,255,255,0.75);
+}
