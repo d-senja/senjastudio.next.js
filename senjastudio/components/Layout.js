@@ -41,7 +41,15 @@ function QualifyModal({ isOpen, onClose }) {
         body: JSON.stringify({ _subject: 'Senja Studio — Qualifying Answers', answers, source: typeof window !== 'undefined' ? window.location.href : '' })
       })
     } catch (e) {}
-    window.open('https://calendly.com/dan-senjastudio/lets-talk', '_blank')
+
+    // Build Calendly URL with prefilled answers
+    const params = new URLSearchParams()
+    if (answers.website) params.append('a1', answers.website)
+    if (answers.goal) params.append('a2', answers.goal)
+    if (answers.timeline) params.append('a3', answers.timeline)
+
+    const calendlyUrl = `https://calendly.com/dan-senjastudio/lets-talk${params.toString() ? '?' + params.toString() : ''}`
+    window.open(calendlyUrl, '_blank')
     onClose()
   }
 
