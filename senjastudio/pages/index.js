@@ -700,7 +700,7 @@ function WebsiteScoreQuiz() {
             fontFamily: 'var(--serif)',
             fontSize: '1.4rem',
             fontWeight: 500,
-            color: 'var(--white)',
+            color: '#FFFFFF',
             marginBottom: '12px',
             lineHeight: 1.4
           }}>
@@ -709,7 +709,7 @@ function WebsiteScoreQuiz() {
 
           <p style={{
             fontSize: '0.85rem',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'rgba(255,255,255,0.75)',
             marginBottom: '32px',
             lineHeight: 1.7
           }}>
