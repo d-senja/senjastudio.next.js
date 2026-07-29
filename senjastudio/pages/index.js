@@ -94,8 +94,9 @@ function Typewriter() {
   }, [])
 
   return (
-    <em style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.35s ease', color: 'var(--gold)' }}>
+    <em style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.35s ease', color: 'var(--gold)', position: 'relative' }}>
       {phrases[idx]}
+      <span className="typewriter-cursor"></span>
     </em>
   )
 }
