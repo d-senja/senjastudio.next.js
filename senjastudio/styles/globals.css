@@ -2650,7 +2650,7 @@ input:focus, textarea:focus {
 [data-theme="dark"] .back-to-blog { color: #E2C46A !important; }
 
 /* SS4: Marquee trust bar - text in marquee */
-[data-theme="dark"] .trust-marquee .trust-strip-item { color: rgba(232,224,216,0.55) !important; }
+[data-theme="dark"] .trust-marquee .trust-strip-item { color: rgba(232,224,216,0.75) !important; }
 [data-theme="dark"] .trust-strip-item strong { color: rgba(232,224,216,0.9) !important; }
 
 /* SS5: Sticky comparison bar - prices and labels */
