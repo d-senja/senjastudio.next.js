@@ -2599,6 +2599,20 @@ input:focus, textarea:focus {
 [data-theme="dark"] #process [style*="color:var(--muted)"] { color: #9A92A4 !important; }
 [data-theme="dark"] #process [style*="color:var(--navy)"] { color: #E8E0D8 !important; }
 
+/* Process steps light mode visibility fixes */
+[data-theme="light"] #process h3[style*="color:var(--navy)"] {
+  color: var(--navy) !important;
+}
+
+[data-theme="light"] #process p[style*="color:var(--muted)"] {
+  color: rgba(15,11,30,0.7) !important;
+}
+
+[data-theme="light"] #process div[style*="fontSize: '2rem'"] {
+  color: var(--navy) !important;
+  opacity: 0.12 !important;
+}
+
 /* FAQ */
 [data-theme="dark"] .faq-section, [data-theme="dark"] #faq { background: #0F0B1E !important; }
 [data-theme="dark"] .faq-item { background: #1A1428 !important; border-color: rgba(201,168,76,0.1) !important; }
