@@ -3138,6 +3138,24 @@ input:focus, textarea:focus {
   background: var(--navy) !important;
 }
 
+.offer-grid {
+  background: rgba(201,168,76,0.1) !important;
+  border-color: rgba(201,168,76,0.1) !important;
+}
+
+.offer-item {
+  background: #1A1428 !important;
+  border-color: rgba(201,168,76,0.1) !important;
+}
+
+.offer-item h3 {
+  color: #E8E0D8 !important;
+}
+
+.offer-item p {
+  color: #9A92A4 !important;
+}
+
 #offer .section-label {
   color: var(--gold-light) !important;
 }
