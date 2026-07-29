@@ -181,21 +181,33 @@ function StickyCompare({ openModal }) {
   useEffect(() => {
     const hero = document.getElementById('home')
     const pricing = document.getElementById('pricing')
-    const obs = new IntersectionObserver(entries => {
-      const heroVisible = entries[0]?.isIntersecting
-      if (!heroVisible) {
-        if (pricing) {
-          const r = pricing.getBoundingClientRect()
-          setVisible(r.top > window.innerHeight || r.bottom < 0)
-        } else setVisible(true)
-      } else setVisible(false)
-    }, { threshold: 0 })
-    if (hero) obs.observe(hero)
-    if (pricing) {
-      const obs2 = new IntersectionObserver(e => { if (e[0].isIntersecting) setVisible(false) }, { threshold: 0.1 })
-      obs2.observe(pricing)
+
+    const checkVisibility = () => {
+      const heroRect = hero?.getBoundingClientRect()
+      const pricingRect = pricing?.getBoundingClientRect()
+
+      // Hide if hero is in viewport
+      if (heroRect && heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
+        setVisible(false)
+        return
+      }
+
+      // Hide if pricing section is in viewport
+      if (pricingRect && pricingRect.top < window.innerHeight && pricingRect.bottom > 0) {
+        setVisible(false)
+        return
+      }
+
+      // Show if scrolled past hero but pricing not in viewport
+      if (heroRect && heroRect.bottom < 0) {
+        setVisible(true)
+      }
     }
-    return () => obs.disconnect()
+
+    window.addEventListener('scroll', checkVisibility, { passive: true })
+    checkVisibility()
+
+    return () => window.removeEventListener('scroll', checkVisibility)
   }, [])
 
   return (
