@@ -2776,6 +2776,26 @@ input:focus, textarea:focus {
   background: var(--navy) !important;
 }
 
+/* Force quiz section text to be light in all themes */
+#website-quiz h2,
+#website-quiz h3,
+#website-quiz p,
+#website-quiz div[style*="color"] {
+  color: var(--white) !important;
+}
+
+#website-quiz .section-label {
+  color: var(--gold-light) !important;
+}
+
+#website-quiz em {
+  color: var(--gold-light) !important;
+}
+
+#website-quiz div[style*="rgba(255,255,255"] {
+  color: rgba(255,255,255,0.85) !important;
+}
+
 #roi::before {
   opacity: 1 !important;
   height: 120px;
