@@ -43,11 +43,33 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, duplicate: true });
   }
 
-  const { email, name } = req.body;
+  const { email, name, source, pdf } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required.' });
 
   const formId = process.env.FORMSPREE_ID || 'xgogpkzq';
   const resendKey = process.env.RESEND_API_KEY;
+
+  // Determine which PDF to send based on source
+  const pdfFileName = pdf || '5-things-broker-site-guide.pdf';
+  const leadSource = source || 'lead-magnet';
+
+  // Configure content based on source
+  const config = {
+    'lead-magnet': {
+      subject: 'Your free guide: 5 Things Your Broker Site Is Costing You Right Now',
+      pdfName: '5-things-broker-site-guide.pdf',
+      intro: 'Thanks for downloading the guide. Your copy is attached.',
+      body: 'Inside you\'ll find the 5 most common reasons broker sites lose enquiries — and the exact fix for each one. Most of these take under an hour to address once you know what to look for.'
+    },
+    'fca-checklist': {
+      subject: 'Your FCA Compliance Checklist for Mortgage Broker Websites',
+      pdfName: 'fca-compliance-checklist.pdf',
+      intro: 'Thanks for downloading the FCA Compliance Checklist. Your copy is attached.',
+      body: 'Inside you\'ll find the exact requirements every regulated mortgage broker website must meet — and how to check your site against them in under 10 minutes.'
+    }
+  };
+
+  const emailConfig = config[leadSource] || config['lead-magnet'];
 
   // ── 1. Log to Formspree ─────────────────────────────────────
   try {
@@ -57,8 +79,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         email,
         name: name || 'Not provided',
-        source: 'lead-magnet',
-        _subject: `New lead magnet download — ${email}`,
+        source: leadSource,
+        _subject: `New ${leadSource} download — ${email}`,
       }),
     });
   } catch (e) {
@@ -69,7 +91,7 @@ export default async function handler(req, res) {
   if (resendKey) {
     try {
       // Read PDF from filesystem and encode to base64
-      const pdfPath = path.join(process.cwd(), 'public', 'downloads', '5-things-broker-site-guide.pdf');
+      const pdfPath = path.join(process.cwd(), 'public', 'downloads', pdfFileName);
       const pdfBuffer = fs.readFileSync(pdfPath);
       const pdfBase64 = pdfBuffer.toString('base64');
 
@@ -82,14 +104,13 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           from: 'Dan at Senja Studio <dan@senjastudio.co.uk>',
           to: [email],
-          subject: 'Your free guide: 5 Things Your Broker Site Is Costing You Right Now',
+          subject: emailConfig.subject,
           html: `
             <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; color: #1A1428;">
               <p style="font-size: 17px;">Hi${name ? ` ${name}` : ''},</p>
-              <p style="font-size: 15px; line-height: 1.7;">Thanks for downloading the guide. Your copy is attached.</p>
+              <p style="font-size: 15px; line-height: 1.7;">${emailConfig.intro}</p>
               <p style="font-size: 15px; line-height: 1.7;">
-                Inside you'll find the 5 most common reasons broker sites lose enquiries — and the exact fix for each one.
-                Most of these take under an hour to address once you know what to look for.
+                ${emailConfig.body}
               </p>
               <p style="font-size: 15px; line-height: 1.7;">
                 If you want me to look at your specific site and tell you what's costing you the most,
@@ -101,7 +122,7 @@ export default async function handler(req, res) {
             </div>
           `,
           attachments: [{
-            filename: '5-things-broker-site-guide.pdf',
+            filename: emailConfig.pdfName,
             content: pdfBase64,
           }]
         }),
@@ -121,6 +142,6 @@ export default async function handler(req, res) {
   // Client-side JS should redirect to this URL after API success
   return res.status(200).json({
     success: true,
-    downloadUrl: '/downloads/5-things-broker-site-guide.pdf',
+    downloadUrl: `/downloads/${pdfFileName}`,
   });
 }

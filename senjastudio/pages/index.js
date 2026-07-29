@@ -1030,6 +1030,144 @@ function LeadMagnetSection() {
   )
 }
 
+// ── FCA CHECKLIST LEAD MAGNET ─────────────────────────────────
+function FCAChecklistSection() {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!email) return
+
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await fetch('/api/lead-magnet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, source: 'fca-checklist', pdf: 'fca-compliance-checklist.pdf' })
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        setSuccess(true)
+        if (data.downloadUrl) {
+          window.location.href = data.downloadUrl
+        }
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.')
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (success) {
+    return (
+      <section className="section" style={{ background: 'var(--navy)', textAlign: 'center' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: 'var(--white)', marginBottom: '12px', lineHeight: 1.3 }}>
+            Check your inbox
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
+            Your FCA compliance checklist is on its way. If you don't see it in the next few minutes, check your spam folder.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section className="section" style={{ background: 'var(--navy)' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>📋</div>
+        <p className="section-label" style={{ color: 'var(--gold-light)' }}>FREE CHECKLIST</p>
+        <h2 className="lead-magnet-heading" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
+          Is Your Broker Site <em style={{ color: 'var(--gold-light)' }}>FCA Compliant?</em>
+        </h2>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '32px', maxWidth: '520px', margin: '0 auto 32px' }}>
+          The exact requirements every regulated mortgage broker site must meet — and how to check yours in 10 minutes.
+        </p>
+
+        <form onSubmit={handleSubmit} style={{ maxWidth: '460px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '12px' }}>
+            <input
+              type="text"
+              placeholder="Your name (optional)"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={loading}
+              style={{
+                padding: '16px 20px',
+                fontSize: '0.9rem',
+                border: '1px solid rgba(255,255,255,0.15)',
+                background: 'rgba(255,255,255,0.05)',
+                color: 'var(--white)',
+                borderRadius: '4px',
+                outline: 'none',
+                transition: 'all 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
+            />
+            <input
+              type="email"
+              placeholder="Your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+              style={{
+                padding: '16px 20px',
+                fontSize: '0.9rem',
+                border: '1px solid rgba(255,255,255,0.15)',
+                background: 'rgba(255,255,255,0.05)',
+                color: 'var(--white)',
+                borderRadius: '4px',
+                outline: 'none',
+                transition: 'all 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || !email}
+            className="btn-gold"
+            style={{
+              width: '100%',
+              opacity: loading || !email ? 0.5 : 1,
+              cursor: loading || !email ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {loading ? 'Sending...' : 'Get the Free Checklist →'}
+          </button>
+
+          {error && (
+            <p style={{ fontSize: '0.8rem', color: '#ff6b6b', marginTop: '12px' }}>
+              {error}
+            </p>
+          )}
+
+          <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', marginTop: '12px', lineHeight: 1.6 }}>
+            No spam. Unsubscribe anytime. Read our <Link href="/privacy-policy" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>privacy policy</Link>.
+          </p>
+        </form>
+      </div>
+    </section>
+  )
+}
+
 // ── PAGE ──────────────────────────────────────────────────────
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -1557,6 +1695,9 @@ export default function Home() {
 
       {/* ── LEAD MAGNET ──────────────────────────────── */}
       <LeadMagnetSection />
+
+      {/* ── FCA CHECKLIST ────────────────────────────── */}
+      <FCAChecklistSection />
 
       {/* ── AI AUDIT ─────────────────────────────────── */}
       <AuditSection />
