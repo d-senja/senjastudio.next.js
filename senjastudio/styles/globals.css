@@ -3078,6 +3078,16 @@ input:focus, textarea:focus {
 /* ── ROTATING CAROUSEL ──────────────────────────────────────── */
 /* Carousel card theme styles removed - cards now use inline dark styling */
 
+/* ── FCA COMPLIANCE SECTION ────────────────────────────────── */
+/* Ensure FCA card text is always visible on dark background */
+#compliance p {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+#compliance h3 {
+  color: #FFFFFF !important;
+}
+
 /* ── GLOBAL DARK MODE TEXT VISIBILITY FIXES ────────────────── */
 /* Fix low-opacity body text across all pages */
 [data-theme="dark"] p[style*="rgba(255,255,255,0.45)"],
