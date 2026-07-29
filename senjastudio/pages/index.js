@@ -1082,7 +1082,7 @@ export default function Home() {
           />
           <div className="hero-right-overlay">
             <div className="hero-right-name">Dan Senja</div>
-            <div className="hero-right-title">Founder · Senja Studio · Mortgage Broker Specialist</div>
+            <div className="hero-right-title">Founder · Senja Studio · Mortgage Broker Website Specialist</div>
           </div>
         </div>
       </section>
