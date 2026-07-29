@@ -1296,11 +1296,12 @@ export default function Home() {
 
       {/* ── MEET DAN ─────────────────────────────────── */}
       <section className="meet-dan" id="about">
-        <div className="meet-dan-img-wrap">
-          <img src="/images/dan-photo-about.png" alt="Dan Senja — founder of Senja Studio" className="meet-dan-img" loading="lazy" />
-          <div className="meet-dan-img-tag">Dan Senja · Founder</div>
-        </div>
-        <div className="meet-dan-content">
+        <div className="meet-dan-inner">
+          <div className="meet-dan-img-wrap">
+            <img src="/images/dan-photo-about.png" alt="Dan Senja — founder of Senja Studio" className="meet-dan-img" loading="lazy" />
+            <div className="meet-dan-img-tag">Dan Senja · Founder</div>
+          </div>
+          <div className="meet-dan-content">
           <p className="section-label" style={{ color: 'var(--gold)' }}>The person building your site</p>
           <h2 className="meet-dan-heading">
             You're not hiring an agency.<br />You're working with <em>Dan.</em>
@@ -1317,6 +1318,7 @@ export default function Home() {
             ))}
           </div>
           <button className="btn-gold" onClick={openModal} style={{ marginTop: '24px', padding: '19px 32px' }}>Book a Free Call with Dan</button>
+          </div>
         </div>
       </section>
 

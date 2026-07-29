@@ -847,16 +847,16 @@ nav {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 35% 65%;
   gap: 72px;
-  align-items: center;
+  align-items: start;
 }
 .meet-dan-img-wrap { position: relative; }
 .meet-dan-img {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: cover;
-  object-position: center 25%;
+  object-position: top center;
   display: block;
   max-height: 520px;
   filter: brightness(1.02);
