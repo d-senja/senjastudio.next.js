@@ -225,6 +225,24 @@ export default function BlogPost({ post, slug }) {
               ))}
           </div>
         </div>
+
+        {/* Serving brokers in your area */}
+        <div style={{ marginTop: '48px', paddingTop: '32px', borderTop: '1px solid var(--border)' }}>
+          <p style={{ fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '20px' }}>Serving brokers in your area</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '8px' }}>
+            {[
+              { slug: 'mortgage-broker-website-design-london', label: 'London' },
+              { slug: 'mortgage-broker-website-design-manchester', label: 'Manchester' },
+              { slug: 'mortgage-broker-website-design-birmingham', label: 'Birmingham' },
+              { slug: 'mortgage-broker-website-design-leeds', label: 'Leeds' },
+              { slug: 'mortgage-broker-website-design-bristol', label: 'Bristol' },
+            ].map(location => (
+              <Link key={location.slug} href={`/${location.slug}`} style={{ textDecoration: 'none', fontSize: '0.8rem', color: 'var(--navy)', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '4px', textAlign: 'center', transition: 'all 0.2s' }}>
+                {location.label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </Layout>
   )

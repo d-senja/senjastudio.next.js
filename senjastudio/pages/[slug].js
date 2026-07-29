@@ -453,6 +453,25 @@ export default function LocationPage({ location, slug }) {
         </div>
       </div>
 
+      {/* Related articles */}
+      <div style={{ maxWidth: '740px', margin: '0 auto', padding: '0 48px 72px' }}>
+        <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '24px' }}>
+          Related articles
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {[
+            { slug: 'fca-compliant-mortgage-broker-website', title: 'FCA Compliant Mortgage Broker Website: What You Actually Need in 2025' },
+            { slug: 'why-mortgage-broker-websites-fail-to-convert', title: 'Why Most Mortgage Broker Websites Fail to Convert' },
+            { slug: 'how-much-does-a-mortgage-broker-website-cost', title: 'How Much Does a Mortgage Broker Website Cost UK?' },
+          ].map(article => (
+            <Link key={article.slug} href={`/blog/${article.slug}`} style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+              <span style={{ fontSize: '0.85rem', color: 'var(--navy)', fontFamily: 'var(--serif)' }}>{article.title}</span>
+              <span style={{ color: 'var(--gold)', fontSize: '0.8rem', flexShrink: 0, marginLeft: '12px' }}>→</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* CTA */}
       <div style={{ background: 'var(--navy)', padding: '80px 48px', textAlign: 'center' }}>
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
