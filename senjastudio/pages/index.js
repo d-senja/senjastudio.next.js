@@ -1168,28 +1168,28 @@ export default function Home() {
           <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginTop: '8px', marginBottom: '10px' }}>Required by FCA</div>
             <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>FCA Authorisation Statement</h3>
-            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.52)', lineHeight: 1.85 }}>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85 }}>
               Every regulated mortgage broker site must display their authorisation statement and registration number — required by the FCA (UK), ASIC (Australia), CFPB/state regulators (USA), and equivalent bodies worldwide. We build a compliant placeholder into the footer of every page and flag it before going live.
             </p>
           </div>
           <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginTop: '8px', marginBottom: '10px' }}>Financial Promotions Rules</div>
             <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>Fair, Clear & Not Misleading</h3>
-            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.52)', lineHeight: 1.85 }}>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85 }}>
               FCA rules require all financial promotions to be fair, clear and not misleading. We write copy with this in mind — no outcome guarantees, no rate promises, no "we'll definitely get you a mortgage" language. We flag any problematic claims in client-supplied copy before they go live on a regulated site.
             </p>
           </div>
           <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginTop: '8px', marginBottom: '10px' }}>Data Privacy</div>
             <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>GDPR-Compliant Lead Capture</h3>
-            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.52)', lineHeight: 1.85 }}>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85 }}>
               Any lead capture form requires a privacy policy, explicit consent language, and compliant data handling. We build every form with the correct consent checkboxes, privacy policy links, and compliant copy. Your clients are responsible for their own GDPR compliance — but we make sure the forms we build don't create problems from the start.
             </p>
           </div>
           <div style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.02)' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-light)', marginTop: '8px', marginBottom: '10px' }}>UK Law</div>
             <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--white)', marginBottom: '10px' }}>Cookie Consent & Accessibility</h3>
-            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.85 }}>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85 }}>
               UK law requires a genuine cookie consent banner with real accept and reject options — not a fake banner that ignores user preference. We also build with accessibility in mind: good colour contrast, descriptive alt text, and keyboard-navigable forms. Financial services sites are increasingly expected to meet WCAG standards.
             </p>
           </div>
