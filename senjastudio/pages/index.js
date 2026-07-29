@@ -1144,10 +1144,10 @@ export default function Home() {
       </section>
 
       {/* ── WHAT'S INCLUDED ──────────────────────────── */}
-      <section className="section" id="offer">
-        <p className="section-label">What's included</p>
-        <h2 className="section-heading fade-in-up" id="offer-heading">
-          Everything your site needs to <em>win clients.</em>
+      <section className="section" id="offer" style={{ background: 'var(--navy)' }}>
+        <p className="section-label" style={{ color: 'var(--gold-light)' }}>What's included</p>
+        <h2 className="section-heading fade-in-up" id="offer-heading" style={{ color: '#FFFFFF' }}>
+          Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h2>
         <RotatingCarousel items={OFFER_ITEMS} />
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
