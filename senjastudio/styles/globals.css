@@ -2745,7 +2745,7 @@ input:focus, textarea:focus {
 }
 
 #website-quiz {
-  background: linear-gradient(to bottom, rgba(15,11,30,0.98) 0%, var(--navy) 100%) !important;
+  background: var(--navy) !important;
 }
 
 #roi::before {
