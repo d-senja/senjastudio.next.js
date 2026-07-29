@@ -179,8 +179,8 @@ function Nav({ openModal }) {
   const navLinks = [
     { href: '/#why-niche', label: 'Why Specialist' },
     { href: '/examples', label: 'Broker Sites' },
-    { href: '/#pricing', label: 'Pricing' },
     { href: '/#about', label: 'About Dan' },
+    { href: '/#pricing', label: 'Pricing' },
     { href: '/blog', label: 'Blog' },
     { href: '/#faq', label: 'FAQ' },
   ]
