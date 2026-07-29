@@ -2378,7 +2378,7 @@ input:focus, textarea:focus {
 /* NAV */
 [data-theme="dark"] nav { background: rgba(7,5,18,0.97) !important; border-bottom-color: rgba(201,168,76,0.15) !important; }
 [data-theme="dark"] .nav-logo { color: #E8E0D8 !important; }
-[data-theme="dark"] .nav-link { color: rgba(232,224,216,0.5) !important; }
+[data-theme="dark"] .nav-link { color: rgba(232,224,216,0.75) !important; }
 [data-theme="dark"] .nav-link:hover, [data-theme="dark"] .nav-link.nav-active { color: #D4A84C !important; }
 [data-theme="dark"] #mobileMenu { background: #070512 !important; }
 
