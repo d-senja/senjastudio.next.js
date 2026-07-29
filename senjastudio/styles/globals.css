@@ -2690,6 +2690,11 @@ input:focus, textarea:focus {
 [data-theme="dark"] [style*="color:var(--navy)"] { color: #E8E0D8 !important; }
 [data-theme="dark"] [style*="color:var(--muted)"] { color: #9A92A4 !important; }
 
+/* Full AI Stack price numbers - ensure full opacity white in dark mode */
+[data-theme="dark"] #full-ai-stack div[style*="font-size: 3.5rem"] {
+  color: #FFFFFF !important;
+}
+
 /* FIX: Elements where dark inline override makes text invisible */
 [data-theme="dark"] .section-label { -webkit-text-fill-color: unset; color: transparent; background-clip: text; -webkit-background-clip: text; }
 [data-theme="dark"] .response-badge { color: #2ECC71 !important; background: rgba(46,204,113,0.1) !important; }
