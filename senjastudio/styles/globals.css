@@ -2192,9 +2192,18 @@ input:focus, textarea:focus {
   font-weight: 700;
   width: 18px; height: 18px;
   border-radius: 50%;
-  display: none; /* Removed fake notification badge */
+  display: flex;
   align-items: center; justify-content: center;
   font-family: var(--sans);
+  animation: pulseBadge 2s ease-in-out infinite;
+}
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .wa-popup {
   position: absolute;
