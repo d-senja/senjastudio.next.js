@@ -825,11 +825,11 @@ nav {
 .meet-dan-img-wrap { position: relative; }
 .meet-dan-img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   object-fit: cover;
-  object-position: 50% 20%;
+  object-position: center 25%;
   display: block;
-  max-height: 420px;
+  max-height: 520px;
   filter: brightness(1.02);
 }
 .meet-dan-img-tag {
