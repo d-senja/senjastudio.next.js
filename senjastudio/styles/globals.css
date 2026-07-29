@@ -386,7 +386,13 @@ nav {
   margin-bottom: 20px;
   letter-spacing: -0.03em;
 }
-.hero-headline em { font-style: italic; color: var(--gold); font-weight: 400; letter-spacing: -0.02em; }
+.hero-headline em {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
 .hero-niche-pill {
   display: inline-flex;
   align-items: center;
