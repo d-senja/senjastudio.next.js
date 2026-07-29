@@ -6,19 +6,19 @@ import RotatingCarousel from '../components/RotatingCarousel'
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
 const NICHE_CARDS = [
-  { icon: '◆', title: 'We know how mortgage clients think', body: 'Self-employed clients, complex cases, first-time buyers — we know what each one needs to see before they book a call. That knowledge is built into every layout, every CTA, every line of copy.' },
-  { icon: '▪', title: 'FCA compliance built in from the start', body: 'Regulatory compliance built in from day one — authorisation statements, GDPR/privacy-compliant forms, cookie consent, financial promotion-safe copy. A generic agency hands you a site and leaves you to figure it out.' },
-  { icon: '◆', title: "We've studied what actually converts", body: "We've analysed conversion patterns across mortgage broker sites specifically — not restaurant sites, not e-commerce. We know what makes a broker's phone ring and what makes visitors bounce." },
-  { icon: '▸', title: 'No briefing from scratch', body: "A generic agency needs weeks to understand your industry before they can even begin. We already understand it. That's why we deliver in 7 days and a generic agency takes 3 months." },
-  { icon: '◆', title: 'Segmented pathways for each client type', body: 'The biggest leak in most broker sites is one generic CTA for every type of client. We build segmented pathways — self-employed, complex cases, first-time buyers — so each visitor feels directly spoken to.' },
-  { icon: '▴', title: 'Specialists outperform generalists', body: "You wouldn't use a general solicitor for a complex mortgage dispute. You wouldn't use a general web agency for a mortgage broker website. Specialism matters." },
+  { title: 'We know how mortgage clients think', body: 'Self-employed clients, complex cases, first-time buyers — we know what each one needs to see before they book a call. That knowledge is built into every layout, every CTA, every line of copy.' },
+  { title: 'FCA compliance built in from the start', body: 'Regulatory compliance built in from day one — authorisation statements, GDPR/privacy-compliant forms, cookie consent, financial promotion-safe copy. A generic agency hands you a site and leaves you to figure it out.' },
+  { title: "We've studied what actually converts", body: "We've analysed conversion patterns across mortgage broker sites specifically — not restaurant sites, not e-commerce. We know what makes a broker's phone ring and what makes visitors bounce." },
+  { title: 'No briefing from scratch', body: "A generic agency needs weeks to understand your industry before they can even begin. We already understand it. That's why we deliver in 7 days and a generic agency takes 3 months." },
+  { title: 'Segmented pathways for each client type', body: 'The biggest leak in most broker sites is one generic CTA for every type of client. We build segmented pathways — self-employed, complex cases, first-time buyers — so each visitor feels directly spoken to.' },
+  { title: 'Specialists outperform generalists', body: "You wouldn't use a general solicitor for a complex mortgage dispute. You wouldn't use a general web agency for a mortgage broker website. Specialism matters." },
 ]
 
 const WHO_CARDS = [
-  { icon: '▸', title: 'Brokers Just Starting Out', body: "Your first impression is everything. Starting with a professional, FCA-compliant site from day one means you look established immediately — and clients choose you over brokers who've been going for years but haven't invested online." },
-  { icon: '■', title: 'Established Brokers Leaking Leads', body: "You're getting traffic but not enough enquiries. Your current site looks dated, loads slowly, and doesn't speak to the client types you actually want. A conversion-first rebuild pays for itself within weeks." },
-  { icon: '▴', title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build sites with segmented CTAs that speak directly to them so they self-identify and book rather than bounce." },
-  { icon: '◆', title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. A properly built mortgage broker landing page can double or triple your return on ad spend." },
+  { title: 'Brokers Just Starting Out', body: "Your first impression is everything. Starting with a professional, FCA-compliant site from day one means you look established immediately — and clients choose you over brokers who've been going for years but haven't invested online." },
+  { title: 'Established Brokers Leaking Leads', body: "You're getting traffic but not enough enquiries. Your current site looks dated, loads slowly, and doesn't speak to the client types you actually want. A conversion-first rebuild pays for itself within weeks." },
+  { title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build sites with segmented CTAs that speak directly to them so they self-identify and book rather than bounce." },
+  { title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. A properly built mortgage broker landing page can double or triple your return on ad spend." },
 ]
 
 const OFFER_ITEMS = [
@@ -1118,7 +1118,7 @@ export default function Home() {
         <div className="niche-grid">
           {NICHE_CARDS.map((card, i) => (
             <div key={i} className="niche-card stagger-child">
-              <div className="niche-icon">{card.icon}</div>
+              <div className="niche-icon css-diamond"></div>
               <h3>{card.title}</h3>
               <p>{card.body}</p>
             </div>
@@ -1135,7 +1135,7 @@ export default function Home() {
         <div className="who-grid">
           {WHO_CARDS.map((card, i) => (
             <div key={i} className="who-card stagger-child">
-              <div className="who-icon">{card.icon}</div>
+              <div className="who-icon css-diamond"></div>
               <h3>{card.title}</h3>
               <p>{card.body}</p>
             </div>

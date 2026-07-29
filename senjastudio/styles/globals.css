@@ -2683,6 +2683,16 @@ input:focus, textarea:focus {
 /* Feature symbols visibility fix */
 [data-theme="dark"] .offer-num { opacity: 0.18 !important; }
 
+/* ── CSS DIAMOND DECORATOR ─────────────────────────────────── */
+.css-diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
 /* ── SECTION TRANSITION POLISH ─────────────────────────────── */
 /* Add subtle gradient blending between light and dark sections */
 #audit::after {
