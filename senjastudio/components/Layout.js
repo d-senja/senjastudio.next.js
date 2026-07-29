@@ -520,6 +520,11 @@ function ExitIntentLeadMagnet() {
     sessionStorage.setItem('exitIntent1Closed', 'true')
   }
 
+  const popupBg = '#FAFAF8'
+  const popupText = 'var(--navy)'
+  const popupTextLight = 'rgba(15,11,30,0.7)'
+  const popupCloseBtnColor = 'rgba(15,11,30,0.4)'
+
   useEffect(() => {
     // Don't show if already shown this session or user has submitted any form
     if (typeof window === 'undefined') return
@@ -654,16 +659,16 @@ function ExitIntentLeadMagnet() {
               fontFamily: 'var(--serif)',
               fontSize: '1.8rem',
               fontWeight: 500,
-              color: 'var(--white)',
+              color: 'var(--navy)',
               marginBottom: '12px',
               textAlign: 'center',
               lineHeight: 1.3
             }}>
-              Before you go —<br />get the <em style={{ color: 'var(--gold-light)' }}>free guide</em>
+              Before you go —<br />get the <em style={{ color: 'var(--gold)' }}>free guide</em>
             </h3>
             <p style={{
               fontSize: '0.9rem',
-              color: 'rgba(255,255,255,0.6)',
+              color: 'rgba(15,11,30,0.7)',
               marginBottom: '28px',
               textAlign: 'center',
               lineHeight: 1.7
@@ -683,16 +688,16 @@ function ExitIntentLeadMagnet() {
                   width: '100%',
                   padding: '16px 20px',
                   fontSize: '0.9rem',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: 'var(--white)',
+                  border: '1px solid rgba(15,11,30,0.15)',
+                  background: 'rgba(15,11,30,0.05)',
+                  color: '#0F0B1E',
                   borderRadius: '4px',
                   marginBottom: '12px',
                   outline: 'none',
                   transition: 'all 0.2s ease'
                 }}
                 onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
-                onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(15,11,30,0.15)'}
               />
 
               <button
