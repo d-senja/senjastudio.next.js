@@ -634,13 +634,8 @@ function ExitIntentLeadMagnet() {
 
   const closePopup = () => {
     setShow(false)
-    sessionStorage.setItem('exitIntent1Closed', 'true')
+    sessionStorage.setItem('exitIntent1Shown', 'true')
   }
-
-  const popupBg = '#FAFAF8'
-  const popupText = 'var(--navy)'
-  const popupTextLight = 'rgba(15,11,30,0.7)'
-  const popupCloseBtnColor = 'rgba(15,11,30,0.4)'
 
   useEffect(() => {
     // Don't show if already shown this session or user has submitted any form
@@ -655,7 +650,6 @@ function ExitIntentLeadMagnet() {
       if (e.clientY <= 10) {
         triggered = true
         setShow(true)
-        sessionStorage.setItem('exitIntent1Shown', 'true')
       }
     }
 
@@ -855,6 +849,10 @@ function ExitIntentObjection() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
+  const closePopup = () => {
+    setShow(false)
+  }
+
   const reasons = [
     { value: 'not-ready', label: 'Not ready yet' },
     { value: 'price', label: 'Price' },
@@ -863,37 +861,25 @@ function ExitIntentObjection() {
   ]
 
   useEffect(() => {
-    // Check every second if popup 1 has been closed and we can show popup 2
-    const checkInterval = setInterval(() => {
-      if (typeof window === 'undefined') return
-      if (sessionStorage.getItem('exitIntent2Shown')) return
-      if (sessionStorage.getItem('formSubmitted')) return
-      if (!sessionStorage.getItem('exitIntent1Shown')) return
-      if (!sessionStorage.getItem('exitIntent1Closed')) return
+    // Don't show if already shown this session or user has submitted any form
+    if (typeof window === 'undefined') return
+    if (sessionStorage.getItem('exitIntent2Shown')) return
+    if (sessionStorage.getItem('formSubmitted')) return
+    if (!sessionStorage.getItem('exitIntent1Shown')) return
 
-      // Popup 1 is closed, set up exit listener for popup 2
-      let triggered = false
+    let triggered = false
 
-      const handleMouseLeave = (e) => {
-        if (triggered) return
-        if (e.clientY <= 10) {
-          triggered = true
-          setShow(true)
-          sessionStorage.setItem('exitIntent2Shown', 'true')
-          clearInterval(checkInterval)
-          document.removeEventListener('mouseleave', handleMouseLeave)
-        }
+    const handleMouseLeave = (e) => {
+      if (triggered) return
+      if (e.clientY <= 10) {
+        triggered = true
+        setShow(true)
+        sessionStorage.setItem('exitIntent2Shown', 'true')
       }
+    }
 
-      document.addEventListener('mouseleave', handleMouseLeave)
-      clearInterval(checkInterval) // Stop checking once listener is set
-
-      return () => {
-        document.removeEventListener('mouseleave', handleMouseLeave)
-      }
-    }, 1000)
-
-    return () => clearInterval(checkInterval)
+    document.addEventListener('mouseleave', handleMouseLeave)
+    return () => document.removeEventListener('mouseleave', handleMouseLeave)
   }, [])
 
   const handleSubmit = async (e) => {
