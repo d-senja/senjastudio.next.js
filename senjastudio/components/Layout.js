@@ -746,29 +746,37 @@ function ExitIntentObjection() {
   ]
 
   useEffect(() => {
-    // Only show if Popup 1 has already been shown AND closed
-    if (typeof window === 'undefined') return
-    if (sessionStorage.getItem('exitIntent2Shown')) return
-    if (sessionStorage.getItem('formSubmitted')) return
-    if (!sessionStorage.getItem('exitIntent1Shown')) return // Wait for popup 1 to be shown first
-    if (!sessionStorage.getItem('exitIntent1Closed')) return // Wait for popup 1 to be closed
+    // Check every second if popup 1 has been closed and we can show popup 2
+    const checkInterval = setInterval(() => {
+      if (typeof window === 'undefined') return
+      if (sessionStorage.getItem('exitIntent2Shown')) return
+      if (sessionStorage.getItem('formSubmitted')) return
+      if (!sessionStorage.getItem('exitIntent1Shown')) return
+      if (!sessionStorage.getItem('exitIntent1Closed')) return
 
-    let triggered = false
+      // Popup 1 is closed, set up exit listener for popup 2
+      let triggered = false
 
-    const handleMouseLeave = (e) => {
-      if (triggered) return
-      if (e.clientY <= 10) {
-        triggered = true
-        setShow(true)
-        sessionStorage.setItem('exitIntent2Shown', 'true')
+      const handleMouseLeave = (e) => {
+        if (triggered) return
+        if (e.clientY <= 10) {
+          triggered = true
+          setShow(true)
+          sessionStorage.setItem('exitIntent2Shown', 'true')
+          clearInterval(checkInterval)
+          document.removeEventListener('mouseleave', handleMouseLeave)
+        }
       }
-    }
 
-    document.addEventListener('mouseleave', handleMouseLeave)
+      document.addEventListener('mouseleave', handleMouseLeave)
+      clearInterval(checkInterval) // Stop checking once listener is set
 
-    return () => {
-      document.removeEventListener('mouseleave', handleMouseLeave)
-    }
+      return () => {
+        document.removeEventListener('mouseleave', handleMouseLeave)
+      }
+    }, 1000)
+
+    return () => clearInterval(checkInterval)
   }, [])
 
   const handleSubmit = async (e) => {
