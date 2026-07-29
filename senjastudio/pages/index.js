@@ -61,12 +61,12 @@ const FAQS = [
 ]
 
 const ADDONS = [
-  { icon: '◆', tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: 'Included in Care Plan' },
-  { icon: '▪', tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '£1,200', monthly: '+ £100/month' },
-  { icon: '▪', tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '£1,000', monthly: '+ £100/month' },
-  { icon: '▸', tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '£1,500', monthly: '+ £150/month' },
-  { icon: '▪', tag: 'Add-on', title: 'AI Inbound Phone Caller', body: "An AI voice agent that answers your business calls when you're unavailable — qualifying the enquiry, capturing details, and booking a callback.", price: '£1,500', monthly: '+ £120/month' },
-  { icon: '▸', tag: 'Add-on', title: 'AI Outbound Phone Caller', body: "An AI voice agent that proactively calls leads from your pipeline — following up on enquiries and booking appointments.", price: '£2,000', monthly: '+ £150/month' },
+  { tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: 'Included in Care Plan' },
+  { tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '£1,200', monthly: '+ £100/month' },
+  { tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '£1,000', monthly: '+ £100/month' },
+  { tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '£1,500', monthly: '+ £150/month' },
+  { tag: 'Add-on', title: 'AI Inbound Phone Caller', body: "An AI voice agent that answers your business calls when you're unavailable — qualifying the enquiry, capturing details, and booking a callback.", price: '£1,500', monthly: '+ £120/month' },
+  { tag: 'Add-on', title: 'AI Outbound Phone Caller', body: "An AI voice agent that proactively calls leads from your pipeline — following up on enquiries and booking appointments.", price: '£2,000', monthly: '+ £150/month' },
 ]
 
 const BLOG_POSTS = [
@@ -1381,7 +1381,7 @@ export default function Home() {
         <div className="grid-3col" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           {ADDONS.map((addon, i) => (
             <div key={i} className="upsell-card">
-              <span className="upsell-icon">{addon.icon}</span>
+              <div className="upsell-icon css-diamond"></div>
               <div className="upsell-tag">{addon.tag}</div>
               <div className="upsell-title">{addon.title}</div>
               <div className="upsell-sub">{addon.body}</div>
