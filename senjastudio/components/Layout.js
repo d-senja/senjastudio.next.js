@@ -183,6 +183,7 @@ function Nav({ openModal }) {
     { href: '/#pricing', label: 'Pricing' },
     { href: '/blog', label: 'Blog' },
     { href: '/#faq', label: 'FAQ' },
+    { href: '/contact', label: 'Contact' },
   ]
 
   return (
@@ -289,7 +290,6 @@ function Footer() {
         <Link href="/blog" className="footer-link">Blog</Link>
         <Link href="/examples" className="footer-link">Examples</Link>
         <Link href="/glossary" className="footer-link">Glossary</Link>
-        <Link href="/contact" className="footer-link">Contact</Link>
         <Link href="/referral" className="footer-link">Referral Programme</Link>
         <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
         <Link href="/terms" className="footer-link">Terms</Link>
