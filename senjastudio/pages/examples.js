@@ -55,6 +55,26 @@ export default function Examples() {
           </div>
         </div>
 
+        <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '40px' }}>
+          <a
+            href="https://whitfieldmortgages.co.uk"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontSize: '0.85rem',
+              color: 'var(--gold)',
+              textDecoration: 'none',
+              fontFamily: 'var(--serif)',
+              fontWeight: 500,
+              transition: 'opacity 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.opacity = '0.7'}
+            onMouseOut={(e) => e.target.style.opacity = '1'}
+          >
+            See a site we've built — Whitfield Mortgages →
+          </a>
+        </div>
+
         {/* Coming soon */}
         <p style={{ fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold)', textAlign: 'center', marginBottom: '32px' }}>
           More sites being added
