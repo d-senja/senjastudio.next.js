@@ -2,8 +2,21 @@ import Layout from '../components/Layout'
 
 const sections = [
   { title: 'Who we are', content: 'Senja Studio is a specialist mortgage broker website design agency. Our website address is senjastudio.co.uk. We can be contacted at dan@senjastudio.co.uk.' },
-  { title: 'What data we collect', content: 'We collect information you voluntarily provide when you submit a contact form, book a free call, or request a site audit. This includes your name, email address, and any information you provide about your mortgage broking firm. We also collect standard analytics data through Google Analytics, including pages visited, time on site, and general location data.' },
+  { title: 'What data we collect', content: 'We collect information you voluntarily provide when you submit a contact form, book a free call, or request a site audit. This includes your name, email address, mobile phone number (optional), and any information you provide about your mortgage broking firm. We also collect standard analytics data through Google Analytics, including pages visited, time on site, and general location data.' },
   { title: 'How we use your data', content: 'We use the information you provide to respond to your enquiry, provide the services you\'ve requested, and send you information relevant to your enquiry. We do not sell your data to third parties. We do not use your data for automated decision-making or profiling.' },
+  {
+    title: 'Marketing Communications',
+    subsections: [
+      {
+        subtitle: 'Email Communications',
+        content: 'By providing your email address when requesting a guide, resource, or other download, you consent to receive the requested resource and occasional relevant updates about mortgage broker website design. You can unsubscribe at any time via the unsubscribe link included in every email we send, or by emailing dan@senjastudio.co.uk.'
+      },
+      {
+        subtitle: 'SMS and Text Message Communications',
+        content: 'Senja Studio may use your mobile number to send a single transactional text message to notify you when your requested guide or resource has been delivered. We do not send marketing SMS messages. Your mobile number is never shared with third parties or used for any purpose other than delivering the resource you requested. You can opt out at any time by replying STOP to any message or emailing dan@senjastudio.co.uk. By providing your mobile number you consent to receiving this single delivery notification.'
+      }
+    ]
+  },
   { title: 'Legal basis for processing', content: 'We process your personal data on the basis of legitimate interest (responding to business enquiries) and, where you have given explicit consent, for marketing communications. You can withdraw consent at any time by contacting us at dan@senjastudio.co.uk.' },
   { title: 'Data retention', content: 'We retain enquiry data for up to 24 months after last contact. Analytics data is retained in accordance with Google Analytics\' standard retention policies. You can request deletion of your personal data at any time.' },
   { title: 'Cookies', content: 'We use cookies to analyse site traffic and improve your experience. Analytics cookies are only set after you provide consent via our cookie banner. You can decline cookies and the site will continue to function. Essential cookies (required for the site to function) are set regardless of consent.' },
@@ -26,7 +39,15 @@ export default function PrivacyPolicy() {
         {sections.map((s, i) => (
           <div key={i} style={{ marginBottom: '36px', paddingBottom: '36px', borderBottom: i < sections.length - 1 ? '1px solid var(--border)' : 'none' }}>
             <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '12px' }}>{s.title}</h2>
-            <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.85 }}>{s.content}</p>
+            {s.content && (
+              <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.85 }}>{s.content}</p>
+            )}
+            {s.subsections && s.subsections.map((sub, j) => (
+              <div key={j} style={{ marginTop: j === 0 ? '16px' : '24px' }}>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.05rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '8px' }}>{sub.subtitle}</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.85 }}>{sub.content}</p>
+              </div>
+            ))}
           </div>
         ))}
       </div>
