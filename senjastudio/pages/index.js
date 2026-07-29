@@ -939,7 +939,7 @@ function LeadMagnetSection() {
       <div style={{ maxWidth: '680px', margin: '0 auto', textAlign: 'center' }}>
         <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>📋</div>
         <p className="section-label" style={{ color: 'var(--gold-light)' }}>Free Guide</p>
-        <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: 'var(--white)', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
+        <h2 className="lead-magnet-heading" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
           5 Things Your Broker Site<br />Is Costing You <em style={{ color: 'var(--gold-light)' }}>Right Now</em>
         </h2>
         <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '32px', maxWidth: '520px', margin: '0 auto 32px' }}>
