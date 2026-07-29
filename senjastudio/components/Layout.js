@@ -1220,6 +1220,33 @@ export default function Layout({ children, title, description, canonical, modalO
 
       <main>{children}</main>
 
+      {/* Referral Banner */}
+      <Link
+        href="/referral"
+        style={{
+          display: 'block',
+          background: 'var(--navy)',
+          padding: '16px 48px',
+          textAlign: 'center',
+          borderTop: '1px solid rgba(212,175,55,0.2)',
+          borderBottom: '1px solid rgba(212,175,55,0.2)',
+          textDecoration: 'none',
+          transition: 'background 0.2s ease'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(26,20,40,0.95)'}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--navy)'}
+      >
+        <span style={{
+          fontSize: '0.9rem',
+          color: 'var(--gold)',
+          fontFamily: 'var(--serif)',
+          fontWeight: 500,
+          letterSpacing: '0.01em'
+        }}>
+          Know a mortgage broker? Earn £250 for every referral. →
+        </span>
+      </Link>
+
       <Footer />
 
       <QualifyModal isOpen={isModalOpen} onClose={closeModal} />
