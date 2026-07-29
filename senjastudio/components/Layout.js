@@ -507,6 +507,11 @@ function ExitIntentLeadMagnet() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
+  const closePopup = () => {
+    setShow(false)
+    sessionStorage.setItem('exitIntent1Closed', 'true')
+  }
+
   useEffect(() => {
     // Don't show if already shown this session or user has submitted any form
     if (typeof window === 'undefined') return
@@ -549,7 +554,7 @@ function ExitIntentLeadMagnet() {
         if (data.downloadUrl) {
           window.location.href = data.downloadUrl
         }
-        setTimeout(() => setShow(false), 3000)
+        setTimeout(() => closePopup(), 3000)
       }
     } catch (err) {
       // Silent fail
@@ -576,7 +581,7 @@ function ExitIntentLeadMagnet() {
         padding: '20px',
         animation: 'fadeIn 0.3s ease'
       }}
-      onClick={(e) => { if (e.target === e.currentTarget) setShow(false) }}
+      onClick={(e) => { if (e.target === e.currentTarget) closePopup() }}
     >
       <div style={{
         background: 'var(--navy)',
@@ -588,7 +593,7 @@ function ExitIntentLeadMagnet() {
         boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
       }}>
         <button
-          onClick={() => setShow(false)}
+          onClick={() => closePopup()}
           style={{
             position: 'absolute',
             top: '16px',
@@ -728,11 +733,12 @@ function ExitIntentObjection() {
   ]
 
   useEffect(() => {
-    // Don't show if already shown this session or user has submitted any form
+    // Only show if Popup 1 has already been shown AND closed
     if (typeof window === 'undefined') return
     if (sessionStorage.getItem('exitIntent2Shown')) return
     if (sessionStorage.getItem('formSubmitted')) return
-    if (sessionStorage.getItem('exitIntent1Shown')) return // Don't show if popup 1 already shown
+    if (!sessionStorage.getItem('exitIntent1Shown')) return // Wait for popup 1 to be shown first
+    if (!sessionStorage.getItem('exitIntent1Closed')) return // Wait for popup 1 to be closed
 
     let triggered = false
 
@@ -745,13 +751,9 @@ function ExitIntentObjection() {
       }
     }
 
-    // Delay this listener so popup 1 gets priority
-    const timer = setTimeout(() => {
-      document.addEventListener('mouseleave', handleMouseLeave)
-    }, 100)
+    document.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
-      clearTimeout(timer)
       document.removeEventListener('mouseleave', handleMouseLeave)
     }
   }, [])
@@ -802,7 +804,7 @@ function ExitIntentObjection() {
         padding: '20px',
         animation: 'fadeIn 0.3s ease'
       }}
-      onClick={(e) => { if (e.target === e.currentTarget) setShow(false) }}
+      onClick={(e) => { if (e.target === e.currentTarget) closePopup() }}
     >
       <div style={{
         background: 'var(--navy)',
@@ -814,7 +816,7 @@ function ExitIntentObjection() {
         boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
       }}>
         <button
-          onClick={() => setShow(false)}
+          onClick={() => closePopup()}
           style={{
             position: 'absolute',
             top: '16px',
