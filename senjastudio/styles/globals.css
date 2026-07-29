@@ -2714,6 +2714,46 @@ input:focus, textarea:focus {
   background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.02) 100%);
 }
 
+/* ── BLOG PAGE DARK MODE ───────────────────────────────────── */
+.blog-card {
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .blog-card {
+  background: #1A1428 !important;
+}
+
+[data-theme="dark"] .blog-card h3 {
+  color: #E8E0D8 !important;
+}
+
+[data-theme="dark"] .blog-card p {
+  color: rgba(232,224,216,0.85) !important;
+}
+
+[data-theme="dark"] .blog-card-image {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a2847 100%) !important;
+}
+
+[data-theme="dark"] .blog-tag {
+  background: rgba(201,168,76,0.15) !important;
+  color: #E2C46A !important;
+}
+
+[data-theme="dark"] .blog-date {
+  color: rgba(232,224,216,0.5) !important;
+}
+
+[data-theme="dark"] .blog-read-more {
+  color: #E2C46A !important;
+}
+
 /* SS5: Sticky comparison bar - prices and labels */
 [data-theme="dark"] .sticky-compare { background: #070512 !important; border-bottom-color: rgba(201,168,76,0.2) !important; }
 [data-theme="dark"] .sticky-compare-item { border-right-color: rgba(255,255,255,0.04) !important; }
