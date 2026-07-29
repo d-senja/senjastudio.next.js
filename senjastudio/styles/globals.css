@@ -2754,6 +2754,32 @@ input:focus, textarea:focus {
   color: #E2C46A !important;
 }
 
+/* ── LOCATION PAGE DARK MODE ───────────────────────────────── */
+/* Ensure all location page cards and text have proper contrast */
+[data-theme="dark"] .grid-2col .card {
+  background: #1A1428 !important;
+  border-color: rgba(201,168,76,0.1) !important;
+}
+
+[data-theme="dark"] .grid-2col .card h3 {
+  color: #E8E0D8 !important;
+}
+
+[data-theme="dark"] .grid-2col .card p {
+  color: rgba(232,224,216,0.85) !important;
+}
+
+/* Fix location page hero and CTA sections */
+[data-theme="dark"] section h1,
+[data-theme="dark"] section h2 {
+  color: #E8E0D8 !important;
+}
+
+[data-theme="dark"] section h1 em,
+[data-theme="dark"] section h2 em {
+  color: #D4A84C !important;
+}
+
 /* SS5: Sticky comparison bar - prices and labels */
 [data-theme="dark"] .sticky-compare { background: #070512 !important; border-bottom-color: rgba(201,168,76,0.2) !important; }
 [data-theme="dark"] .sticky-compare-item { border-right-color: rgba(255,255,255,0.04) !important; }
