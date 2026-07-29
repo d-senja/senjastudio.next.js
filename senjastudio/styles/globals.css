@@ -2420,7 +2420,7 @@ input:focus, textarea:focus {
 [data-theme="dark"] .hero-tag { background: linear-gradient(135deg, #8B6914, #C9A84C) !important; color: #0F0B1E !important; font-weight: 700 !important; }
 [data-theme="dark"] .hero-right-overlay { background: linear-gradient(to top, rgba(7,5,18,0.98) 0%, rgba(7,5,18,0.5) 55%, transparent 100%) !important; }
 [data-theme="dark"] .hero-right-name { color: #E8E0D8 !important; }
-[data-theme="dark"] .hero-right-title { color: rgba(232,224,216,0.55) !important; }
+[data-theme="dark"] .hero-right-title { color: rgba(255,255,255,0.85) !important; }
 [data-theme="dark"] .activity-feed-wrap { background: #1A1428 !important; border-color: rgba(201,168,76,0.15) !important; }
 [data-theme="dark"] .activity-text { color: #9A92A4 !important; }
 [data-theme="dark"] .hero-trust-text, [data-theme="dark"] .hero-stars-sub { color: rgba(232,224,216,0.4) !important; }
