@@ -2599,6 +2599,11 @@ input:focus, textarea:focus {
 [data-theme="dark"] #process [style*="color:var(--muted)"] { color: #9A92A4 !important; }
 [data-theme="dark"] #process [style*="color:var(--navy)"] { color: #E8E0D8 !important; }
 
+/* Process step numbers visibility - increase opacity in both modes */
+[data-theme="dark"] #process div[style*="font-size: 2rem"] {
+  opacity: 0.08 !important;
+}
+
 /* Process steps light mode visibility fixes */
 [data-theme="light"] #process h3[style*="color:var(--navy)"] {
   color: var(--navy) !important;
