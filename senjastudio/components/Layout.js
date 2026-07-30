@@ -1152,28 +1152,34 @@ export default function Layout({ children, title, description, canonical, modalO
   }, [])
 
   // Crisp Live Chat Integration
-  // IMPORTANT: Replace 'cc79fcb2-592c-4730-8afd-fbc75420b2a2' with your actual Crisp website ID
-  // Get your ID by creating a free account at https://crisp.chat
-  // After signup, go to Settings > Website Settings to find your website ID
   useEffect(() => {
     const CRISP_WEBSITE_ID = 'cc79fcb2-592c-4730-8afd-fbc75420b2a2'
 
-    // Only load Crisp if a real ID is configured
-    if (CRISP_WEBSITE_ID !== 'cc79fcb2-592c-4730-8afd-fbc75420b2a2') {
-      window.$crisp = []
-      window.CRISP_WEBSITE_ID = CRISP_WEBSITE_ID
+    window.$crisp = []
+    window.CRISP_WEBSITE_ID = CRISP_WEBSITE_ID
 
-      const script = document.createElement('script')
-      script.src = 'https://client.crisp.chat/l.js'
-      script.async = true
-      document.head.appendChild(script)
+    const script = document.createElement('script')
+    script.src = 'https://client.crisp.chat/l.js'
+    script.async = true
+    document.head.appendChild(script)
 
-      return () => {
-        // Cleanup on unmount
-        if (window.$crisp) {
-          window.$crisp.push(['do', 'chat:hide'])
-        }
+    return () => {
+      // Cleanup on unmount
+      if (window.$crisp) {
+        window.$crisp.push(['do', 'chat:hide'])
       }
+    }
+  }, [])
+
+  // Microsoft Clarity Integration
+  useEffect(() => {
+    // Only load Clarity in production
+    if (process.env.NODE_ENV !== 'development') {
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "xua9mh5o25");
     }
   }, [])
 
