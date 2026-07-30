@@ -393,12 +393,12 @@ export default function LocationPage({ location, slug }) {
       canonical={`/${slug}`}
     >
       {/* Hero */}
-      <div style={{ background: 'var(--navy)', padding: '80px 48px', textAlign: 'center' }}>
+      <div style={{ background: '#1A1428', padding: '80px 48px', textAlign: 'center' }}>
         <span className="section-label" style={{ display: 'block', marginBottom: '16px' }}>
           Mortgage broker website design {city}
         </span>
-        <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3.5rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
-          The mortgage broker website<br /><em style={{ color: 'var(--gold-light)' }}>{city} independents trust.</em>
+        <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3.5rem)', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
+          The mortgage broker website<br /><em style={{ color: '#E2C46A' }}>{city} independents trust.</em>
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '560px', margin: '0 auto 32px', lineHeight: 1.85 }}>
           {regionDesc}. Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent advisers — worldwide. Delivered in 7 days from £2,500.
