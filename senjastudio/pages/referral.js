@@ -47,21 +47,21 @@ export default function Referral() {
       canonical="/referral"
     >
       {/* Hero */}
-      <div style={{ background: 'var(--navy)', padding: '80px 48px 64px', textAlign: 'center' }}>
+      <div style={{ background: '#1A1428', padding: '80px 48px 64px', textAlign: 'center' }}>
         <h1 style={{
           fontFamily: 'var(--serif)',
           fontSize: 'clamp(2.5rem,5vw,4rem)',
           fontWeight: 600,
-          color: 'var(--white)',
+          color: '#FFFFFF',
           lineHeight: 1.1,
           marginBottom: '16px',
           letterSpacing: '-0.02em'
         }}>
-          Refer a broker. <em style={{ color: 'var(--gold)' }}>Earn £250.</em>
+          Refer a broker. <em style={{ color: '#C9A84C' }}>Earn £250.</em>
         </h1>
         <p style={{
           fontSize: '1.1rem',
-          color: 'var(--gold-light)',
+          color: '#E2C46A',
           maxWidth: '600px',
           margin: '0 auto 24px',
           fontFamily: 'var(--serif)',
