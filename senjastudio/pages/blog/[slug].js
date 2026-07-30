@@ -13,7 +13,7 @@ const POSTS = {
     date: 'July 2025',
     readTime: '6 min read',
     content: [
-      { type: 'p', text: 'Most mortgage broker websites share the same fundamental problem: they were built to look professional, not to convert visitors into enquiries. There\'s a meaningful difference between the two, and it costs independent brokers leads every single week.' },
+      { type: 'p', text: 'Most mortgage broker websites share the same fundamental problem: they were built to look professional, not to convert visitors into enquiries. There\'s a meaningful difference between the two, and it costs independent brokers leads every single week. Whether you\'re based in [London](/mortgage-broker-website-design-london), [Manchester](/mortgage-broker-website-design-manchester), or anywhere else, these conversion mistakes are universal.' },
       { type: 'h2', text: 'Problem 1: One generic CTA for every type of client' },
       { type: 'p', text: 'The most common conversion mistake on broker sites is a single "Get in Touch" or "Book a Free Consultation" button for every visitor. A self-employed contractor has completely different anxieties from a first-time buyer. A complex case with adverse credit needs completely different reassurance from someone remortgaging a straightforward residential property.' },
       { type: 'p', text: 'When every visitor hits the same generic button, none of them feel directly spoken to. The self-employed person thinks: "Do they actually understand my situation?" The adverse credit client thinks: "They\'ll just say no like everyone else." And both of them leave.' },
@@ -39,7 +39,7 @@ const POSTS = {
     date: 'July 2025',
     readTime: '7 min read',
     content: [
-      { type: 'p', text: 'Every mortgage broker who operates in the UK market is subject to FCA regulation — and that regulation extends to your website. Many brokers are unaware of exactly what\'s required, and most generic web agencies have never thought about financial promotion rules at all.' },
+      { type: 'p', text: 'Every mortgage broker who operates in the UK market is subject to FCA regulation — and that regulation extends to your website. Whether you\'re an independent broker in [Birmingham](/mortgage-broker-website-design-birmingham), [Edinburgh](/mortgage-broker-website-design-edinburgh), or anywhere across the UK, many brokers are unaware of exactly what\'s required, and most generic web agencies have never thought about financial promotion rules at all.' },
       { type: 'h2', text: 'The FCA Authorisation Statement' },
       { type: 'p', text: 'This is the most basic requirement and the one most often missed. Every page of your website must clearly display that your firm is authorised and regulated by the Financial Conduct Authority, along with your FCA registration number. The statement typically goes in the footer.' },
       { type: 'p', text: 'The exact wording required: "[Firm Name] is authorised and regulated by the Financial Conduct Authority. FCA Registration Number: XXXXXX." It must be legible — not 8pt grey text that nobody can read.' },
@@ -64,7 +64,7 @@ const POSTS = {
     date: 'July 2025',
     readTime: '5 min read',
     content: [
-      { type: 'p', text: 'The range of prices for mortgage broker websites in the UK is enormous — from £500 to £15,000 for what sounds like broadly the same thing. The difference between these price points is real, and understanding it will help you make a better decision about where to invest.' },
+      { type: 'p', text: 'The range of prices for mortgage broker websites in the UK is enormous — from £500 to £15,000 for what sounds like broadly the same thing. Whether you\'re a broker in [Leeds](/mortgage-broker-website-design-leeds), [Bristol](/mortgage-broker-website-design-bristol), or elsewhere, the difference between these price points is real, and understanding it will help you make a better decision about where to invest.' },
       { type: 'h2', text: '£500–£1,500: Freelancers and template builders' },
       { type: 'p', text: 'At this price point, you\'re typically getting a template — a pre-built design from Wix, Squarespace, WordPress, or a theme marketplace — with your logo and copy inserted. The designer has likely never worked with a mortgage broker before, doesn\'t know what FCA compliance looks like in practice, and won\'t have thought about conversion optimisation.' },
       { type: 'p', text: 'The result looks like a website. It won\'t, however, be built to convert mortgage clients specifically. The CTAs will be generic, the social proof placement will be an afterthought, and the mobile experience will be adequate rather than excellent.' },
@@ -135,6 +135,36 @@ const POSTS = {
   },
 }
 
+// ── TEXT PARSER WITH LINK SUPPORT ────────────────────────────
+// Parses text with [link text](/url) syntax
+function parseTextWithLinks(text) {
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
+  const parts = []
+  let lastIndex = 0
+  let match
+
+  while ((match = linkRegex.exec(text)) !== null) {
+    // Add text before the link
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index))
+    }
+    // Add the link
+    parts.push(
+      <Link key={match.index} href={match[2]} style={{ color: 'var(--gold)', textDecoration: 'underline' }}>
+        {match[1]}
+      </Link>
+    )
+    lastIndex = match.index + match[0].length
+  }
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex))
+  }
+
+  return parts.length > 0 ? parts : text
+}
+
 // ── CONTENT RENDERER ──────────────────────────────────────────
 function renderContent(blocks) {
   return blocks.map((block, i) => {
@@ -144,16 +174,16 @@ function renderContent(blocks) {
       case 'h3':
         return <h3 key={i}>{block.text}</h3>
       case 'p':
-        return <p key={i}>{block.text}</p>
+        return <p key={i}>{parseTextWithLinks(block.text)}</p>
       case 'highlight':
         return (
           <div key={i} className="highlight-box">
             {block.title && <strong>{block.title}</strong>}
-            <p>{block.text}</p>
+            <p>{parseTextWithLinks(block.text)}</p>
           </div>
         )
       case 'list':
-        return <ul key={i}>{block.items.map((item, j) => <li key={j}>{item}</li>)}</ul>
+        return <ul key={i}>{block.items.map((item, j) => <li key={j}>{parseTextWithLinks(item)}</li>)}</ul>
       default:
         return null
     }
