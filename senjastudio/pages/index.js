@@ -80,22 +80,46 @@ const BLOG_POSTS = [
 function Typewriter() {
   const phrases = ['booked calls.', 'qualified leads.', 'paying clients.', 'your best work.']
   const [idx, setIdx] = useState(0)
-  const [visible, setVisible] = useState(true)
+  const [text, setText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisible(false)
-      setTimeout(() => {
-        setIdx(i => (i + 1) % phrases.length)
-        setVisible(true)
-      }, 350)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [])
+    const currentPhrase = phrases[idx]
+
+    if (isPaused) {
+      const pauseTimeout = setTimeout(() => {
+        setIsPaused(false)
+        setIsDeleting(true)
+      }, 1500)
+      return () => clearTimeout(pauseTimeout)
+    }
+
+    if (isDeleting) {
+      if (text.length === 0) {
+        setIsDeleting(false)
+        setIdx((prev) => (prev + 1) % phrases.length)
+      } else {
+        const timeout = setTimeout(() => {
+          setText(currentPhrase.substring(0, text.length - 1))
+        }, 50)
+        return () => clearTimeout(timeout)
+      }
+    } else {
+      if (text === currentPhrase) {
+        setIsPaused(true)
+      } else {
+        const timeout = setTimeout(() => {
+          setText(currentPhrase.substring(0, text.length + 1))
+        }, 80)
+        return () => clearTimeout(timeout)
+      }
+    }
+  }, [text, isDeleting, isPaused, idx, phrases])
 
   return (
-    <em style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.35s ease', color: 'var(--gold)', position: 'relative' }}>
-      {phrases[idx]}
+    <em style={{ color: 'var(--gold)', position: 'relative' }}>
+      {text}
       <span className="typewriter-cursor"></span>
     </em>
   )
