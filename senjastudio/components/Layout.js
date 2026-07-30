@@ -1149,6 +1149,32 @@ export default function Layout({ children, title, description, canonical, modalO
     return () => document.removeEventListener('openModal', handler)
   }, [])
 
+  // Crisp Live Chat Integration
+  // IMPORTANT: Replace 'YOUR_CRISP_ID_HERE' with your actual Crisp website ID
+  // Get your ID by creating a free account at https://crisp.chat
+  // After signup, go to Settings > Website Settings to find your website ID
+  useEffect(() => {
+    const CRISP_WEBSITE_ID = 'YOUR_CRISP_ID_HERE'
+
+    // Only load Crisp if a real ID is configured
+    if (CRISP_WEBSITE_ID !== 'YOUR_CRISP_ID_HERE') {
+      window.$crisp = []
+      window.CRISP_WEBSITE_ID = CRISP_WEBSITE_ID
+
+      const script = document.createElement('script')
+      script.src = 'https://client.crisp.chat/l.js'
+      script.async = true
+      document.head.appendChild(script)
+
+      return () => {
+        // Cleanup on unmount
+        if (window.$crisp) {
+          window.$crisp.push(['do', 'chat:hide'])
+        }
+      }
+    }
+  }, [])
+
   const siteTitle = title
     ? `${title} | Senja Studio`
     : 'Mortgage Broker Website Design | Senja Studio — From £2,500, Delivered in 7 Days'
