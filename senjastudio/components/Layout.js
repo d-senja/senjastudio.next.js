@@ -275,7 +275,9 @@ function Footer() {
     { name: 'Ireland', slug: 'mortgage-broker-website-design-ireland' },
     { name: 'South Africa', slug: 'mortgage-broker-website-design-south-africa' },
     { name: 'Germany', slug: 'mortgage-broker-website-design-germany' },
-    { name: 'France', slug: 'mortgage-broker-website-design-france' }
+    { name: 'France', slug: 'mortgage-broker-website-design-france' },
+    { name: 'Spain', slug: 'mortgage-broker-website-design-spain' },
+    { name: 'Portugal', slug: 'mortgage-broker-website-design-portugal' }
   ]
 
   return (

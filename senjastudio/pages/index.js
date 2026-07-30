@@ -1269,6 +1269,15 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <p style={{ fontSize: '0.75rem', color: 'rgba(26,20,40,0.4)', textAlign: 'center', marginTop: '12px' }}>
+          Serving brokers in{' '}
+          <Link href="/mortgage-broker-website-design-london" style={{ color: 'var(--gold)', textDecoration: 'none', fontWeight: 500 }}>London</Link>
+          {', '}
+          <Link href="/mortgage-broker-website-design-manchester" style={{ color: 'var(--gold)', textDecoration: 'none', fontWeight: 500 }}>Manchester</Link>
+          {', '}
+          <Link href="/mortgage-broker-website-design-birmingham" style={{ color: 'var(--gold)', textDecoration: 'none', fontWeight: 500 }}>Birmingham</Link>
+          {' and 22 more markets worldwide'}
+        </p>
       </div>
 
       <LiveRates />
