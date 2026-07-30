@@ -1,6 +1,8 @@
 import '../styles/globals.css'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
@@ -92,11 +94,15 @@ export default function App({ Component, pageProps }) {
   }, [])
 
   return (
-    <div style={{
-      opacity: isTransitioning ? 0 : 1,
-      transition: 'opacity 0.3s ease'
-    }}>
-      <Component {...pageProps} />
-    </div>
+    <>
+      <div style={{
+        opacity: isTransitioning ? 0 : 1,
+        transition: 'opacity 0.3s ease'
+      }}>
+        <Component {...pageProps} />
+      </div>
+      <Analytics />
+      <SpeedInsights />
+    </>
   )
 }
