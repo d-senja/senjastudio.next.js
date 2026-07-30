@@ -131,12 +131,34 @@ export default async function handler(req, res) {
 
       const emailData = await emailRes.json();
       if (!emailRes.ok) {
-        console.error('Resend API error:', emailRes.status, emailData);
+        // Log full error details
+        console.error('Resend API error - Status:', emailRes.status);
+        console.error('Resend API error - Response:', JSON.stringify(emailData));
+        console.error('Resend API error - Email:', email);
+        console.error('Resend API error - PDF:', pdfFileName);
+
+        // Return error instead of silently continuing
+        return res.status(500).json({
+          success: false,
+          error: 'Failed to send email. Please try again or contact support.',
+          details: emailData
+        });
       }
     } catch (e) {
-      // Email failed — still return success, Formspree captured the lead
-      console.error('Failed to send email:', e.message);
+      // Log full error and return 500
+      console.error('Failed to send email - Error:', e);
+      console.error('Failed to send email - Stack:', e.stack);
+      console.error('Failed to send email - Email:', email);
+      console.error('Failed to send email - PDF:', pdfFileName);
+
+      return res.status(500).json({
+        success: false,
+        error: 'Email delivery failed. Please try again or contact support.',
+        details: e.message
+      });
     }
+  } else {
+    console.warn('No Resend API key configured - skipping email delivery');
   }
 
   // ── 3. Return download URL ──────────────────────────────────
