@@ -1152,14 +1152,14 @@ export default function Layout({ children, title, description, canonical, modalO
   }, [])
 
   // Crisp Live Chat Integration
-  // IMPORTANT: Replace 'YOUR_CRISP_ID_HERE' with your actual Crisp website ID
+  // IMPORTANT: Replace 'cc79fcb2-592c-4730-8afd-fbc75420b2a2' with your actual Crisp website ID
   // Get your ID by creating a free account at https://crisp.chat
   // After signup, go to Settings > Website Settings to find your website ID
   useEffect(() => {
-    const CRISP_WEBSITE_ID = 'YOUR_CRISP_ID_HERE'
+    const CRISP_WEBSITE_ID = 'cc79fcb2-592c-4730-8afd-fbc75420b2a2'
 
     // Only load Crisp if a real ID is configured
-    if (CRISP_WEBSITE_ID !== 'YOUR_CRISP_ID_HERE') {
+    if (CRISP_WEBSITE_ID !== 'cc79fcb2-592c-4730-8afd-fbc75420b2a2') {
       window.$crisp = []
       window.CRISP_WEBSITE_ID = CRISP_WEBSITE_ID
 
