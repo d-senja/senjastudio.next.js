@@ -1495,6 +1495,77 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FOUNDER VIDEO ────────────────────────────── */}
+      <section className="section" id="founder-video" style={{ background: 'var(--navy)', textAlign: 'center' }}>
+        <p className="section-label" style={{ color: 'var(--gold)' }}>From The Founder</p>
+        <h2 style={{
+          fontFamily: 'var(--serif)',
+          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+          fontWeight: 500,
+          color: 'var(--white)',
+          marginBottom: '48px',
+          lineHeight: 1.3,
+          maxWidth: '800px',
+          margin: '0 auto 48px'
+        }}>
+          Why I built Senja Studio exclusively for mortgage brokers.
+        </h2>
+
+        <div style={{
+          maxWidth: '900px',
+          margin: '0 auto 40px',
+          position: 'relative',
+          aspectRatio: '16 / 9',
+          background: 'var(--royal)',
+          border: '2px solid var(--gold)',
+          borderRadius: '8px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '20px'
+        }}
+        aria-label="Video placeholder - coming soon"
+        >
+          <div style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            border: '3px solid var(--gold)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2rem',
+            color: 'var(--gold)'
+          }}
+          aria-hidden="true"
+          >
+            ▶
+          </div>
+          <p style={{
+            fontSize: '0.9rem',
+            color: 'rgba(255,255,255,0.6)',
+            maxWidth: '400px',
+            lineHeight: 1.7
+          }}>
+            Video coming soon — in the meantime, book a free call below.
+          </p>
+        </div>
+
+        <a
+          href="https://calendly.com/senjastudio/30min"
+          className="btn-gold"
+          style={{
+            textDecoration: 'none',
+            display: 'inline-block'
+          }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          BOOK YOUR FREE CALL →
+        </a>
+      </section>
+
       {/* ── TESTIMONIALS ─────────────────────────────── */}
       <section className="section" id="testimonials">
         <p className="section-label">What brokers say</p>
