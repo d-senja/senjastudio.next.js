@@ -1,8 +1,77 @@
 import '../styles/globals.css'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import React from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import * as Sentry from '@sentry/nextjs'
+
+// Initialize Sentry only in production
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://c2a4669b1f7871eaaa69874aad37fdfc@o4511637563768832.ingest.de.sentry.io/4511821412040784',
+    tracesSampleRate: 1.0,
+    debug: false,
+    environment: process.env.NODE_ENV,
+  })
+}
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // Log error to Sentry in production
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } })
+    } else {
+      console.error('Error caught by boundary:', error, errorInfo)
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          padding: '20px',
+          textAlign: 'center',
+          fontFamily: 'Inter, sans-serif'
+        }}>
+          <div>
+            <h1 style={{ fontSize: '1.5rem', marginBottom: '12px' }}>Something went wrong</h1>
+            <p style={{ color: '#666', marginBottom: '20px' }}>We've been notified and are looking into it.</p>
+            <button
+              onClick={() => window.location.href = '/'}
+              style={{
+                padding: '12px 24px',
+                background: '#1A1428',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Return to Homepage
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    return this.props.children
+  }
+}
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
@@ -94,7 +163,7 @@ export default function App({ Component, pageProps }) {
   }, [])
 
   return (
-    <>
+    <ErrorBoundary>
       <div style={{
         opacity: isTransitioning ? 0 : 1,
         transition: 'opacity 0.3s ease'
@@ -103,6 +172,6 @@ export default function App({ Component, pageProps }) {
       </div>
       <Analytics />
       <SpeedInsights />
-    </>
+    </ErrorBoundary>
   )
 }
