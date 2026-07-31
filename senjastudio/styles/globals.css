@@ -2597,4 +2597,638 @@ footer {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 200ms;
+}}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE STYLES
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── MOBILE: MAX-WIDTH 768PX ────────────────────────────────── */
+@media (max-width: 768px) {
+  
+  /* Navigation */
+  nav {
+    padding: 12px 20px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  #burgerBtn {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 101;
+  }
+  
+  /* Hero Section - Stack Vertically */
+  .hero-section {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 60px;
+  }
+  
+  .hero-left {
+    padding: 32px 24px;
+    order: 1;
+  }
+  
+  .hero-right {
+    order: 2;
+    min-height: 400px;
+  }
+  
+  .hero-headline {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    line-height: 1.15;
+  }
+  
+  .hero-sub {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-actions .btn-primary,
+  .hero-actions .btn-ghost {
+    width: 100%;
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 0.75rem;
+  }
+  
+  .hero-tag {
+    font-size: 0.65rem;
+  }
+  
+  /* Trust Bar */
+  .trust-bar-strip {
+    padding: 12px 20px;
+    font-size: 0.65rem;
+  }
+  
+  .trust-strip-item {
+    padding: 6px 16px;
+    font-size: 0.65rem;
+  }
+  
+  /* Live Rates Bar */
+  .live-bar {
+    padding: 12px 20px;
+  }
+  
+  .live-bar-inner {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .live-rates {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    font-size: 0.7rem;
+  }
+  
+  .live-rate-item {
+    font-size: 0.75rem;
+  }
+  
+  .live-availability {
+    font-size: 0.7rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Activity Feed */
+  .activity-feed-wrap {
+    padding: 6px 12px;
+  }
+  
+  .activity-feed {
+    font-size: 0.65rem;
+  }
+  
+  /* Section Padding */
+  .section {
+    padding: 60px 24px;
+  }
+  
+  .section-heading {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: 32px;
+  }
+  
+  .section-label {
+    font-size: 0.6rem;
+    margin-bottom: 16px;
+  }
+  
+  /* Niche Cards - 1 Column */
+  .niche-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border: none;
+    background: transparent;
+  }
+  
+  .niche-card {
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .niche-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .niche-card p {
+    font-size: 0.9rem;
+  }
+  
+  /* Who Cards - 1 Column */
+  .who-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border: none;
+    background: transparent;
+  }
+  
+  .who-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+  }
+  
+  .who-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .who-card p {
+    font-size: 0.9rem;
+  }
+  
+  /* Offer Grid - 1 Column */
+  .offer-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border: none;
+    background: transparent;
+  }
+  
+  .offer-item {
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .offer-item h3 {
+    font-size: 1.1rem;
+  }
+  
+  .offer-item p {
+    font-size: 0.9rem;
+  }
+  
+  /* Comparison Table */
+  .compare-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .compare-header,
+  .compare-row {
+    grid-template-columns: 1.2fr 1fr 1fr;
+    min-width: 500px;
+  }
+  
+  .compare-cell {
+    padding: 12px 8px;
+    font-size: 0.7rem;
+  }
+  
+  .compare-header-cell {
+    padding: 12px 8px;
+    font-size: 0.6rem;
+  }
+  
+  /* Meet Dan - Stack Vertically */
+  .meet-dan {
+    padding: 60px 24px;
+  }
+  
+  .meet-dan-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .meet-dan-img {
+    max-height: 400px;
+  }
+  
+  .meet-dan-heading {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+  
+  .meet-dan-p {
+    font-size: 0.9rem;
+  }
+  
+  .meet-dan-stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    background: transparent;
+    border: none;
+  }
+  
+  .meet-dan-stat {
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+  }
+  
+  /* Testimonials - 1 Column */
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border: none;
+    background: transparent;
+  }
+  
+  .testi-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  
+  .testi-quote {
+    font-size: 1rem;
+  }
+  
+  /* Pricing Cards - 1 Column */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+    border: none;
+    background: transparent;
+  }
+  
+  .pricing-card {
+    padding: 32px 24px;
+    border: 1px solid var(--border);
+  }
+  
+  .pricing-card.featured {
+    transform: scale(1);
+    border: 2px solid var(--gold);
+  }
+  
+  .pricing-title {
+    font-size: 1.2rem;
+  }
+  
+  .pricing-price {
+    font-size: 2.8rem;
+  }
+  
+  .pricing-delivery,
+  .pricing-per {
+    font-size: 0.8rem;
+  }
+  
+  .pricing-features li {
+    font-size: 0.85rem;
+  }
+  
+  .pricing-card .btn-primary,
+  .pricing-card .btn-gold {
+    width: 100%;
+    padding: 16px;
+    font-size: 0.75rem;
+  }
+  
+  /* AI Add-ons - 1 Column */
+  .upsell-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border: none;
+    background: transparent;
+  }
+  
+  .upsell-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  
+  .upsell-title {
+    font-size: 1rem;
+  }
+  
+  .upsell-sub {
+    font-size: 0.85rem;
+  }
+  
+  /* Full AI Stack */
+  #full-ai-stack {
+    padding: 60px 20px;
+  }
+  
+  #full-ai-stack > div > div:first-child {
+    padding: 32px 20px;
+  }
+  
+  #full-ai-stack h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+  
+  #full-ai-stack p {
+    font-size: 0.9rem;
+  }
+  
+  #full-ai-stack > div > div > div {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+  }
+  
+  /* Process Steps - 1 Column */
+  .grid-3col {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    border: none;
+    background: transparent;
+  }
+  
+  .grid-3col > div {
+    border: 1px solid var(--border);
+  }
+  
+  /* ROI Calculator */
+  #roi > div:nth-child(3) {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  
+  #roi > div:nth-child(3) > div {
+    padding: 24px 20px !important;
+  }
+  
+  /* Quiz Section */
+  #website-quiz {
+    padding: 60px 20px;
+  }
+  
+  #website-quiz h2 {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  }
+  
+  #website-quiz button {
+    min-height: 48px;
+    font-size: 0.85rem;
+    padding: 14px 24px;
+  }
+  
+  /* Lead Magnet Forms */
+  .exit-form-row,
+  .audit-input-row {
+    flex-direction: column;
+  }
+  
+  .exit-form-row input,
+  .audit-input {
+    border-right: 1px solid var(--border) !important;
+    border-bottom: none;
+  }
+  
+  .exit-form-row button,
+  .audit-btn {
+    width: 100%;
+    padding: 16px;
+    min-height: 48px;
+  }
+  
+  /* Footer */
+  footer {
+    padding: 24px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .footer-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  /* Sticky Compare Bar */
+  .sticky-compare {
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .sticky-compare-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 0;
+    width: 100%;
+  }
+  
+  .sticky-compare-item:last-child {
+    border-bottom: none;
+  }
+  
+  .sticky-compare-btn {
+    width: 100%;
+    padding: 14px 20px;
+    min-height: 48px;
+  }
+  
+  /* Trust Badges */
+  .trust-badges {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .trust-badge {
+    min-width: auto;
+    padding: 12px 16px;
+  }
+  
+  /* Social Trust */
+  .social-trust {
+    padding: 40px 24px;
+  }
+  
+  .social-trust-inner {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .social-trust-text {
+    font-size: clamp(1.1rem, 5vw, 1.4rem);
+    max-width: 100%;
+  }
+  
+  /* CTA Final */
+  .cta-final {
+    padding: 80px 24px;
+  }
+  
+  .cta-heading {
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
+  }
+  
+  .cta-sub {
+    font-size: 0.9rem;
+  }
+  
+  /* Buttons - Minimum Touch Target */
+  .btn-primary,
+  .btn-gold,
+  .btn-ghost {
+    min-height: 48px;
+    padding: 14px 28px;
+  }
+  
+  /* FAQ */
+  .faq-wrap {
+    border-left: none;
+    border-right: none;
+  }
+  
+  .faq-q {
+    padding: 16px 20px;
+    font-size: 0.85rem;
+  }
+  
+  .faq-a {
+    padding: 0 20px 16px;
+    font-size: 0.85rem;
+  }
+  
+  /* Exit Intent Modal */
+  .exit-box,
+  .qualify-box {
+    max-width: 100%;
+    margin: 16px;
+  }
+  
+  .exit-box-top,
+  .qualify-header {
+    padding: 24px 20px;
+  }
+  
+  .exit-box-body,
+  .qualify-body {
+    padding: 20px;
+  }
+  
+  .exit-headline,
+  .qualify-title {
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
+  }
+  
+  /* Back to Top */
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* WhatsApp Button */
+  .whatsapp-btn {
+    bottom: 76px;
+    right: 20px;
+    padding: 12px;
+    border-radius: 50%;
+  }
+  
+  .whatsapp-btn-text {
+    display: none;
+  }
+}
+
+/* ── MOBILE: MAX-WIDTH 640PX ────────────────────────────────── */
+@media (max-width: 640px) {
+  
+  /* Even More Compact on Smaller Phones */
+  .section {
+    padding: 48px 16px;
+  }
+  
+  .hero-left {
+    padding: 24px 16px;
+  }
+  
+  .section-heading {
+    font-size: clamp(1.4rem, 7vw, 1.8rem);
+  }
+  
+  nav {
+    padding: 10px 16px;
+  }
+  
+  .nav-logo {
+    font-size: 1.1rem;
+  }
+  
+  .hero-headline {
+    font-size: clamp(1.6rem, 9vw, 2.2rem);
+  }
+  
+  .meet-dan,
+  .cta-final {
+    padding: 60px 16px;
+  }
+  
+  /* Reduce font sizes further for smallest screens */
+  .niche-card p,
+  .who-card p,
+  .offer-item p,
+  .testi-quote {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  
+  /* Trust badges single column */
+  .trust-badges {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Comparison table scroll hint */
+  .compare-table::after {
+    content: 'Scroll →';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(to left, var(--cream), transparent);
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    pointer-events: none;
+  }
+}
+
+/* ── LANDSCAPE MOBILE (HEIGHT < 500PX) ──────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-section {
+    min-height: auto;
+  }
+  
+  .hero-right {
+    min-height: 300px;
+  }
+  
+  .meet-dan-img {
+    max-height: 300px;
+  }
 }
