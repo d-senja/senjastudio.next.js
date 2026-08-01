@@ -3223,12 +3223,18 @@ footer {
   .hero-section {
     min-height: auto;
   }
-  
+
   .hero-right {
     min-height: 300px;
   }
-  
+
   .meet-dan-img {
     max-height: 300px;
   }
+}
+
+/* ── REFERRAL PAGE HERO DARK MODE ────────────────────────────── */
+[data-theme="dark"] .referral-hero {
+  background: var(--navy);
+  color: #FAFAF8;
 }

@@ -47,7 +47,7 @@ export default function Referral() {
       canonical="/referral"
     >
       {/* Hero */}
-      <div style={{ background: '#1A1428', padding: '80px 48px 64px', textAlign: 'center' }}>
+      <div className="referral-hero" style={{ background: '#1A1428', padding: '80px 48px 64px', textAlign: 'center' }}>
         <h1 style={{
           fontFamily: 'var(--serif)',
           fontSize: 'clamp(2.5rem,5vw,4rem)',
