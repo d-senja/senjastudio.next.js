@@ -1620,7 +1620,7 @@ export default function Home() {
               {card.featured && <div className="pricing-badge">Most Popular</div>}
               <div className="pricing-title">{card.title}</div>
               <div className="pricing-price">{card.price}</div>
-              <div className="pricing-delivery">{card.delivery}</div>
+              <div className="pricing-delivery" style={card.featured ? { color: 'rgba(255,255,255,0.75)' } : {}}>{card.delivery}</div>
               <ul className="pricing-features">
                 {card.features.map((f, i) => <li key={i}>{f}</li>)}
               </ul>
