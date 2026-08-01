@@ -393,7 +393,7 @@ export default function LocationPage({ location, slug }) {
       canonical={`/${slug}`}
     >
       {/* Hero */}
-      <div style={{ background: '#1A1428', padding: '80px 48px', textAlign: 'center' }}>
+      <div className="location-hero" style={{ background: '#1A1428', padding: '80px 48px', textAlign: 'center' }}>
         <span className="section-label" style={{ display: 'block', marginBottom: '16px' }}>
           Mortgage broker website design {city}
         </span>

@@ -3238,3 +3238,9 @@ footer {
   background: var(--navy);
   color: #FAFAF8;
 }
+
+/* ── LOCATION PAGES HERO DARK MODE ────────────────────────────── */
+[data-theme="dark"] .location-hero {
+  background: var(--navy);
+  color: #FAFAF8;
+}
