@@ -1492,7 +1492,7 @@ export default function Home() {
       </div>
 
       {/* ── MEET DAN ─────────────────────────────────── */}
-      <section className="meet-dan" id="about">
+      <section className="meet-dan" id="about" style={{scrollMarginTop: '100px'}}>
         <div className="meet-dan-inner">
           <div className="meet-dan-img-wrap">
             <img src="/images/dan-photo-about.png" alt="Dan Senja — founder of Senja Studio" className="meet-dan-img" loading="lazy" />
