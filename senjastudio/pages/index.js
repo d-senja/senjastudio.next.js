@@ -497,7 +497,7 @@ function WebsiteScoreQuiz() {
     const outcome = getOutcome(score)
 
     return (
-      <section className="section" id="website-quiz" style={{ background: 'var(--navy)' }}>
+      <section className="section" id="website-quiz" style={{ background: 'var(--navy)', backgroundColor: 'var(--navy)' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ marginBottom: '32px' }}>
             <div style={{
@@ -653,25 +653,27 @@ function WebsiteScoreQuiz() {
   const progress = ((currentQuestion + 1) / questions.length) * 100
 
   return (
-    <section className="section" id="website-quiz" style={{ background: 'var(--navy)' }}>
+    <section className="section" id="website-quiz" style={{ background: 'var(--navy)', backgroundColor: 'var(--navy)' }}>
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
-          <p className="section-label" style={{ color: 'var(--gold-light)' }}>5-Question Website Score</p>
+          <p className="section-label" style={{ color: 'var(--gold-light)', color: 'white' }}>5-Question Website Score</p>
           <h2 style={{
             fontFamily: 'var(--serif)',
             fontSize: 'clamp(1.5rem,3.5vw,2.2rem)',
             fontWeight: 500,
             color: 'var(--white)',
+            color: 'white',
             marginBottom: '16px',
             lineHeight: 1.25,
             letterSpacing: '-0.01em'
           }}>
-            How does your broker site<br /><em style={{ color: 'var(--gold-light)' }}>stack up?</em>
+            How does your broker site<br /><em style={{ color: 'var(--gold-light)', color: 'white' }}>stack up?</em>
           </h2>
           <p style={{
             fontSize: '0.9rem',
             color: 'rgba(255,255,255,0.6)',
+            color: 'white',
             lineHeight: 1.8
           }}>
             Answer 5 quick yes/no questions about your current website and get an instant score with a personalized action plan.
@@ -699,6 +701,7 @@ function WebsiteScoreQuiz() {
         {/* Question Card */}
         <div style={{
           background: 'rgba(255,255,255,0.05)',
+          backgroundColor: '#1e1a35',
           border: '1px solid rgba(255,255,255,0.1)',
           borderRadius: '8px',
           padding: '40px 32px',
@@ -709,6 +712,7 @@ function WebsiteScoreQuiz() {
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: 'var(--gold-light)',
+            color: 'white',
             marginBottom: '16px',
             fontWeight: 500
           }}>
@@ -720,6 +724,7 @@ function WebsiteScoreQuiz() {
             fontSize: '1.4rem',
             fontWeight: 500,
             color: '#FFFFFF',
+            color: 'white',
             marginBottom: '12px',
             lineHeight: 1.4
           }}>
@@ -729,6 +734,7 @@ function WebsiteScoreQuiz() {
           <p style={{
             fontSize: '0.85rem',
             color: 'rgba(255,255,255,0.75)',
+            color: 'white',
             marginBottom: '32px',
             lineHeight: 1.7
           }}>
