@@ -1335,9 +1335,9 @@ export default function Home() {
       </section>
 
       {/* ── WHAT'S INCLUDED ──────────────────────────── */}
-      <section className="section scroll-reveal-text" id="offer" style={{ background: 'var(--navy)' }}>
+      <section className="section scroll-reveal-text" id="offer" style={{ background: 'var(--navy)', backgroundColor: 'var(--navy)' }}>
         <p className="section-label" style={{ color: 'var(--gold-light)' }}>What's included</p>
-        <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF' }}>
+        <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF', color: 'white' }}>
           Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h2>
         <CardStackCarousel items={OFFER_ITEMS} />
