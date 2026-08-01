@@ -1251,7 +1251,7 @@ nav::after {
   top: -1px; left: 50%;
   transform: translateX(-50%);
   background: #1a5c3a;
-  color: var(--cream);
+  color: #FAFAF8;
   font-size: 0.58rem;
   font-weight: 600;
   letter-spacing: 0.14em;
