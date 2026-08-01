@@ -251,8 +251,6 @@ a, button { transition: all 0.22s ease; }
   pointer-events: none;
   z-index: 0;
 }
-.hero-section { position: relative; }
-.hero-left { position: relative; z-index: 1; }
 
 /* SMOOTH SECTION TRANSITIONS */
 section { transition: background 0.3s ease; }
@@ -417,6 +415,8 @@ nav::after {
   z-index: 10;
 }
 .hero-left {
+  position: relative;
+  z-index: 1;
   padding: 52px 56px;
   display: flex;
   flex-direction: column;
