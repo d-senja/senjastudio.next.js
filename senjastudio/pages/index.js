@@ -82,18 +82,9 @@ function Typewriter() {
   const [idx, setIdx] = useState(0)
   const [text, setText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
     const currentPhrase = phrases[idx]
-
-    if (isPaused) {
-      const pauseTimeout = setTimeout(() => {
-        setIsPaused(false)
-        setIsDeleting(true)
-      }, 1500)
-      return () => clearTimeout(pauseTimeout)
-    }
 
     if (isDeleting) {
       if (text.length === 0) {
@@ -101,13 +92,16 @@ function Typewriter() {
         setIdx((prev) => (prev + 1) % phrases.length)
       } else {
         const timeout = setTimeout(() => {
-          setText(currentPhrase.substring(0, text.length - 1))
+          setText(text.substring(0, text.length - 1))
         }, 50)
         return () => clearTimeout(timeout)
       }
     } else {
       if (text === currentPhrase) {
-        setIsPaused(true)
+        const timeout = setTimeout(() => {
+          setIsDeleting(true)
+        }, 1500)
+        return () => clearTimeout(timeout)
       } else {
         const timeout = setTimeout(() => {
           setText(currentPhrase.substring(0, text.length + 1))
@@ -115,7 +109,7 @@ function Typewriter() {
         return () => clearTimeout(timeout)
       }
     }
-  }, [text, isDeleting, isPaused, idx, phrases])
+  }, [text, isDeleting, idx, phrases])
 
   return (
     <em style={{ color: 'var(--gold)', position: 'relative' }}>
