@@ -91,10 +91,50 @@ export default async function handler(req, res) {
   // ── 2. Send PDF via Resend ──────────────────────────────────
   if (resendKey) {
     try {
+      console.log('[Resend] Starting email send process');
+      console.log('[Resend] To:', email);
+      console.log('[Resend] PDF:', pdfFileName);
+      console.log('[Resend] Subject:', emailConfig.subject);
+
       // Read PDF from filesystem and encode to base64
       const pdfPath = path.join(process.cwd(), 'public', 'downloads', pdfFileName);
+      console.log('[Resend] PDF path:', pdfPath);
+
       const pdfBuffer = fs.readFileSync(pdfPath);
+      console.log('[Resend] PDF buffer size:', pdfBuffer.length, 'bytes');
+
       const pdfBase64 = pdfBuffer.toString('base64');
+      console.log('[Resend] PDF base64 length:', pdfBase64.length);
+
+      const emailPayload = {
+        from: 'Dan at Senja Studio <dan@senjastudio.co.uk>',
+        to: [email],
+        subject: emailConfig.subject,
+        html: `
+          <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; color: #1A1428;">
+            <p style="font-size: 17px;">Hi${name ? ` ${name}` : ''},</p>
+            <p style="font-size: 15px; line-height: 1.7;">${emailConfig.intro}</p>
+            <p style="font-size: 15px; line-height: 1.7;">
+              ${emailConfig.body}
+            </p>
+            <p style="font-size: 15px; line-height: 1.7;">
+              If you want me to look at your specific site and tell you what's costing you the most,
+              <a href="https://calendly.com/dan-senjastudio/lets-talk" style="color: #C9A84C;">book a free 20-minute call here</a>.
+            </p>
+            <p style="font-size: 15px; margin-top: 2rem;">Dan<br>
+              <span style="color: #7A7570; font-size: 13px;">Senja Studio — Mortgage Broker Websites</span>
+            </p>
+          </div>
+        `,
+        attachments: [{
+          filename: emailConfig.pdfName,
+          content: pdfBase64,
+        }]
+      };
+
+      console.log('[Resend] Payload from:', emailPayload.from);
+      console.log('[Resend] Payload to:', emailPayload.to);
+      console.log('[Resend] Payload attachment filename:', emailPayload.attachments[0].filename);
 
       const emailRes = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -102,40 +142,20 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${resendKey}`,
         },
-        body: JSON.stringify({
-          from: 'Dan at Senja Studio <dan@senjastudio.co.uk>',
-          to: [email],
-          subject: emailConfig.subject,
-          html: `
-            <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; color: #1A1428;">
-              <p style="font-size: 17px;">Hi${name ? ` ${name}` : ''},</p>
-              <p style="font-size: 15px; line-height: 1.7;">${emailConfig.intro}</p>
-              <p style="font-size: 15px; line-height: 1.7;">
-                ${emailConfig.body}
-              </p>
-              <p style="font-size: 15px; line-height: 1.7;">
-                If you want me to look at your specific site and tell you what's costing you the most,
-                <a href="https://calendly.com/dan-senjastudio/lets-talk" style="color: #C9A84C;">book a free 20-minute call here</a>.
-              </p>
-              <p style="font-size: 15px; margin-top: 2rem;">Dan<br>
-                <span style="color: #7A7570; font-size: 13px;">Senja Studio — Mortgage Broker Websites</span>
-              </p>
-            </div>
-          `,
-          attachments: [{
-            filename: emailConfig.pdfName,
-            content: pdfBase64,
-          }]
-        }),
+        body: JSON.stringify(emailPayload),
       });
 
       const emailData = await emailRes.json();
+
+      console.log('[Resend] Response status:', emailRes.status);
+      console.log('[Resend] Response data:', JSON.stringify(emailData));
+
       if (!emailRes.ok) {
         // Log full error details
-        console.error('Resend API error - Status:', emailRes.status);
-        console.error('Resend API error - Response:', JSON.stringify(emailData));
-        console.error('Resend API error - Email:', email);
-        console.error('Resend API error - PDF:', pdfFileName);
+        console.error('[Resend ERROR] Status:', emailRes.status);
+        console.error('[Resend ERROR] Response:', JSON.stringify(emailData));
+        console.error('[Resend ERROR] Email:', email);
+        console.error('[Resend ERROR] PDF:', pdfFileName);
 
         // Return error instead of silently continuing
         return res.status(500).json({
@@ -144,12 +164,14 @@ export default async function handler(req, res) {
           details: emailData
         });
       }
+
+      console.log('[Resend SUCCESS] Email sent with ID:', emailData.id || 'no-id-returned');
     } catch (e) {
       // Log full error and return 500
-      console.error('Failed to send email - Error:', e);
-      console.error('Failed to send email - Stack:', e.stack);
-      console.error('Failed to send email - Email:', email);
-      console.error('Failed to send email - PDF:', pdfFileName);
+      console.error('[Resend EXCEPTION] Error:', e);
+      console.error('[Resend EXCEPTION] Stack:', e.stack);
+      console.error('[Resend EXCEPTION] Email:', email);
+      console.error('[Resend EXCEPTION] PDF:', pdfFileName);
 
       return res.status(500).json({
         success: false,
@@ -158,7 +180,7 @@ export default async function handler(req, res) {
       });
     }
   } else {
-    console.warn('No Resend API key configured - skipping email delivery');
+    console.warn('[Resend] No Resend API key configured - skipping email delivery');
   }
 
   // ── 3. Return download URL ──────────────────────────────────
