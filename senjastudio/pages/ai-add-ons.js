@@ -17,8 +17,8 @@ const ADDONS = [
 export default function AiAddOns() {
   return (
     <Layout
-      title="AI Add-Ons for Mortgage Brokers"
-      description="AI lead capture, customer support, appointment setting and voice agents built into your mortgage broker website. Six add-ons, or the full stack."
+      title="AI Add-Ons for Broker Websites"
+      description="AI lead capture, support, appointment setting and voice agents built into your broker website. Six add-ons from £800, or the full stack. Scoped separately."
       canonical="/ai-add-ons"
     >
       <div className="location-hero" style={{ padding: '80px 48px 64px', textAlign: 'center' }}>

@@ -48,8 +48,8 @@ export default function Contact() {
 
   return (
     <Layout
-      title="Contact"
-      description="Get in touch with Senja Studio — mortgage broker website design enquiries, questions, and support."
+      title="Contact — Broker Website Enquiries"
+      description="Questions about a mortgage broker website build, pricing or timelines? Email Dan directly, or book a free 30-minute review of your current site."
       canonical="/contact"
     >
       {/* Hero */}

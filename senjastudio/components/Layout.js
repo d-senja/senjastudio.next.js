@@ -1212,9 +1212,9 @@ export default function Layout({ children, title, description, canonical, schema
 
   const siteTitle = title
     ? `${title} | Senja Studio`
-    : 'Mortgage Broker Website Design | Senja Studio — From £1,500'
+    : 'Mortgage Broker Website Design | Senja Studio'
 
-  const siteDesc = description || 'High-converting websites built exclusively for independent mortgage brokers worldwide. Websites from £1,500, full builds from £2,500, delivered in 7 days.'
+  const siteDesc = description || 'Websites built only for independent mortgage brokers. Segmented enquiry paths, compliance handled, live in 7 days. From £1,500. Book a free 30-minute review.'
 
   return (
     <>

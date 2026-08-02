@@ -31,7 +31,7 @@ const LOCATIONS = {
     ],
     faqs: [
       { q: 'Can you build a website for a Manchester-based mortgage broker?', a: "Absolutely. We work with brokers across the UK remotely. Manchester is one of our most active markets — we understand the buyer demographics, the competitive landscape, and the client types that define the Manchester mortgage market. Everything is handled online from brief to launch." },
-      { q: 'What makes a good mortgage broker website in Manchester?', a: "In Manchester's competitive market, the difference between a site that converts and one that doesn't comes down to three things: instant booking options, visible Google reviews, and mobile-first design. Over 60% of Manchester mortgage searches happen on mobile — if your site isn't optimised for that, you're losing the majority of your potential clients before they've read a word." },
+      { q: 'What makes a good mortgage broker website in Manchester?', a: "In Manchester's competitive market, the difference between a site that converts and one that doesn't comes down to three things: instant booking options, visible Google reviews, and mobile-first design. Most mortgage research in Manchester now happens on a phone. If your site isn't built for that first, you lose people before they've read a word." },
     ],
   },
 
@@ -61,7 +61,7 @@ const LOCATIONS = {
     ],
     faqs: [
       { q: 'Can you build a mortgage broker website for a Leeds-based broker?', a: "Yes — we work with brokers across Leeds and Yorkshire remotely. We understand the Leeds market, including its strong buy-to-let sector and first-time buyer demographic, and build sites optimised for the client types that define enquiries in this region." },
-      { q: 'How important is mobile design for a Leeds mortgage broker website?', a: "Critical. Over 60% of mortgage searches in Leeds happen on mobile — commuters, lunch breaks, evenings. If your site doesn't convert on mobile, you're losing the majority of your potential clients. We build every site mobile-first, not as an afterthought." },
+      { q: 'How important is mobile design for a Leeds mortgage broker website?', a: "Critical. Most mortgage research in Leeds now happens on a phone — commuters, lunch breaks, evenings. If your site doesn't convert on mobile, you're losing the majority of your potential clients. We build every site mobile-first, not as an afterthought." },
     ],
   },
 
@@ -389,7 +389,7 @@ export default function LocationPage({ location, slug }) {
   return (
     <Layout
       title={`Mortgage Broker Website Design ${city}`}
-      description={`Specialist mortgage broker website design for independent advisers in ${city}. Conversion-first, FCA-compliant. Websites from £1,500, full builds from £2,500.`}
+      description={`Websites built only for mortgage brokers, including independent advisers in ${city}. Segmented enquiry paths, compliance handled, live in 7 days.`}
       canonical={`/${slug}`}
     >
       {/* Hero */}

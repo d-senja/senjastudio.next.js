@@ -47,8 +47,8 @@ export default function Referral() {
 
   return (
     <Layout
-      title="Referral Programme"
-      description="Refer an independent mortgage broker to Senja Studio and earn £250 for every client. No limit on referrals."
+      title="Referral Programme — Earn £250 Per Broker"
+      description="Know an independent mortgage broker who needs a better website? Earn £250 cash for every referral that becomes a client. Paid within 7 days. No cap."
       canonical="/referral"
     >
       {/* Hero */}

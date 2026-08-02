@@ -36,12 +36,12 @@ function WebsiteScoreQuiz() {
     {
       id: 'segmented',
       text: 'Do you have separate CTAs for self-employed clients and first-time buyers?',
-      explanation: 'Segmented CTAs convert 2-3x better than generic ones'
+      explanation: 'A self-employed client and a first-time buyer need different reassurance before they enquire'
     },
     {
       id: 'speed',
       text: 'Does your site load in under 3 seconds on mobile?',
-      explanation: 'Every second of delay costs you 7% of conversions'
+      explanation: 'Most mortgage searches happen on a phone, often outside working hours'
     }
   ]
 
@@ -65,7 +65,7 @@ function WebsiteScoreQuiz() {
     if (score <= 40) {
       return {
         title: 'Your site needs urgent attention',
-        description: 'You\'re missing critical conversion elements that are costing you enquiries every single week. Most of these fixes take under an hour once you know what to look for.',
+        description: 'Several of the elements that turn a visitor into an enquiry are missing. Most are quick to fix once you know what to look for.',
         color: '#c53030',
         pdfUrl: '/downloads/score-report-low.pdf',
         pdfLabel: 'Download Your Full Report (0-40%)'
@@ -73,7 +73,7 @@ function WebsiteScoreQuiz() {
     } else if (score <= 70) {
       return {
         title: 'Your site has real gaps',
-        description: 'You\'re doing some things right, but there are clear opportunities being left on the table. Fixing these gaps could double your conversion rate within a month.',
+        description: 'You\'re doing some things right, but there are clear gaps. Each one is a reason a visitor who was interested decided not to make contact.',
         color: '#d69e2e',
         pdfUrl: '/downloads/score-report-mid.pdf',
         pdfLabel: 'Download Your Full Report (41-70%)'
@@ -400,8 +400,8 @@ function WebsiteScoreQuiz() {
 export default function WebsiteScorePage() {
   return (
     <Layout
-      title="Score Your Mortgage Broker Website"
-      description="Answer five yes/no questions about your current mortgage broker website and get an instant conversion score with a personalised action plan."
+      title="Score Your Broker Website"
+      description="Five yes/no questions about your broker site. Get an instant score, the specific gaps costing you enquiries, and a report you can act on today."
       canonical="/website-score"
     >
       {/* The quiz uses h2 internally, so the page needs its own h1 for both

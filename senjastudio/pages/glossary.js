@@ -13,7 +13,7 @@ const terms = [
   { letter: 'I', term: 'Interest-Only Mortgage', definition: 'A mortgage where monthly payments only cover the interest on the loan, not the capital. The full loan amount is due at the end of the term. Less common now than in the past, and requires a credible repayment strategy acceptable to the lender.' },
   { letter: 'L', term: 'Lead Capture', definition: 'Any mechanism on a website that collects contact information from visitors. This includes contact forms, callback request forms, free guide downloads, qualification quizzes, and AI chatbots.' },
   { letter: 'L', term: 'Loan-to-Value (LTV)', definition: 'The ratio of your mortgage loan to the value of the property, expressed as a percentage. A £180,000 mortgage on a £200,000 property is 90% LTV. Lower LTV generally means access to better interest rates. The deposit is the inverse — a 90% LTV loan requires a 10% deposit.' },
-  { letter: 'M', term: 'Mobile-First Design', definition: 'An approach to web design where the mobile experience is designed before the desktop version. Over 60% of mortgage-related searches happen on mobile.' },
+  { letter: 'M', term: 'Mobile-First Design', definition: 'An approach to web design where the mobile experience is designed before the desktop version. Most mortgage research now happens on a phone.' },
   { letter: 'M', term: 'Mortgage for Unique or Borderline (MUFB)', definition: 'A lender category for cases that fall outside standard lending criteria — self-employed with complex income, adverse credit history, non-standard construction properties, or other factors that make the case harder to place. Requires a broker with specialist knowledge.' },
   { letter: 'O', term: 'Offset Mortgage', definition: 'A mortgage linked to your savings account. Instead of earning interest on your savings, the balance is offset against your mortgage, reducing the interest you pay. Can save significant amounts over the term and offers flexibility, though the mortgage rate is often slightly higher than standard products.' },
   { letter: 'P', term: 'Porting', definition: 'The ability to transfer your existing mortgage deal to a new property when you move. Not all mortgages are portable, and even those that are may require additional underwriting. Worth checking before assuming you can take your current rate with you.' },
@@ -30,7 +30,7 @@ export default function Glossary() {
   return (
     <Layout
       title="Mortgage Broker Website Glossary"
-      description="Complete mortgage broker website glossary — key terms every independent broker needs to know."
+      description="Plain-English definitions of the mortgage and web terms that matter when commissioning a broker website — from LTV and DIP to segmented CTAs and CRO."
       canonical="/glossary"
     >
       <div style={{ background: 'var(--navy)', padding: '72px 48px 64px', textAlign: 'center' }}>

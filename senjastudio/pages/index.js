@@ -19,7 +19,7 @@ const WHO_CARDS = [
   { title: 'Brokers Just Starting Out', body: "Your first impression is everything. Starting with a professional, FCA-compliant site from day one means you look established immediately — and clients choose you over brokers who've been going for years but haven't invested online." },
   { title: 'Established Brokers Leaking Leads', body: "You're getting traffic but not enough enquiries. Your current site looks dated, loads slowly, and doesn't speak to the client types you actually want. A conversion-first rebuild pays for itself within weeks." },
   { title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build sites with segmented CTAs that speak directly to them so they self-identify and book rather than bounce." },
-  { title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. A properly built mortgage broker landing page can double or triple your return on ad spend." },
+  { title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. If the page you send that traffic to doesn't speak to the client you're targeting, you pay for the click and lose the enquiry." },
 ]
 
 const OFFER_ITEMS = [
@@ -28,7 +28,7 @@ const OFFER_ITEMS = [
   { num: '03', title: 'Google Reviews Positioned to Close', body: 'Your star rating and best client quote in the hero — before anyone scrolls. Social proof at the exact moment visitors decide whether to trust you.' },
   { num: '04', title: 'FCA Compliance Throughout', body: 'Authorisation statement, regulatory badges, compliant copy. We check every financial promotion claim before the site goes live. You deal with us directly — not a junior following a checklist.' },
   { num: '05', title: 'WhatsApp, Calendly & Booking Integration', body: 'Direct WhatsApp widget, Calendly booking flow, and click-to-call — every possible way a motivated lead can reach you, built in and working from day one.' },
-  { num: '06', title: 'Mobile-First & Fast', body: 'Over 60% of mortgage searches happen on mobile. Your site loads fast, looks sharp, and converts on every device — phone, tablet, desktop.' },
+  { num: '06', title: 'Mobile-First & Fast', body: 'Most mortgage research now happens on a phone. Your site loads fast, looks sharp, and converts on every device — phone, tablet, desktop.' },
   { num: '07', title: 'Lender Panel Credibility Block', body: "A \"whole of market access to 90+ lenders\" trust signal — because the breadth of your panel is one of the biggest reasons clients choose an independent broker over a bank." },
   { num: '08', title: '48-Hour DIP Promise Display', body: 'Decision in Principle timelines matter to buyers who are under pressure. If you offer a fast DIP, we make that a visible selling point.' },
   // Folded in from the old "Broker-Specific Features" section. The other three
@@ -59,7 +59,7 @@ const FAQS = [
   { q: 'How much does a mortgage broker website cost?', a: "We offer three tiers. Homepage only: £1,500, delivered in 5 days. Full website (homepage + about + services + contact): £2,500, delivered in 7 days. Bespoke multi-page builds from £3,500 with timeline agreed per project. All builds include the first month of the Care Plan free." },
   { q: 'Do you build websites for brokers just starting out?', a: "Absolutely. Starting with a professional, FCA-compliant, conversion-focused site means you look established from day one — and clients choose you over brokers who've been around for years but never invested in their online presence." },
   { q: 'Are your websites FCA compliant?', a: "Yes. Every build includes FCA authorisation badge placement, compliant disclaimer copy, and layouts structured to meet financial promotion requirements. We review all claims and copy before launch." },
-  { q: "What do you actually build — is it just a homepage?", a: "We offer three tiers. The Homepage Build is one high-converting page — where 90% of visitor decisions happen anyway. The Full Website adds About, Services, and Contact pages. The Bespoke tier covers custom multi-page architectures." },
+  { q: "What do you actually build — is it just a homepage?", a: "We offer three tiers. The Homepage Build is one high-converting page — which is where most visitors decide whether to contact you. The Full Website adds About, Services, and Contact pages. The Bespoke tier covers custom multi-page architectures." },
   { q: "What if I don't like the design?", a: "Every build includes 2 rounds of revisions. Before we start, we send you a project brief covering your brand colours, positioning, and preferences. Revisions are included — additional rounds beyond the two are billed at £75/hour." },
   { q: "Do I need to provide content, copy, or photos?", a: "No. We write all the copy, structure the page, and work with whatever brand assets you have. If you have a headshot, great. If not, we work with what's available. Everything you need to provide is covered in the project brief." },
   { q: "What's the Care Plan and what does it include?", a: "The Care Plan at £150/month comes with every build — your first month is free. It covers up to 2 hours of changes per month — adding new Google reviews, updating rates, refreshing copy, small design tweaks. Work beyond 2 hours is billed at £75/hour, agreed in advance." },
@@ -897,7 +897,7 @@ export default function Home() {
   return (
     <Layout
       title={null}
-      description="Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent brokers worldwide. Websites from £1,500, full builds from £2,500 — delivered in 7 days."
+      description="We build websites for independent mortgage brokers and nobody else. Segmented enquiry paths, FCA compliance handled, live in 7 days. From £1,500."
       canonical="/"
       schema={HOME_SCHEMA}
       modalOpen={modalOpen}
@@ -916,20 +916,23 @@ export default function Home() {
             The mortgage broker website <br />that turns visitors into <Typewriter />
           </h1>
 
+          {/* One idea per sentence, and the reader's problem before our
+              credentials. The previous version stacked five claims into a
+              single sentence and read as a keyword list. */}
           <p className="hero-sub">
-            <strong>Senja Studio builds mortgage broker websites that win clients.</strong> Not templates. Not generic agency work. Conversion-first sites built exclusively for independent brokers — with segmented CTAs, FCA compliance, and social proof positioned to do one thing: fill your calendar. Websites from £1,500, full builds from £2,500 — delivered in 7 days.
+            <strong>Your site is where a broker gets chosen — or quietly ruled out.</strong> Most broker sites are built to look tidy, not to turn a stranger at 11pm into a booked call. We build for mortgage brokers and nobody else, so we already know what a self-employed applicant needs to read before they pick up the phone. Websites from £1,500. Live in 7 days.
           </p>
 
           <div className="hero-actions">
-            <button className="btn-primary" onClick={openModal}>Book Your Free Call</button>
-            <a href="/examples" className="btn-ghost">See Our Work →</a>
+            <button className="btn-primary" onClick={openModal}>Book a free 30-minute review</button>
+            <a href="/examples" className="btn-ghost">See a site we&apos;ve built →</a>
           </div>
 
           <div className="hero-trust">
-            <div className="hero-stars">★★★★★</div>
+            <div className="hero-stars" aria-hidden="true">★★★★★</div>
             <div>
-              <div className="hero-trust-bold">FCA compliant. Mobile-first. Built to convert.</div>
-              <div className="hero-trust-sub">Delivered in 7 days — not 7 weeks.</div>
+              <div className="hero-trust-bold">Built for one industry. Compliance handled. Live in 7 days.</div>
+              <div className="hero-trust-sub">Dan builds every site personally — you never get passed to a junior.</div>
             </div>
           </div>
         </div>

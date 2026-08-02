@@ -47,8 +47,8 @@ const posts = [
 export default function Blog() {
   return (
     <Layout
-      title="Mortgage Broker Website Design Blog"
-      description="Mortgage broker website design guides, FCA compliance tips, and conversion strategies from Senja Studio."
+      title="Mortgage Broker Website Guides"
+      description="Practical guides on mortgage broker websites: what FCA compliance actually requires, what a build should cost, and why most broker sites lose enquiries."
       canonical="/blog"
     >
       {/* Hero */}
