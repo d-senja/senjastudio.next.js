@@ -33,7 +33,7 @@ export default function PrivacyPolicy() {
         <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, letterSpacing: '-0.02em' }}>
           Privacy Policy
         </h1>
-        <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.35)', marginTop: '12px' }}>Last updated: July 2025</p>
+        <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.78)', marginTop: '12px' }}>Last updated: July 2025</p>
       </div>
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '56px 32px' }}>
         {sections.map((s, i) => (

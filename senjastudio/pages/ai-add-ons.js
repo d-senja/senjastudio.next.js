@@ -106,14 +106,14 @@ export default function AiAddOns() {
             {/* Right: Pricing */}
             <div style={{ textAlign: 'center' }}>
               <div style={{ marginBottom: '32px' }}>
-                <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>Setup Fee</div>
+                <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)', marginBottom: '12px' }}>Setup Fee</div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£4,999</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--gold)', fontWeight: 500 }}>Save £3,000 vs buying separately</div>
               </div>
 
               <div style={{ paddingTop: '32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>Monthly</div>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£499<span style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.5)' }}>/mo</span></div>
+                <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)', marginBottom: '12px' }}>Monthly</div>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£499<span style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.78)' }}>/mo</span></div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--gold)', fontWeight: 500 }}>Save £120/month vs buying separately</div>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function AiAddOns() {
             >
               Book a Call to Discuss the Full Stack →
             </button>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '16px', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.78)', marginTop: '16px', lineHeight: 1.7 }}>
               Not every broker needs all six agents. We'll help you choose the right stack for your business on the call.
             </p>
           </div>

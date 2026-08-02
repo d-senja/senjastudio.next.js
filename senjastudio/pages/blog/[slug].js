@@ -204,13 +204,13 @@ export default function BlogPost({ post, slug }) {
       <div className="hero" style={{ background: 'var(--royal)', padding: '64px 48px 56px', textAlign: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
           <span className="blog-tag">{post.tag}</span>
-          <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)' }}>{post.date}</span>
-          <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)' }}>{post.readTime}</span>
+          <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.68)' }}>{post.date}</span>
+          <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.68)' }}>{post.readTime}</span>
         </div>
         <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, maxWidth: '800px', margin: '0 auto 16px', letterSpacing: '-0.02em' }}>
           {post.title}
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '560px', margin: '0 auto', lineHeight: 1.8 }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '560px', margin: '0 auto', lineHeight: 1.8 }}>
           {post.description}
         </p>
       </div>
@@ -229,7 +229,7 @@ export default function BlogPost({ post, slug }) {
           <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', color: 'var(--white)', marginBottom: '10px' }}>
             Want a site that fixes all of this?
           </h3>
-          <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.75, marginBottom: '20px' }}>
+          <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.75, marginBottom: '20px' }}>
             Book a free 30-minute call. We'll review your current site, identify exactly what's costing you leads, and show you what a properly built broker site looks like.
           </p>
           <button

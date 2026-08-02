@@ -67,7 +67,7 @@ export default function Contact() {
         </h1>
         <p style={{
           fontSize: '0.95rem',
-          color: 'rgba(255,255,255,0.5)',
+          color: 'rgba(255,255,255,0.78)',
           maxWidth: '560px',
           margin: '0 auto',
           lineHeight: 1.85
@@ -111,7 +111,7 @@ export default function Contact() {
                 </p>
                 <p style={{
                   fontSize: '0.9rem',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'rgba(255,255,255,0.78)',
                   lineHeight: 1.7
                 }}>
                   Your message has been received. We typically respond within 2 hours during UK business hours.
@@ -319,7 +319,7 @@ export default function Contact() {
               </h3>
               <p style={{
                 fontSize: '0.9rem',
-                color: 'rgba(255,255,255,0.5)',
+                color: 'rgba(255,255,255,0.78)',
                 lineHeight: 1.75,
                 marginBottom: '24px'
               }}>
@@ -336,7 +336,7 @@ export default function Contact() {
               </a>
               <p style={{
                 fontSize: '0.75rem',
-                color: 'rgba(255,255,255,0.25)',
+                color: 'rgba(255,255,255,0.68)',
                 marginTop: '16px',
                 lineHeight: 1.6
               }}>

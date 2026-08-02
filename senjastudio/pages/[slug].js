@@ -400,7 +400,7 @@ export default function LocationPage({ location, slug }) {
         <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3.5rem)', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
           The mortgage broker website<br /><em style={{ color: '#E2C46A' }}>{city} independents trust.</em>
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '560px', margin: '0 auto 32px', lineHeight: 1.85 }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '560px', margin: '0 auto 32px', lineHeight: 1.85 }}>
           {regionDesc}. Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent advisers — worldwide. Websites from £1,500, full builds from £2,500, delivered in 7 days.
         </p>
         <button className="btn-gold" onClick={() => document.dispatchEvent(new CustomEvent('openModal'))}>
@@ -436,7 +436,7 @@ export default function LocationPage({ location, slug }) {
         {[['7', 'Day delivery'], ['£2,500', 'Full website from'], ['100%', 'Mortgage broker niche']].map(([num, label]) => (
           <div key={label} style={{ padding: '20px' }}>
             <div className="stat-num" style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 700, color: 'var(--gold-light)', marginBottom: '6px' }}>{num}</div>
-            <div className="stat-label" style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>{label}</div>
+            <div className="stat-label" style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)' }}>{label}</div>
           </div>
         ))}
       </div>
@@ -478,13 +478,13 @@ export default function LocationPage({ location, slug }) {
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
           Ready to build the best<br />broker site in <em style={{ color: 'var(--gold-light)' }}>{city}?</em>
         </h2>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '500px', margin: '0 auto 32px', lineHeight: 1.85 }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '500px', margin: '0 auto 32px', lineHeight: 1.85 }}>
           Book a free 30-minute call. We'll review your current site, show you a live example, and tell you exactly what your next site should look like. No commitment required.
         </p>
         <button className="btn-gold" onClick={() => document.dispatchEvent(new CustomEvent('openModal'))}>
           Book Your Free Call
         </button>
-        <p style={{ marginTop: '16px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)' }}>
+        <p style={{ marginTop: '16px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.68)' }}>
           Typically responds within 2 hours · dan@senjastudio.co.uk
         </p>
       </div>

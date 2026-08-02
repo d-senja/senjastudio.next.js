@@ -14,7 +14,7 @@ export default function Examples() {
         <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3.5rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
           Mortgage broker websites<br />built to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '540px', margin: '0 auto', lineHeight: 1.8 }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '540px', margin: '0 auto', lineHeight: 1.8 }}>
           Every site built by Senja Studio is conversion-first, FCA-compliant, and delivered in 7 days. See the standard we hold ourselves to.
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function Examples() {
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
           You could be next.<br /><em style={{ color: 'var(--gold-light)' }}>Seriously.</em>
         </h2>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '500px', margin: '0 auto 36px', lineHeight: 1.8 }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '500px', margin: '0 auto 36px', lineHeight: 1.8 }}>
           Every build starts with a call. 30 minutes, no commitment. By the end you&apos;ll know exactly what your site needs — and whether we&apos;re the right fit to build it.
         </p>
         <button className="btn-gold" onClick={() => document.dispatchEvent(new CustomEvent('openModal'))}>

@@ -628,7 +628,7 @@ function LeadMagnetSection() {
         <h2 className="lead-magnet-heading" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
           5 Things Your Broker Site<br />Is Costing You <em style={{ color: 'var(--gold-light)' }}>Right Now</em>
         </h2>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '32px', maxWidth: '520px', margin: '0 auto 32px' }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, marginBottom: '32px', maxWidth: '520px', margin: '0 auto 32px' }}>
           The most common mistakes that cost mortgage brokers enquiries every single week — and the exact fix for each one.
         </p>
 
@@ -693,7 +693,7 @@ function LeadMagnetSection() {
                 onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
                 onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.15)'}
               />
-              <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', marginTop: '6px', lineHeight: 1.4 }}>
+              <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.78)', marginTop: '6px', lineHeight: 1.4 }}>
                 UK numbers only. One text, no spam.
               </p>
             </div>
@@ -718,7 +718,7 @@ function LeadMagnetSection() {
             </p>
           )}
 
-          <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', marginTop: '12px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.78)', marginTop: '12px', lineHeight: 1.6 }}>
             No spam. Unsubscribe anytime. Read our <Link href="/privacy-policy" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>privacy policy</Link>.
           </p>
         </form>
@@ -860,7 +860,7 @@ function FCAChecklistForm() {
             </p>
           )}
 
-          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '12px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.78)', marginTop: '12px', lineHeight: 1.6 }}>
             No spam. Unsubscribe anytime. Read our <Link href="/privacy-policy" style={{ color: 'var(--gold-light)', textDecoration: 'underline' }}>privacy policy</Link>.
           </p>
         </form>
@@ -965,12 +965,6 @@ export default function Home() {
                 <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
               </div>
             ))}
-            {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £1,500 — fraction of agency cost'].map((t, i) => (
-              <div key={`b${i}`} className="trust-strip-item">
-                <span className="trust-strip-icon">✦</span>
-                <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
-              </div>
-            ))}
           </div>
         </div>
         <p style={{ fontSize: '0.75rem', color: 'rgba(26,20,40,0.4)', textAlign: 'center', marginTop: '12px' }}>
@@ -1039,7 +1033,7 @@ export default function Home() {
         <h2 className="section-heading" style={{ color: 'var(--white)' }}>
           Most agencies hand you a site<br />and leave you to <em style={{ color: 'var(--gold-light)' }}>figure out compliance yourself.</em>
         </h2>
-        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.45)', fontSize: '0.88rem', maxWidth: '600px', margin: '0 auto 56px', lineHeight: 1.85 }}>
+        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.78)', fontSize: '0.88rem', maxWidth: '600px', margin: '0 auto 56px', lineHeight: 1.85 }}>
           We don't. Every site we build includes a standard compliance checklist delivered as part of the handover. Here's what's covered — and why it matters for your FCA authorisation.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '1px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.06)', maxWidth: '1000px', margin: '0 auto 56px' }}>
@@ -1095,8 +1089,8 @@ export default function Home() {
         <div className="agency-compare-scroll">
         <div className="agency-compare-table" role="table" aria-label="Senja Studio compared with a typical agency">
           <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', background: 'var(--royal)' }} role="row">
-            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader"></div>
-            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader">Typical Agency</div>
+            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader"></div>
+            <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.78)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader">Typical Agency</div>
             <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold-light)' }} role="columnheader">Senja Studio</div>
           </div>
           {[
@@ -1115,8 +1109,8 @@ export default function Home() {
           ].map(([feature, bad, good], i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', borderTop: '1px solid var(--border)', background: 'var(--surface)' }} role="row">
               <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--ink)', fontWeight: 400, borderRight: '1px solid var(--border)', lineHeight: 1.5 }} role="cell">{feature}</div>
-              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: '#C0392B', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✕</span> {bad}</div>
-              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: '#1E7D4A', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✓</span> {good}</div>
+              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--negative)', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✕</span> {bad}</div>
+              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--positive)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✓</span> {good}</div>
             </div>
           ))}
         </div>
@@ -1275,7 +1269,10 @@ export default function Home() {
         </h2>
         <div className="grid-3col" style={{ maxWidth: '1060px', margin: '0 auto' }}>
           {PROCESS_STEPS.map((step, i) => (
-            <div key={i} style={{ background: i === 5 ? 'var(--cream)' : 'var(--white)', padding: '32px 28px' }}>
+            <div key={i} style={{ // --surface, not --white: --white is a literal #FFFFFF for text on dark
+              // panels and does not flip with the theme, so using it as a card
+              // background left light text on a white card in dark mode.
+              background: i === 5 ? 'var(--cream2)' : 'var(--surface)', padding: '32px 28px' }}>
               <div style={{ fontFamily: 'var(--serif)', fontSize: '2rem', fontWeight: 700, color: 'var(--gold)', opacity: 0.2, marginBottom: '8px' }}>{step.num}</div>
               <div style={{ fontSize: '0.62rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '8px' }}>{step.day}</div>
               <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '10px' }}>{step.title}</h3>
@@ -1361,7 +1358,7 @@ export default function Home() {
           <button className="btn-gold" onClick={openModal} style={{ marginBottom: '16px' }}>
             Book your free 30-minute review
           </button>
-          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)', marginTop: '8px' }}>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.68)', marginTop: '8px' }}>
             dan@senjastudio.co.uk · senjastudio.co.uk
           </p>
         </div>

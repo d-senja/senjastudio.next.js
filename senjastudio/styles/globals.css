@@ -43,6 +43,8 @@
   --ink: #1A1428;            /* primary text on the page background */
   --muted: #4A4A4A;          /* secondary text — was #333, now AA on cream */
   --border: rgba(26,20,40,0.12);
+  --positive: #1E7D4A;
+  --negative: #C0392B;
 
   --serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --serif2: 'Cormorant Garamond', Georgia, serif;
@@ -82,6 +84,9 @@
   --muted: #B9B4C6;
   --border: rgba(255,255,255,0.14);
   --nav-bg: rgba(18,16,28,0.97);
+  /* Lifted for contrast against the dark surface. */
+  --positive: #5BC98B;
+  --negative: #FF8A80;
 
   /* Gold needs a touch more luminance to hold contrast on dark surfaces. */
   --gold: #D8B65E;
@@ -101,6 +106,8 @@
     --muted: #B9B4C6;
     --border: rgba(255,255,255,0.14);
     --nav-bg: rgba(18,16,28,0.97);
+    --positive: #5BC98B;
+    --negative: #FF8A80;
     --gold: #D8B65E;
     --gold-dark: #B08F2E;
   }
@@ -490,26 +497,6 @@ nav::after {
   box-shadow: 0 2px 12px rgba(201,168,76,0.3);
 }
 
-/* Shimmer animation that sweeps every 4 seconds */
-.hero-tag::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: heroTagShimmer 4s ease-in-out infinite;
-}
-
-@keyframes heroTagShimmer {
-  0%, 90% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
 .hero-headline {
   text-rendering: optimizeLegibility;
   font-family: var(--serif);
@@ -763,10 +750,6 @@ nav::after {
 }
 /* Single definition. Previously split across two blocks 700 lines apart, with
    the later one silently overriding font-size, letter-spacing and background. */
-@keyframes goldShimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
 .section-label {
   display: flex;
   align-items: center;
@@ -777,11 +760,9 @@ nav::after {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, var(--gold-dark) 100%);
-  background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: goldShimmer 5s linear infinite;
   margin-bottom: 20px;
   position: relative;
 }
@@ -851,7 +832,7 @@ nav::after {
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
-.niche-card p { font-size: 0.8rem; color: rgba(255,255,255,0.4); line-height: 1.85; }
+.niche-card p { font-size: 0.8rem; color: rgba(255,255,255,0.78); line-height: 1.85; }
 .who-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -949,7 +930,7 @@ nav::after {
   position: absolute;
   bottom: 0; left: 0;
   background: var(--gold);
-  color: var(--white);
+  color: #0F0B1E;
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -1205,7 +1186,7 @@ details[open] .faq-q::after { transform: rotate(45deg); }
   line-height: 1;
   margin-bottom: 4px;
 }
-.trust-badge-label { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+.trust-badge-label { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.68); }
 
 /* CTA FINAL */
 .cta-final {
@@ -1227,7 +1208,7 @@ details[open] .faq-q::after { transform: rotate(45deg); }
   letter-spacing: -0.03em;
 }
 .cta-heading em { font-style: italic; color: var(--gold-light); font-weight: 400; }
-.cta-sub { font-size: 0.88rem; color: rgba(255,255,255,0.5); max-width: 480px; margin: 0 auto 40px; line-height: 1.85; }
+.cta-sub { font-size: 0.88rem; color: rgba(255,255,255,0.78); max-width: 480px; margin: 0 auto 40px; line-height: 1.85; }
 
 /* FOOTER */
 footer {
@@ -1241,10 +1222,10 @@ footer {
   gap: 1rem;
   transition: background-color 0.3s ease;
 }
-.footer-logo { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; }
+.footer-logo { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.78); text-decoration: none; }
 .footer-logo span { color: var(--gold); }
 .footer-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.footer-link { font-size: 0.68rem; color: rgba(255,255,255,0.4); text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
+.footer-link { font-size: 0.68rem; color: rgba(255,255,255,0.78); text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
 .footer-link:hover { color: rgba(255,255,255,0.7); }
 
 /* BACK TO TOP */
@@ -1357,7 +1338,7 @@ footer {
   top: 16px; right: 20px;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.78);
   font-size: 1.4rem;
   cursor: pointer;
   line-height: 1;
@@ -1458,23 +1439,21 @@ footer {
 }
 
 /* ── MARQUEE TRUST BAR ─────────────────────────────────────── */
-.trust-marquee { width: 100%; overflow: hidden; padding: 0; }
+.trust-marquee { width: 100%; }
+/* Was a 30s infinite scroll. A static row reads as more considered and stops
+   the eye being dragged sideways while trying to read the page. */
 .trust-marquee-inner {
   display: flex;
-  width: max-content;
-  animation: marqueeScroll 30s linear infinite;
-}
-.trust-marquee:hover .trust-marquee-inner { animation-play-state: paused; }
-@keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 .trust-marquee .trust-strip-item {
-  flex-shrink: 0;
-  padding: 14px 28px;
-  border-right: 1px solid rgba(255,255,255,0.06);
+  padding: 10px 22px;
+  border-right: 1px solid rgba(255,255,255,0.08);
   white-space: nowrap;
 }
+.trust-marquee .trust-strip-item:last-child { border-right: none; }
 /* ── SECTION GOLD DIVIDER ──────────────────────────────────── */
 /* Was `width: 0` waiting for a `.drawn` class that nothing ever added, so the
    divider was permanently invisible. Drawn on scroll-reveal instead. */
@@ -1487,19 +1466,6 @@ footer {
 }
 
 /* ── PRICING CARD GLOW ─────────────────────────────────────── */
-.pricing-card.featured::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: radial-gradient(circle at center, rgba(201,168,76,0.08) 0%, transparent 60%);
-  animation: royalGlow 4s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes royalGlow {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 1; }
-}
 .whatsapp-btn.visible {
   opacity: 1;
   transform: translateY(0);
@@ -1533,11 +1499,6 @@ footer {
   gap: 20px;
   font-size: 0.72rem;
   flex-wrap: wrap;
-}
-
-@keyframes pulseLiveDot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
 }
 
 .live-label {
@@ -1613,7 +1574,6 @@ footer {
   background: #38A169;
   border-radius: 50%;
   flex-shrink: 0;
-  animation: pulseLiveDot 2s ease-in-out infinite;
 }
 
 .activity-feed {
@@ -1687,7 +1647,7 @@ footer {
   font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.78);
   font-weight: 500;
 }
 
@@ -1766,7 +1726,7 @@ footer {
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.78);
   font-weight: 500;
   letter-spacing: 0.04em;
 }
@@ -1776,7 +1736,6 @@ footer {
   height: 6px;
   background: #38A169;
   border-radius: 50%;
-  animation: pulseLiveDot 2s ease-in-out infinite;
 }
 
 /* BLOG TAG */

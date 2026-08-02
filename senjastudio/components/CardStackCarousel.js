@@ -224,7 +224,7 @@ export default function CardStackCarousel({ items }) {
         fontSize: '0.7rem',
         letterSpacing: '0.12em',
         textTransform: 'uppercase',
-        color: 'rgba(255,255,255,0.6)',
+        color: 'rgba(255,255,255,0.78)',
         fontWeight: 500,
         pointerEvents: 'none'
       }}>

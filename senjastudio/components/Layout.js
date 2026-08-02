@@ -291,7 +291,7 @@ function Footer() {
     <footer>
       <div className="footer-left">
         <Link href="/" className="footer-logo">Senja<span>.</span>Studio</Link>
-        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.25)', marginTop: '6px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.68)', marginTop: '6px', lineHeight: 1.6 }}>
           Mortgage broker website design · Worldwide · Websites from £1,500
         </p>
       </div>
@@ -314,7 +314,7 @@ function Footer() {
           style={{
             background: 'none',
             border: 'none',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'rgba(255,255,255,0.78)',
             fontSize: '0.75rem',
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
@@ -348,7 +348,7 @@ function Footer() {
                     href={`/${loc.slug}`}
                     style={{
                       fontSize: '0.82rem',
-                      color: 'rgba(255,255,255,0.5)',
+                      color: 'rgba(255,255,255,0.78)',
                       textDecoration: 'none',
                       transition: 'color 0.2s ease',
                       paddingLeft: '12px',
@@ -381,7 +381,7 @@ function Footer() {
                     href={`/${loc.slug}`}
                     style={{
                       fontSize: '0.82rem',
-                      color: 'rgba(255,255,255,0.5)',
+                      color: 'rgba(255,255,255,0.78)',
                       textDecoration: 'none',
                       transition: 'color 0.2s ease',
                       paddingLeft: '12px',
@@ -405,7 +405,7 @@ function Footer() {
         )}
       </div>
 
-      <div style={{ width: '100%', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: '0.68rem', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>
+      <div style={{ width: '100%', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: '0.68rem', color: 'rgba(255,255,255,0.68)', textAlign: 'center' }}>
         Senja Studio is not authorised and regulated by the FCA. This website is for marketing purposes only. © {YEAR} Senja Studio. All rights reserved.
       </div>
     </footer>
@@ -806,7 +806,7 @@ function ExitIntentLeadMagnet() {
             right: '16px',
             background: 'none',
             border: 'none',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'rgba(255,255,255,0.78)',
             fontSize: '1.5rem',
             cursor: 'pointer',
             width: '32px',
@@ -841,7 +841,7 @@ function ExitIntentLeadMagnet() {
             }}>
               Check your inbox!
             </h3>
-            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)' }}>
               Your free guide is on its way.
             </p>
           </div>
@@ -918,7 +918,7 @@ function ExitIntentLeadMagnet() {
 
               <p style={{
                 fontSize: '0.72rem',
-                color: 'rgba(255,255,255,0.55)',
+                color: 'rgba(255,255,255,0.78)',
                 marginTop: '12px',
                 textAlign: 'center',
                 lineHeight: 1.6
@@ -1038,7 +1038,7 @@ function ExitIntentObjection() {
             right: '16px',
             background: 'none',
             border: 'none',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'rgba(255,255,255,0.78)',
             fontSize: '1.5rem',
             cursor: 'pointer',
             width: '32px',
@@ -1073,7 +1073,7 @@ function ExitIntentObjection() {
             }}>
               Thanks for the feedback!
             </h3>
-            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)' }}>
               We appreciate you taking the time to let us know.
             </p>
           </div>
@@ -1093,7 +1093,7 @@ function ExitIntentObjection() {
             </h3>
             <p style={{
               fontSize: '0.85rem',
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(255,255,255,0.78)',
               marginBottom: '28px',
               textAlign: 'center',
               lineHeight: 1.6

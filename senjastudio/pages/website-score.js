@@ -202,7 +202,7 @@ function WebsiteScoreQuiz() {
               style={{
                 background: 'none',
                 border: '1px solid rgba(255,255,255,0.2)',
-                color: 'rgba(255,255,255,0.6)',
+                color: 'rgba(255,255,255,0.78)',
                 padding: '12px 24px',
                 fontSize: '0.75rem',
                 fontWeight: 500,
@@ -227,7 +227,7 @@ function WebsiteScoreQuiz() {
 
           <p style={{
             fontSize: '0.85rem',
-            color: 'rgba(255,255,255,0.4)',
+            color: 'rgba(255,255,255,0.78)',
             marginTop: '32px',
             lineHeight: 1.7
           }}>
@@ -377,7 +377,7 @@ function WebsiteScoreQuiz() {
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'rgba(255,255,255,0.4)',
+                color: 'rgba(255,255,255,0.78)',
                 fontSize: '0.75rem',
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',

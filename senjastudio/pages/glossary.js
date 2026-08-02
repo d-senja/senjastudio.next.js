@@ -38,7 +38,7 @@ export default function Glossary() {
         <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 600, color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
           The mortgage broker<br /><em style={{ color: 'var(--gold-light)' }}>website glossary.</em>
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.85 }}>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.85 }}>
           Clear definitions of the terms that matter when building a high-converting mortgage broker website.
         </p>
       </div>
@@ -56,7 +56,7 @@ export default function Glossary() {
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: '2rem', fontWeight: 500, color: 'var(--white)', marginBottom: '12px' }}>
           Want a site built around<br /><em style={{ color: 'var(--gold-light)' }}>these principles?</em>
         </h2>
-        <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.45)', maxWidth: '480px', margin: '0 auto 28px', lineHeight: 1.8 }}>
+        <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.78)', maxWidth: '480px', margin: '0 auto 28px', lineHeight: 1.8 }}>
           Every Senja Studio build is built around conversion fundamentals. Book a call and see the difference.
         </p>
         <button className="btn-gold" onClick={() => document.querySelector('button.nav-cta')?.click()}>

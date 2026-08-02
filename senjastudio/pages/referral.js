@@ -77,7 +77,7 @@ export default function Referral() {
         </p>
         <p style={{
           fontSize: '0.9rem',
-          color: 'rgba(255,255,255,0.5)',
+          color: 'rgba(255,255,255,0.78)',
           maxWidth: '640px',
           margin: '0 auto',
           lineHeight: 1.85
@@ -245,7 +245,7 @@ export default function Referral() {
             </p>
             <p style={{
               fontSize: '0.95rem',
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(255,255,255,0.78)',
               lineHeight: 1.75
             }}>
               We'll email you your unique referral link and tracking details within 24 hours. Check your inbox at <strong style={{ color: 'var(--gold)' }}>{formData.email}</strong>.
@@ -447,7 +447,7 @@ export default function Referral() {
         </h2>
         <p style={{
           fontSize: '0.9rem',
-          color: 'rgba(255,255,255,0.5)',
+          color: 'rgba(255,255,255,0.78)',
           maxWidth: '500px',
           margin: '0 auto 24px',
           lineHeight: 1.8
