@@ -103,13 +103,22 @@ function readPdf(fileName, rid) {
     return null;
   }
 
-  // %PDF magic bytes — guards against placeholder files.
-  if (buffer.subarray(0, 4).toString('latin1') !== '%PDF') {
+  // %PDF magic bytes — guards against placeholder files being emailed as PDFs.
+  // Real readers tolerate a little junk before the header, so scan the first
+  // few bytes rather than requiring offset 0 exactly. (5-things-broker-site-
+  // guide.pdf shipped with a stray leading newline and would otherwise be
+  // rejected outright.)
+  const headerOffset = buffer.subarray(0, 32).indexOf('%PDF', 0, 'latin1');
+  if (headerOffset === -1) {
     console.error(
       `[lead-magnet ${rid}] not a valid PDF file=${fileName} bytes=${buffer.length} ` +
       `head=${JSON.stringify(buffer.subarray(0, 24).toString('latin1'))}`
     );
     return null;
+  }
+  if (headerOffset > 0) {
+    console.warn(`[lead-magnet ${rid}] ${fileName} has ${headerOffset} junk byte(s) before %PDF — trimming`);
+    return buffer.subarray(headerOffset);
   }
 
   return buffer;
