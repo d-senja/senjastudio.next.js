@@ -249,7 +249,7 @@ export default function BlogPost({ post, slug }) {
               .slice(0, 3)
               .map(([s, p]) => (
                 <Link key={s} href={`/blog/${s}`} style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--navy)', fontFamily: 'var(--serif)' }}>{p.title}</span>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--ink)', fontFamily: 'var(--serif)' }}>{p.title}</span>
                   <span style={{ color: 'var(--gold)', fontSize: '0.8rem', flexShrink: 0, marginLeft: '12px' }}>→</span>
                 </Link>
               ))}
@@ -267,7 +267,7 @@ export default function BlogPost({ post, slug }) {
               { slug: 'mortgage-broker-website-design-leeds', label: 'Leeds' },
               { slug: 'mortgage-broker-website-design-bristol', label: 'Bristol' },
             ].map(location => (
-              <Link key={location.slug} href={`/${location.slug}`} style={{ textDecoration: 'none', fontSize: '0.8rem', color: 'var(--navy)', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '4px', textAlign: 'center', transition: 'all 0.2s' }}>
+              <Link key={location.slug} href={`/${location.slug}`} style={{ textDecoration: 'none', fontSize: '0.8rem', color: 'var(--ink)', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '4px', textAlign: 'center', transition: 'all 0.2s' }}>
                 {location.label}
               </Link>
             ))}

@@ -423,8 +423,8 @@ export default function LocationPage({ location, slug }) {
             { title: 'FCA Compliance Built In', body: `Every site we deliver includes a compliant authorisation statement, regulatory disclosure, and cookie consent — built correctly from day one. Not bolted on as an afterthought.` },
             { title: `Live in 7 Working Days`, body: `From brief to live site in 7 days. While a generic agency in ${city} takes 6–10 weeks and charges £5,000+, we deliver a higher-converting site at a fraction of the cost.` },
           ].map((card, i) => (
-            <div key={i} className="card" style={{ background: 'var(--white)', padding: '36px 28px' }}>
-              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.2rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '10px' }}>{card.title}</h3>
+            <div key={i} className="card" style={{ background: 'var(--surface)', padding: '36px 28px' }}>
+              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.2rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '10px' }}>{card.title}</h3>
               <p style={{ fontSize: '0.82rem', color: 'var(--muted)', lineHeight: 1.85 }}>{card.body}</p>
             </div>
           ))}
@@ -456,7 +456,7 @@ export default function LocationPage({ location, slug }) {
 
       {/* Related articles */}
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '0 48px 72px' }}>
-        <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '24px' }}>
+        <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '24px' }}>
           Related articles
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -466,7 +466,7 @@ export default function LocationPage({ location, slug }) {
             { slug: 'how-much-does-a-mortgage-broker-website-cost', title: 'How Much Does a Mortgage Broker Website Cost UK?' },
           ].map(article => (
             <Link key={article.slug} href={`/blog/${article.slug}`} style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
-              <span style={{ fontSize: '0.85rem', color: 'var(--navy)', fontFamily: 'var(--serif)' }}>{article.title}</span>
+              <span style={{ fontSize: '0.85rem', color: 'var(--ink)', fontFamily: 'var(--serif)' }}>{article.title}</span>
               <span style={{ color: 'var(--gold)', fontSize: '0.8rem', flexShrink: 0, marginLeft: '12px' }}>→</span>
             </Link>
           ))}

@@ -1,5 +1,5 @@
 import Layout from '../components/Layout'
-import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Examples() {
   return (
@@ -21,17 +21,19 @@ export default function Examples() {
 
       {/* Live example */}
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '72px 48px' }}>
-        <div style={{ border: '1px solid var(--border)', background: 'var(--white)', marginBottom: '48px', overflow: 'hidden' }}>
+        <div style={{ border: '1px solid var(--border)', background: 'var(--surface)', marginBottom: '48px', overflow: 'hidden' }}>
           <div style={{ aspectRatio: '16/9', background: 'var(--navy)', overflow: 'hidden', position: 'relative' }}>
-            <img
-              src="/images/whitfield-preview.png"
-              alt="Whitfield Mortgages website built by Senja Studio — conversion-first mortgage broker website design"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
+            <Image
+              src="/images/whitfield-preview.jpg"
+              alt="Homepage of the Whitfield Mortgage Advisory website built by Senja Studio, showing the hero headline, segmented call-to-action buttons and a Google review"
+              fill
+              sizes="(max-width: 768px) 100vw, 1100px"
+              style={{ objectFit: 'cover', objectPosition: 'top' }}
             />
           </div>
           <div style={{ padding: '24px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
             <div>
-              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.25rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '6px' }}>
+              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.25rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '6px' }}>
                 Whitfield Mortgage Advisory
               </h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--muted)', lineHeight: 1.7, maxWidth: '600px' }}>
@@ -87,7 +89,7 @@ export default function Examples() {
             <div key={i} style={{ background: 'var(--cream2)', padding: '48px 32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '200px' }}>
               <div style={{ fontSize: '2rem', marginBottom: '16px', opacity: 0.3 }}>🔒</div>
               <p style={{ fontSize: '0.78rem', color: 'var(--muted)', lineHeight: 1.7 }}>
-                <strong style={{ color: 'var(--navy)', display: 'block', marginBottom: '4px' }}>{card.label}</strong>
+                <strong style={{ color: 'var(--ink)', display: 'block', marginBottom: '4px' }}>{card.label}</strong>
                 {card.desc}
               </p>
             </div>

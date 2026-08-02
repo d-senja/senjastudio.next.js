@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import Link from 'next/link'
+import Image from 'next/image'
 import CardStackCarousel from '../components/CardStackCarousel'
 
 // ── DATA ──────────────────────────────────────────────────────
@@ -77,57 +78,77 @@ const BLOG_POSTS = [
 
 // ── COMPONENTS ────────────────────────────────────────────────
 
+// Starts the file download without navigating away, so the success state
+// stays on screen. Assigning to window.location.href replaced the page.
+function triggerDownload(url) {
+  if (!url) return
+  const link = document.createElement('a')
+  link.href = url
+  link.download = ''
+  link.rel = 'noopener'
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+}
+
+// Module scope, not component scope: a new array on every render made it a new
+// useEffect dependency every render, so the effect tore down and re-ran
+// continuously — that was the flashing.
+const TYPEWRITER_PHRASES = ['booked calls.', 'qualified leads.', 'paying clients.', 'your best work.']
+const TYPE_MS = 80
+const DELETE_MS = 45
+const HOLD_MS = 1800
+
 function Typewriter() {
-  const phrases = ['booked calls.', 'qualified leads.', 'paying clients.', 'your best work.']
   const [idx, setIdx] = useState(0)
   const [text, setText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
-    const currentPhrase = phrases[idx]
+    const phrase = TYPEWRITER_PHRASES[idx]
 
-    if (isDeleting) {
-      if (text.length === 0) {
-        setIsDeleting(false)
-        setIdx((prev) => (prev + 1) % phrases.length)
-      } else {
-        const timeout = setTimeout(() => {
-          setText(text.substring(0, text.length - 1))
-        }, 50)
-        return () => clearTimeout(timeout)
-      }
-    } else {
-      if (text === currentPhrase) {
-        const timeout = setTimeout(() => {
-          setIsDeleting(true)
-        }, 1500)
-        return () => clearTimeout(timeout)
-      } else {
-        const timeout = setTimeout(() => {
-          setText(currentPhrase.substring(0, text.length + 1))
-        }, 80)
-        return () => clearTimeout(timeout)
-      }
+    // Finished typing — hold the complete phrase, then start deleting.
+    if (!isDeleting && text === phrase) {
+      const t = setTimeout(() => setIsDeleting(true), HOLD_MS)
+      return () => clearTimeout(t)
     }
-  }, [text, isDeleting, idx, phrases])
+
+    // Finished deleting — advance to the next phrase.
+    if (isDeleting && text === '') {
+      setIsDeleting(false)
+      setIdx((prev) => (prev + 1) % TYPEWRITER_PHRASES.length)
+      return
+    }
+
+    const t = setTimeout(
+      () => setText(isDeleting ? phrase.slice(0, text.length - 1) : phrase.slice(0, text.length + 1)),
+      isDeleting ? DELETE_MS : TYPE_MS
+    )
+    return () => clearTimeout(t)
+  }, [text, isDeleting, idx])
 
   return (
-    <em style={{ color: 'var(--gold)', position: 'relative' }}>
-      {text}
-      <span className="typewriter-cursor"></span>
+    <em className="typewriter" style={{ color: 'var(--gold)' }}>
+      {/* Screen readers get the full sentence once rather than every keystroke. */}
+      <span aria-hidden="true">{text}</span>
+      <span className="typewriter-cursor" aria-hidden="true" />
+      <span className="sr-only">booked calls</span>
     </em>
   )
 }
 
+const BASE_RATES = { r2yr: 4.21, r5yr: 4.08, rtrack: 5.19 }
+
 function LiveRates() {
-  const base = { r2yr: 4.21, r5yr: 4.08, rtrack: 5.19 }
-  const [rates, setRates] = useState(base)
+  const [rates, setRates] = useState(BASE_RATES)
   const [updated, setUpdated] = useState(0)
+  const month = useTimeBasedValue(getMonth, '')
+  const slots = useTimeBasedValue(getSlots, 0)
 
   useEffect(() => {
     const jitter = (n) => +(n + (Math.random() - 0.5) * 0.06).toFixed(2)
     const interval = setInterval(() => {
-      setRates({ r2yr: jitter(base.r2yr), r5yr: jitter(base.r5yr), rtrack: jitter(base.rtrack) })
+      setRates({ r2yr: jitter(BASE_RATES.r2yr), r5yr: jitter(BASE_RATES.r5yr), rtrack: jitter(BASE_RATES.rtrack) })
       setUpdated(0)
     }, 8000)
     const ticker = setInterval(() => setUpdated(s => s + 1), 1000)
@@ -140,18 +161,22 @@ function LiveRates() {
     <div className="live-bar">
       <div className="live-bar-inner">
         <div className="live-rates">
-          <span className="live-dot" />
+          <span className="live-dot" aria-hidden="true" />
           <span className="live-label">Live UK Mortgage Rates</span>
           <span className="live-rate-item">2yr Fixed <strong>{rates.r2yr}%</strong></span>
           <span className="live-rate-item">5yr Fixed <strong>{rates.r5yr}%</strong></span>
           <span className="live-rate-item">Tracker <strong>{rates.rtrack}%</strong></span>
           <span className="live-updated">{timeStr}</span>
         </div>
-        <div className="live-availability">
-          <span>📅</span>
-          <span>Currently booking builds for <strong style={{ color: 'var(--burgundy)' }}>{getMonth()}</strong></span>
-          <span className="live-slots">— <strong style={{ color: 'var(--burgundy)' }}>{getSlots()} slot{getSlots() === 1 ? '' : 's'}</strong> remaining</span>
-        </div>
+        {/* Rendered only once the client has computed the date, so the static
+            HTML never disagrees with the hydrated output. */}
+        {month && (
+          <div className="live-availability">
+            <span aria-hidden="true">📅</span>
+            <span>Currently booking builds for <strong style={{ color: 'var(--burgundy)' }}>{month}</strong></span>
+            <span className="live-slots">— <strong style={{ color: 'var(--burgundy)' }}>{slots} slot{slots === 1 ? '' : 's'}</strong> remaining</span>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -167,27 +192,40 @@ function getSlots() {
   return Math.max(1, 4 - Math.floor(new Date().getDate() / 9))
 }
 
-function ActivityFeed() {
-  const activities = [
-    { icon: '▪', text: 'Currently building a broker site for a new client' },
-    { icon: '▸', text: 'Writing conversion copy for a homepage build' },
-    { icon: '◆', text: 'Following up with brokers who booked calls this week' },
-    { icon: '▴', text: 'Designing a segmented CTA layout for a broker' },
-    { icon: '▸', text: 'Preparing a finished site for launch' },
-    { icon: '◆', text: 'Setting up an AI lead capture chatbot for a client' },
-    { icon: '▴', text: 'Reviewing analytics for a recently launched site' },
-    { icon: '▸', text: 'Optimising mobile speed on a live broker site' },
-  ]
+const ACTIVITIES = [
+  { icon: '▪', text: 'Currently building a broker site for a new client' },
+  { icon: '▸', text: 'Writing conversion copy for a homepage build' },
+  { icon: '◆', text: 'Following up with brokers who booked calls this week' },
+  { icon: '▴', text: 'Designing a segmented CTA layout for a broker' },
+  { icon: '▸', text: 'Preparing a finished site for launch' },
+  { icon: '◆', text: 'Setting up an AI lead capture chatbot for a client' },
+  { icon: '▴', text: 'Reviewing analytics for a recently launched site' },
+  { icon: '▸', text: 'Optimising mobile speed on a live broker site' },
+]
 
+// These pages are statically generated, so anything derived from the clock is
+// frozen at build time in the server HTML and recomputed on the client —
+// a guaranteed hydration mismatch. Render the first value on the server, then
+// swap to the live one after mount.
+function useTimeBasedValue(compute, initial) {
+  const [value, setValue] = useState(initial)
+  useEffect(() => { setValue(compute()) }, [compute])
+  return value
+}
+
+const currentActivity = () => {
   const d = new Date()
-  const blockIdx = Math.floor((d.getHours() * 60 + d.getMinutes()) / 180) % activities.length
-  const activity = activities[blockIdx]
+  return ACTIVITIES[Math.floor((d.getHours() * 60 + d.getMinutes()) / 180) % ACTIVITIES.length]
+}
+
+function ActivityFeed() {
+  const activity = useTimeBasedValue(currentActivity, ACTIVITIES[0])
 
   return (
     <div className="activity-feed-wrap">
       <div className="activity-live-dot" />
       <div className="activity-feed">
-        <span className="activity-icon">{activity.icon}</span>
+        <span className="activity-icon" aria-hidden="true">{activity.icon}</span>
         <span className="activity-text">{activity.text}</span>
       </div>
     </div>
@@ -266,8 +304,10 @@ function AuditSection() {
 
       const data = await res.json()
 
-      if (res.ok && data.audit) {
-        setResult(data.audit)
+      // The API returns { result }. Reading data.audit here meant the audit
+      // never rendered, no matter how well the request went.
+      if (res.ok && data.result) {
+        setResult(data.result)
       } else {
         setError(data.error || 'Something went wrong. Please try again.')
       }
@@ -284,11 +324,11 @@ function AuditSection() {
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🤖</div>
           <p className="section-label">Free AI Website Audit</p>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: 'var(--navy)', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: 'var(--ink)', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
             Get an instant conversion audit<br />of <em style={{ color: 'var(--gold)' }}>your broker site</em>
           </h2>
           <p style={{ fontSize: '0.9rem', color: 'var(--muted)', lineHeight: 1.8, maxWidth: '580px', margin: '0 auto' }}>
-            Enter your website URL and our AI will analyze your homepage for the 5 biggest conversion issues — CTA clarity, trust signals, FCA compliance, mobile UX, and more. <strong style={{ color: 'var(--navy)', fontWeight: 600 }}>2 free audits per day.</strong>
+            Enter your website URL and our AI will analyze your homepage for the 5 biggest conversion issues — CTA clarity, trust signals, FCA compliance, mobile UX, and more. <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>2 free audits per day.</strong>
           </p>
         </div>
 
@@ -308,8 +348,8 @@ function AuditSection() {
                   padding: '16px 20px',
                   fontSize: '0.9rem',
                   border: '1px solid var(--border)',
-                  background: 'var(--white)',
-                  color: 'var(--navy)',
+                  background: 'var(--surface)',
+                  color: 'var(--ink)',
                   borderRadius: '4px',
                   outline: 'none',
                   transition: 'all 0.2s ease'
@@ -350,11 +390,11 @@ function AuditSection() {
             </p>
           </form>
         ) : (
-          <div style={{ background: 'var(--white)', border: '1px solid var(--border)', borderRadius: '8px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', gap: '16px', flexWrap: 'wrap' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', fontWeight: 500, marginBottom: '8px' }}>✓ Audit Complete</div>
-                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '4px' }}>Your Website Audit Results</h3>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '4px' }}>Your Website Audit Results</h3>
                 <p style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>{url}</p>
               </div>
               <button
@@ -364,7 +404,7 @@ function AuditSection() {
                   fontWeight: 500,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: 'var(--navy)',
+                  color: 'var(--ink)',
                   background: 'none',
                   border: '1px solid var(--border)',
                   padding: '10px 16px',
@@ -382,7 +422,7 @@ function AuditSection() {
 
             <div style={{
               fontSize: '0.88rem',
-              color: 'var(--navy)',
+              color: 'var(--ink)',
               lineHeight: 1.85,
               whiteSpace: 'pre-wrap',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
@@ -409,6 +449,12 @@ function AuditSection() {
 }
 
 // ── WEBSITE SCORE QUIZ ────────────────────────────────────────
+
+// Literal hex, applied inline on the section wrapper. The quiz reads as a dark
+// panel by design, so it must not follow the theme — and an inline background
+// cannot be repainted by a theme rule.
+const QUIZ_BG = { background: '#0F0B1E', backgroundColor: '#0F0B1E' }
+
 function WebsiteScoreQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
@@ -497,7 +543,7 @@ function WebsiteScoreQuiz() {
     const outcome = getOutcome(score)
 
     return (
-      <section className="section" id="website-quiz" style={{ background: 'var(--navy)', backgroundColor: 'var(--navy)' }}>
+      <section className="section" id="website-quiz" style={QUIZ_BG}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ marginBottom: '32px' }}>
             <div style={{
@@ -653,30 +699,28 @@ function WebsiteScoreQuiz() {
   const progress = ((currentQuestion + 1) / questions.length) * 100
 
   return (
-    <section className="section" id="website-quiz" style={{ background: 'var(--navy)', backgroundColor: 'var(--navy)' }}>
+    <section className="section" id="website-quiz" style={QUIZ_BG}>
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
-          <p className="section-label" style={{ color: 'var(--gold-light)', color: 'white' }}>5-Question Website Score</p>
+          <p className="section-label">5-Question Website Score</p>
           <h2 style={{
             fontFamily: 'var(--serif)',
             fontSize: 'clamp(1.5rem,3.5vw,2.2rem)',
             fontWeight: 500,
-            color: 'var(--white)',
-            color: 'white',
+            color: '#FFFFFF',
             marginBottom: '16px',
             lineHeight: 1.25,
             letterSpacing: '-0.01em'
           }}>
-            How does your broker site<br /><em style={{ color: 'var(--gold-light)', color: 'white' }}>stack up?</em>
+            How does your broker site<br /><em style={{ color: 'var(--gold-light)' }}>stack up?</em>
           </h2>
           <p style={{
-            fontSize: '0.9rem',
-            color: 'rgba(255,255,255,0.6)',
-            color: 'white',
+            fontSize: '0.95rem',
+            color: 'rgba(255,255,255,0.8)',
             lineHeight: 1.8
           }}>
-            Answer 5 quick yes/no questions about your current website and get an instant score with a personalized action plan.
+            Answer 5 quick yes/no questions about your current website and get an instant score with a personalised action plan.
           </p>
         </div>
 
@@ -700,19 +744,17 @@ function WebsiteScoreQuiz() {
 
         {/* Question Card */}
         <div style={{
-          background: 'rgba(255,255,255,0.05)',
-          backgroundColor: '#1e1a35',
-          border: '1px solid rgba(255,255,255,0.1)',
+          backgroundColor: '#1E1A35',
+          border: '1px solid rgba(255,255,255,0.12)',
           borderRadius: '8px',
           padding: '40px 32px',
           marginBottom: '24px'
         }}>
           <div style={{
-            fontSize: '0.7rem',
+            fontSize: '0.72rem',
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: 'var(--gold-light)',
-            color: 'white',
             marginBottom: '16px',
             fontWeight: 500
           }}>
@@ -724,7 +766,6 @@ function WebsiteScoreQuiz() {
             fontSize: '1.4rem',
             fontWeight: 500,
             color: '#FFFFFF',
-            color: 'white',
             marginBottom: '12px',
             lineHeight: 1.4
           }}>
@@ -732,9 +773,8 @@ function WebsiteScoreQuiz() {
           </h3>
 
           <p style={{
-            fontSize: '0.85rem',
-            color: 'rgba(255,255,255,0.75)',
-            color: 'white',
+            fontSize: '0.9rem',
+            color: 'rgba(255,255,255,0.8)',
             marginBottom: '32px',
             lineHeight: 1.7
           }}>
@@ -748,9 +788,11 @@ function WebsiteScoreQuiz() {
                 flex: '1',
                 maxWidth: '200px',
                 padding: '18px 32px',
-                fontSize: '0.9rem',
+                fontSize: '0.95rem',
                 fontWeight: 600,
-                color: 'var(--navy)',
+                // Literal, not --ink: this button lives on the always-dark quiz
+                // panel, so it must stay dark-on-gold in either theme.
+                color: '#0F0B1E',
                 background: 'var(--gold)',
                 border: 'none',
                 borderRadius: '4px',
@@ -843,16 +885,16 @@ function ROICalculator() {
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '940px', margin: '0 auto' }}>
         {/* SLIDERS */}
-        <div style={{ background: 'var(--white)', padding: '40px 36px' }}>
+        <div style={{ background: 'var(--surface)', padding: '40px 36px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '28px' }}>
             <span style={{ fontSize: '0.9rem', color: 'var(--gold)' }}>☆</span>
-            <span style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--navy)' }}>Your Numbers</span>
+            <span style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink)' }}>Your Numbers</span>
           </div>
 
           <div style={{ marginBottom: '28px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <label style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Average proc fee per case</label>
-              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--navy)' }}>£{fee}</span>
+              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--ink)' }}>£{fee}</span>
             </div>
             <input type="range" min="300" max="2000" step="50" value={fee} onChange={(e) => setFee(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--navy)', cursor: 'pointer' }} />
           </div>
@@ -860,7 +902,7 @@ function ROICalculator() {
           <div style={{ marginBottom: '28px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <label style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Extra cases this site generates / month</label>
-              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--navy)' }}>{cases}</span>
+              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--ink)' }}>{cases}</span>
             </div>
             <input type="range" min="1" max="10" step="1" value={cases} onChange={(e) => setCases(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--navy)', cursor: 'pointer' }} />
           </div>
@@ -868,7 +910,7 @@ function ROICalculator() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <label style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Website enquiry → case conversion rate</label>
-              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--navy)' }}>{convRate}%</span>
+              <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--ink)' }}>{convRate}%</span>
             </div>
             <input type="range" min="10" max="80" step="5" value={convRate} onChange={(e) => setConvRate(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--navy)', cursor: 'pointer' }} />
           </div>
@@ -876,24 +918,24 @@ function ROICalculator() {
 
         {/* RESULTS */}
         <div style={{ background: 'var(--cream)', display: 'flex', flexDirection: 'column', gap: '1px' }}>
-          <div style={{ background: 'var(--white)', padding: '24px 28px', flex: 1 }}>
+          <div style={{ background: 'var(--surface)', padding: '24px 28px', flex: 1 }}>
             <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Extra revenue — Month 1</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--navy)', lineHeight: 1 }}>£{month1.toLocaleString()}</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--ink)', lineHeight: 1 }}>£{month1.toLocaleString()}</div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>From cases that wouldn't have found you without this site</div>
           </div>
-          <div style={{ background: 'var(--white)', padding: '24px 28px', flex: 1 }}>
+          <div style={{ background: 'var(--surface)', padding: '24px 28px', flex: 1 }}>
             <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Extra revenue — Year 1</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--navy)', lineHeight: 1 }}>£{year1.toLocaleString()}</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--ink)', lineHeight: 1 }}>£{year1.toLocaleString()}</div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>Compounding as your Google visibility grows over time</div>
           </div>
-          <div style={{ background: 'var(--white)', borderLeft: '3px solid var(--gold)', padding: '24px 28px', flex: 1 }}>
+          <div style={{ background: 'var(--surface)', borderLeft: '3px solid var(--gold)', padding: '24px 28px', flex: 1 }}>
             <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '8px' }}>Cases needed to cover the site cost</div>
             <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--gold)', lineHeight: 1 }}>{payback}{payback === 3 ? '–4' : payback === 2 ? '–3' : ''}</div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>At your proc fee — typically achieved in the first few weeks</div>
           </div>
-          <div style={{ background: 'var(--white)', padding: '24px 28px', flex: 1 }}>
+          <div style={{ background: 'var(--surface)', padding: '24px 28px', flex: 1 }}>
             <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Enquiries needed to get your first case</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--navy)', lineHeight: 1 }}>{enquiries}</div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--ink)', lineHeight: 1 }}>{enquiries}</div>
             <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '6px' }}>At your current conversion rate</div>
           </div>
         </div>
@@ -922,6 +964,7 @@ function LeadMagnetSection() {
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [emailed, setEmailed] = useState(true)
   const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
@@ -942,10 +985,8 @@ function LeadMagnetSection() {
 
       if (data.success) {
         setSuccess(true)
-        // Trigger download
-        if (data.downloadUrl) {
-          window.location.href = data.downloadUrl
-        }
+        setEmailed(data.emailed !== false)
+        triggerDownload(data.downloadUrl)
       } else {
         setError(data.error || 'Something went wrong. Please try again.')
       }
@@ -958,14 +999,20 @@ function LeadMagnetSection() {
 
   if (success) {
     return (
-      <section className="section" style={{ background: 'var(--navy)', textAlign: 'center' }}>
+      <section className="section lead-magnet-success" style={{ textAlign: 'center' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: 'var(--white)', marginBottom: '12px', lineHeight: 1.3 }}>
-            Check your inbox
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '12px', lineHeight: 1.3 }}>
+            {emailed ? 'Check your inbox' : 'Your download has started'}
           </h2>
-          <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
-            Your free guide is on its way. If you don't see it in the next few minutes, check your spam folder.
+          <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            {emailed
+              ? "Your free guide is downloading now, and a copy is on its way to your inbox. If you don't see it in the next few minutes, check your spam folder."
+              : "Your free guide is downloading now."}{' '}
+            <a href="/downloads/5-things-broker-site-guide.pdf" download style={{ color: 'var(--gold-light)' }}>
+              Download it again
+            </a>{' '}
+            if it didn&apos;t start.
           </p>
         </div>
       </section>
@@ -1085,6 +1132,7 @@ function FCAChecklistSection() {
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [emailed, setEmailed] = useState(true)
   const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
@@ -1098,16 +1146,16 @@ function FCAChecklistSection() {
       const res = await fetch('/api/lead-magnet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, source: 'fca-checklist', pdf: 'fca-compliance-checklist.pdf' })
+        // The API resolves the file from `source`; it never trusts a caller-supplied path.
+        body: JSON.stringify({ email, name, source: 'fca-checklist' })
       })
 
       const data = await res.json()
 
       if (data.success) {
         setSuccess(true)
-        if (data.downloadUrl) {
-          window.location.href = data.downloadUrl
-        }
+        setEmailed(data.emailed !== false)
+        triggerDownload(data.downloadUrl)
       } else {
         setError(data.error || 'Something went wrong. Please try again.')
       }
@@ -1120,14 +1168,20 @@ function FCAChecklistSection() {
 
   if (success) {
     return (
-      <section className="section" style={{ background: 'var(--navy)', textAlign: 'center' }}>
+      <section className="section lead-magnet-success" style={{ textAlign: 'center' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: 'var(--white)', marginBottom: '12px', lineHeight: 1.3 }}>
-            Check your inbox
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '12px', lineHeight: 1.3 }}>
+            {emailed ? 'Check your inbox' : 'Your download has started'}
           </h2>
-          <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
-            Your FCA compliance checklist is on its way. If you don't see it in the next few minutes, check your spam folder.
+          <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            {emailed
+              ? "Your FCA compliance checklist is downloading now, and a copy is on its way to your inbox. If you don't see it in the next few minutes, check your spam folder."
+              : 'Your FCA compliance checklist is downloading now.'}{' '}
+            <a href="/downloads/fca-compliance-checklist.pdf" download style={{ color: 'var(--gold-light)' }}>
+              Download it again
+            </a>{' '}
+            if it didn&apos;t start.
           </p>
         </div>
       </section>
@@ -1218,6 +1272,26 @@ function FCAChecklistSection() {
 }
 
 // ── PAGE ──────────────────────────────────────────────────────
+
+// FAQPage schema belongs only on the page that actually shows the FAQ.
+// It previously shipped inside Layout, so every page on the site — blog posts,
+// contact, privacy policy — claimed the same FAQ, which Google treats as
+// mismatched structured data. Questions are generated from the rendered FAQS
+// so the two can never drift apart.
+const HOME_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'FAQPage',
+      mainEntity: FAQS.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    },
+  ],
+}
+
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false)
   const openModal = (e) => { if (e) e.preventDefault(); setModalOpen(true) }
@@ -1227,6 +1301,7 @@ export default function Home() {
       title={null}
       description="Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent brokers worldwide. Delivered in 7 days from £2,500."
       canonical="/"
+      schema={HOME_SCHEMA}
       modalOpen={modalOpen}
       onModalClose={() => setModalOpen(false)}
     >
@@ -1261,12 +1336,16 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="hero-right" aria-hidden="true">
-          <img
-            id="heroParallax"
+        <div className="hero-right">
+          {/* LCP image: priority so it is preloaded, sized so the browser can
+              reserve the space, and served as AVIF/WebP instead of a 1.1MB PNG. */}
+          <Image
             src="/images/dan-photo.png"
-            alt="Dan Senja — founder of Senja Studio, mortgage broker website design specialist"
-            loading="eager"
+            alt="Dan Senja, founder of Senja Studio"
+            width={1022}
+            height={1280}
+            priority
+            sizes="(max-width: 768px) 100vw, 38vw"
           />
           <div className="hero-right-overlay">
             <div className="hero-right-name">Dan Senja</div>
@@ -1341,9 +1420,10 @@ export default function Home() {
       </section>
 
       {/* ── WHAT'S INCLUDED ──────────────────────────── */}
-      <section className="section scroll-reveal-text" id="offer" style={{ background: 'var(--navy)', backgroundColor: 'var(--navy)' }}>
-        <p className="section-label" style={{ color: 'var(--gold-light)' }}>What's included</p>
-        <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF', color: 'white' }}>
+      {/* Always dark, in either theme — pinned inline so no theme rule can reach it. */}
+      <section className="section scroll-reveal-text" id="offer" style={QUIZ_BG}>
+        <p className="section-label">What&apos;s included</p>
+        <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF' }}>
           Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h2>
         <CardStackCarousel items={OFFER_ITEMS} />
@@ -1397,7 +1477,7 @@ export default function Home() {
       </section>
 
       {/* ── BROKER-SPECIFIC FEATURES ────────────────────── */}
-      <section className="section scroll-reveal-text" id="broker-features" style={{ background: 'var(--white)' }}>
+      <section className="section scroll-reveal-text" id="broker-features" style={{ background: 'var(--surface)' }}>
         <p className="section-label">Built for mortgage brokers specifically</p>
         <h2 className="section-heading">
           Things a generic agency<br />would never think to <em>include.</em>
@@ -1442,7 +1522,10 @@ export default function Home() {
         <h2 className="section-heading">
           What you actually get vs<br /><em>a typical agency.</em>
         </h2>
-        <div style={{ maxWidth: '860px', margin: '0 auto', border: '1px solid var(--border)', overflow: 'hidden' }} role="table" aria-label="Senja Studio vs typical agency comparison">
+        {/* Scrolls horizontally on narrow screens rather than squeezing three
+            columns into 375px. */}
+        <div className="agency-compare-scroll">
+        <div className="agency-compare-table" role="table" aria-label="Senja Studio compared with a typical agency">
           <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', background: 'var(--royal)' }} role="row">
             <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader"></div>
             <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', borderRight: '1px solid rgba(255,255,255,0.06)' }} role="columnheader">Typical Agency</div>
@@ -1462,12 +1545,13 @@ export default function Home() {
             ['Financial promotion copy review', 'Not their problem', 'We flag compliance risks before launch'],
             ['Lock-in contract', 'Long retainer required', 'You own everything. No lock-in.']
           ].map(([feature, bad, good], i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', borderTop: '1px solid var(--border)', background: 'var(--white)' }} role="row">
-              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--navy)', fontWeight: 400, borderRight: '1px solid var(--border)', lineHeight: 1.5 }} role="cell">{feature}</div>
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', borderTop: '1px solid var(--border)', background: 'var(--surface)' }} role="row">
+              <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--ink)', fontWeight: 400, borderRight: '1px solid var(--border)', lineHeight: 1.5 }} role="cell">{feature}</div>
               <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: '#C0392B', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✕</span> {bad}</div>
               <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: '#1E7D4A', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '8px', lineHeight: 1.5 }} role="cell"><span style={{ fontWeight: 700 }}>✓</span> {good}</div>
             </div>
           ))}
+        </div>
         </div>
       </section>
 
@@ -1495,7 +1579,15 @@ export default function Home() {
       <section className="meet-dan" id="about" style={{scrollMarginTop: '100px'}}>
         <div className="meet-dan-inner">
           <div className="meet-dan-img-wrap">
-            <img src="/images/dan-photo-about.png" alt="Dan Senja — founder of Senja Studio" className="meet-dan-img" loading="lazy" />
+            <Image
+              src="/images/dan-photo-about.png"
+              alt="Dan Senja, founder of Senja Studio"
+              width={1022}
+              height={1280}
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 35vw"
+              className="meet-dan-img"
+            />
             <div className="meet-dan-img-tag">Dan Senja · Founder</div>
           </div>
           <div className="meet-dan-content">
@@ -1577,7 +1669,7 @@ export default function Home() {
         </div>
 
         <a
-          href="https://calendly.com/senjastudio/30min"
+          href="https://calendly.com/dan-senjastudio/lets-talk"
           className="btn-gold"
           style={{
             textDecoration: 'none',
@@ -1613,7 +1705,7 @@ export default function Home() {
         <h2 className="section-heading">No hidden fees. No surprises.<br /><em>Just results.</em></h2>
 
         <div className="scroll-reveal" style={{ textAlign: 'left', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)' }}>
-          <strong style={{ color: 'var(--navy)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
+          <strong style={{ color: 'var(--ink)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
         </div>
 
         <div className="scroll-reveal-stagger" style={{ display: 'flex', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1060px', margin: '0 auto' }}>
@@ -1626,7 +1718,8 @@ export default function Home() {
               {card.featured && <div className="pricing-badge">Most Popular</div>}
               <div className="pricing-title">{card.title}</div>
               <div className="pricing-price">{card.price}</div>
-              <div className="pricing-delivery" style={card.featured ? { color: 'rgba(255,255,255,0.75)' } : {}}>{card.delivery}</div>
+              {/* Colour lives in .pricing-delivery / .pricing-card.featured .pricing-delivery */}
+              <div className="pricing-delivery">{card.delivery}</div>
               <ul className="pricing-features">
                 {card.features.map((f, i) => <li key={i}>{f}</li>)}
               </ul>
@@ -1637,9 +1730,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.8rem', color: 'var(--muted)' }}>
-          Next available build slot: <strong style={{ color: 'var(--burgundy)' }}>{getNextSlot()}</strong> &nbsp;·&nbsp; <strong style={{ color: 'var(--burgundy)' }}>{getSlots()} slot{getSlots() === 1 ? '' : 's'}</strong> remaining this month
-        </div>
+        <AvailabilityLine />
 
         <div style={{ textAlign: 'center', marginTop: '24px' }}>
           <a
@@ -1674,7 +1765,7 @@ export default function Home() {
               <div className="upsell-title">{addon.title}</div>
               <div className="upsell-sub">{addon.body}</div>
               <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 300, color: 'var(--navy)' }}>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 300, color: 'var(--ink)' }}>
                   {addon.price} <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--sans)' }}>setup</span>
                 </div>
                 <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '2px' }}>{addon.monthly}</div>
@@ -1789,7 +1880,7 @@ export default function Home() {
             <div key={i} style={{ background: i === 5 ? 'var(--cream)' : 'var(--white)', padding: '32px 28px' }}>
               <div style={{ fontFamily: 'var(--serif)', fontSize: '2rem', fontWeight: 700, color: 'var(--gold)', opacity: 0.2, marginBottom: '8px' }}>{step.num}</div>
               <div style={{ fontSize: '0.62rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '8px' }}>{step.day}</div>
-              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '10px' }}>{step.title}</h3>
+              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '10px' }}>{step.title}</h3>
               <p style={{ fontSize: '0.82rem', color: 'var(--muted)', lineHeight: 1.8 }}>{step.body}</p>
             </div>
           ))}
@@ -1821,7 +1912,7 @@ export default function Home() {
         <h2 className="section-heading">Guides for mortgage brokers<br />who want to <em>convert more.</em></h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1100px', margin: '0 auto 36px' }}>
           {BLOG_POSTS.map(post => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration: 'none', background: 'var(--white)', display: 'block' }}>
+            <Link key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration: 'none', background: 'var(--surface)', display: 'block' }}>
               <div style={{ background: 'var(--navy)', height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
                 {post.emoji}
               </div>
@@ -1829,14 +1920,14 @@ export default function Home() {
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
                   <span className="blog-tag">{post.tag}</span>
                 </div>
-                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '8px', lineHeight: 1.4 }}>{post.title}</h3>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '8px', lineHeight: 1.4 }}>{post.title}</h3>
                 <p style={{ fontSize: '0.78rem', color: 'var(--muted)', lineHeight: 1.7 }}>{post.excerpt}</p>
               </div>
             </Link>
           ))}
         </div>
         <div style={{ textAlign: 'center' }}>
-          <Link href="/blog" style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--navy)', textDecoration: 'none', borderBottom: '1px solid var(--border)', paddingBottom: '2px' }}>
+          <Link href="/blog" style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none', borderBottom: '1px solid var(--border)', paddingBottom: '2px' }}>
             View all 5 articles →
           </Link>
         </div>
@@ -1879,6 +1970,20 @@ export default function Home() {
         </div>
       </section>
     </Layout>
+  )
+}
+
+// Client-only for the same reason as ActivityFeed — the page is static HTML.
+function AvailabilityLine() {
+  const nextSlot = useTimeBasedValue(getNextSlot, '')
+  const slots = useTimeBasedValue(getSlots, 0)
+  if (!nextSlot) return null
+
+  return (
+    <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.85rem', color: 'var(--muted)' }}>
+      Next available build slot: <strong style={{ color: 'var(--burgundy)' }}>{nextSlot}</strong> &nbsp;·&nbsp;{' '}
+      <strong style={{ color: 'var(--burgundy)' }}>{slots} slot{slots === 1 ? '' : 's'}</strong> remaining this month
+    </div>
   )
 }
 

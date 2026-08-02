@@ -20,6 +20,9 @@ export default function RotatingCarousel({ items }) {
   })
   const requestRef = useRef()
   const containerRef = useRef(null)
+  const stageRef = useRef(null)
+  // Mirrors `rotation` without forcing a render on every frame.
+  const rotationRef = useRef(0)
 
   // Responsive dimensions
   useEffect(() => {
@@ -79,15 +82,44 @@ export default function RotatingCarousel({ items }) {
     return () => window.removeEventListener('resize', updateDimensions)
   }, [])
 
-  // Auto-rotation
+  // Auto-rotation.
+  //
+  // This used to call setRotation on every animation frame, so the whole
+  // component — every card, every nested div — re-rendered 60 times a second
+  // for as long as the section existed, even off-screen.
+  //
+  // Now the frame loop writes the transform straight to the DOM node, and it
+  // only runs while the carousel is actually on screen and motion is allowed.
   useEffect(() => {
-    if (!isDragging) {
-      const animate = () => {
-        setRotation(prev => (prev + 0.1) % 360)
-        requestRef.current = requestAnimationFrame(animate)
+    if (isDragging) return
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const node = stageRef.current
+    const container = containerRef.current
+    if (!node || !container) return
+
+    let visible = true
+    const observer = new IntersectionObserver(
+      ([entry]) => { visible = entry.isIntersecting },
+      { threshold: 0 }
+    )
+    observer.observe(container)
+
+    let current = rotationRef.current
+    const animate = () => {
+      if (visible) {
+        current = (current + 0.1) % 360
+        rotationRef.current = current
+        node.style.transform = `rotateY(${current}deg)`
       }
       requestRef.current = requestAnimationFrame(animate)
-      return () => cancelAnimationFrame(requestRef.current)
+    }
+    requestRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(requestRef.current)
     }
   }, [isDragging])
 
@@ -95,14 +127,14 @@ export default function RotatingCarousel({ items }) {
   const handleStart = (clientX) => {
     setIsDragging(true)
     setStartX(clientX)
-    setStartRotation(rotation)
+    setStartRotation(rotationRef.current)
   }
 
   const handleMove = (clientX) => {
     if (!isDragging) return
-    const delta = clientX - startX
-    const rotationDelta = delta * dimensions.dragSensitivity
-    setRotation(startRotation + rotationDelta)
+    const next = startRotation + (clientX - startX) * dimensions.dragSensitivity
+    rotationRef.current = next
+    setRotation(next)
   }
 
   const handleEnd = () => {
@@ -111,7 +143,10 @@ export default function RotatingCarousel({ items }) {
 
   // Calculate card positions
   const angleStep = 360 / items.length
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 480
+  // Derived from the responsive breakpoint that already lives in state, so it
+  // is identical on the server and the client. Reading window.innerWidth during
+  // render produced a different value on each and broke hydration.
+  const isMobile = dimensions.cardWidth <= 260
 
   return (
     <div
@@ -156,13 +191,13 @@ export default function RotatingCarousel({ items }) {
       )}
 
       <div
+        ref={stageRef}
         style={{
           position: 'absolute',
           width: '100%',
           height: '100%',
           transformStyle: 'preserve-3d',
-          transform: `rotateY(${rotation}deg)`,
-          transition: isDragging ? 'none' : 'transform 0.1s linear'
+          transform: `rotateY(${rotation}deg)`
         }}
       >
         {items.map((item, index) => {

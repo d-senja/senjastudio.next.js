@@ -10,24 +10,29 @@ export default function Referral() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
+    setError('')
 
     try {
-      await fetch('https://formspree.io/f/xgogpkzq', {
+      // Posts to our own API so the Formspree form ID stays server-side.
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: 'Senja Studio — Referral Programme Signup',
-          ...formData,
-          source: 'referral-signup'
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ form: 'referral', ...formData })
       })
-      setSubmitted(true)
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setSubmitted(true)
+      } else {
+        setError(data.error || 'Something went wrong. Please email dan@senjastudio.co.uk.')
+      }
     } catch (error) {
-      console.error(error)
+      setError('Something went wrong. Please email dan@senjastudio.co.uk.')
     } finally {
       setSubmitting(false)
     }
@@ -109,7 +114,7 @@ export default function Referral() {
             }
           ].map(step => (
             <div key={step.num} style={{
-              background: 'var(--white)',
+              background: 'var(--surface)',
               padding: '32px 28px',
               border: '1px solid var(--border)',
               borderRadius: '8px'
@@ -128,7 +133,7 @@ export default function Referral() {
                 fontFamily: 'var(--serif)',
                 fontSize: '1.3rem',
                 fontWeight: 500,
-                color: 'var(--navy)',
+                color: 'var(--ink)',
                 marginBottom: '12px',
                 letterSpacing: '-0.01em'
               }}>
@@ -166,7 +171,7 @@ export default function Referral() {
               { icon: '💻', label: 'Marketing Consultants' }
             ].map(item => (
               <div key={item.label} style={{
-                background: 'var(--white)',
+                background: 'var(--surface)',
                 padding: '24px 20px',
                 textAlign: 'center',
                 border: '1px solid var(--border)',
@@ -175,7 +180,7 @@ export default function Referral() {
                 <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{item.icon}</div>
                 <div style={{
                   fontSize: '0.85rem',
-                  color: 'var(--navy)',
+                  color: 'var(--ink)',
                   fontWeight: 500,
                   fontFamily: 'var(--serif)'
                 }}>
@@ -205,7 +210,7 @@ export default function Referral() {
           fontFamily: 'var(--serif)',
           fontSize: '2rem',
           fontWeight: 500,
-          color: 'var(--navy)',
+          color: 'var(--ink)',
           marginBottom: '16px',
           textAlign: 'center',
           letterSpacing: '-0.01em'
@@ -251,7 +256,7 @@ export default function Referral() {
             display: 'flex',
             flexDirection: 'column',
             gap: '24px',
-            background: 'var(--white)',
+            background: 'var(--surface)',
             padding: '40px 32px',
             border: '1px solid var(--border)',
             borderRadius: '8px'
@@ -262,7 +267,7 @@ export default function Referral() {
                 fontSize: '0.75rem',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--navy)',
+                color: 'var(--ink)',
                 marginBottom: '8px',
                 fontWeight: 500
               }}>
@@ -294,7 +299,7 @@ export default function Referral() {
                 fontSize: '0.75rem',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--navy)',
+                color: 'var(--ink)',
                 marginBottom: '8px',
                 fontWeight: 500
               }}>
@@ -326,7 +331,7 @@ export default function Referral() {
                 fontSize: '0.75rem',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--navy)',
+                color: 'var(--ink)',
                 marginBottom: '8px',
                 fontWeight: 500
               }}>
@@ -357,7 +362,7 @@ export default function Referral() {
                 fontSize: '0.75rem',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--navy)',
+                color: 'var(--ink)',
                 marginBottom: '8px',
                 fontWeight: 500
               }}>
@@ -387,6 +392,18 @@ export default function Referral() {
               </select>
             </div>
 
+            {/* Hidden from people, irresistible to bots. */}
+            <input
+              type="text"
+              name="website_url"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={formData.website_url || ''}
+              onChange={handleChange}
+              style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+            />
+
             <button
               type="submit"
               disabled={submitting}
@@ -395,6 +412,12 @@ export default function Referral() {
             >
               {submitting ? 'Submitting...' : 'Join Referral Programme'}
             </button>
+
+            {error && (
+              <p role="alert" style={{ fontSize: '0.85rem', color: '#C0392B', textAlign: 'center', lineHeight: 1.6 }}>
+                {error}
+              </p>
+            )}
 
             <p style={{
               fontSize: '0.75rem',

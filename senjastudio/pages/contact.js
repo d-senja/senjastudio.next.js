@@ -11,24 +11,29 @@ export default function Contact() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
+    setError('')
 
     try {
-      await fetch('https://formspree.io/f/xgogpkzq', {
+      // Posts to our own API so the Formspree form ID stays server-side.
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: 'Senja Studio — Contact Page Enquiry',
-          ...formData,
-          source: 'contact-page'
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ form: 'contact', ...formData })
       })
-      setSubmitted(true)
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setSubmitted(true)
+      } else {
+        setError(data.error || 'Something went wrong. Please email dan@senjastudio.co.uk.')
+      }
     } catch (error) {
-      console.error(error)
+      setError('Something went wrong. Please email dan@senjastudio.co.uk.')
     } finally {
       setSubmitting(false)
     }
@@ -81,7 +86,7 @@ export default function Contact() {
               fontFamily: 'var(--serif)',
               fontSize: '1.8rem',
               fontWeight: 500,
-              color: 'var(--navy)',
+              color: 'var(--ink)',
               marginBottom: '24px',
               letterSpacing: '-0.01em'
             }}>
@@ -120,7 +125,7 @@ export default function Contact() {
                     fontSize: '0.75rem',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: 'var(--navy)',
+                    color: 'var(--ink)',
                     marginBottom: '8px',
                     fontWeight: 500
                   }}>
@@ -152,7 +157,7 @@ export default function Contact() {
                     fontSize: '0.75rem',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: 'var(--navy)',
+                    color: 'var(--ink)',
                     marginBottom: '8px',
                     fontWeight: 500
                   }}>
@@ -184,7 +189,7 @@ export default function Contact() {
                     fontSize: '0.75rem',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: 'var(--navy)',
+                    color: 'var(--ink)',
                     marginBottom: '8px',
                     fontWeight: 500
                   }}>
@@ -215,7 +220,7 @@ export default function Contact() {
                     fontSize: '0.75rem',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: 'var(--navy)',
+                    color: 'var(--ink)',
                     marginBottom: '8px',
                     fontWeight: 500
                   }}>
@@ -242,6 +247,18 @@ export default function Contact() {
                   />
                 </div>
 
+                {/* Hidden from people, irresistible to bots. */}
+                <input
+                  type="text"
+                  name="website_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={formData.website_url || ''}
+                  onChange={handleChange}
+                  style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+                />
+
                 <button
                   type="submit"
                   disabled={submitting}
@@ -250,6 +267,12 @@ export default function Contact() {
                 >
                   {submitting ? 'Sending...' : 'Send Message'}
                 </button>
+
+                {error && (
+                  <p role="alert" style={{ fontSize: '0.85rem', color: '#C0392B', lineHeight: 1.6 }}>
+                    {error}
+                  </p>
+                )}
               </form>
             )}
 

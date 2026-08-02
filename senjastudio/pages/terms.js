@@ -26,7 +26,7 @@ export default function Terms() {
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '56px 32px' }}>
         {sections.map((s, i) => (
           <div key={i} style={{ marginBottom: '36px', paddingBottom: '36px', borderBottom: i < sections.length - 1 ? '1px solid var(--border)' : 'none' }}>
-            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '12px' }}>{s.title}</h2>
+            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '12px' }}>{s.title}</h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.85 }}>{s.content}</p>
           </div>
         ))}

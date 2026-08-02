@@ -38,13 +38,13 @@ export default function PrivacyPolicy() {
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '56px 32px' }}>
         {sections.map((s, i) => (
           <div key={i} style={{ marginBottom: '36px', paddingBottom: '36px', borderBottom: i < sections.length - 1 ? '1px solid var(--border)' : 'none' }}>
-            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '12px' }}>{s.title}</h2>
+            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '12px' }}>{s.title}</h2>
             {s.content && (
               <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.85 }}>{s.content}</p>
             )}
             {s.subsections && s.subsections.map((sub, j) => (
               <div key={j} style={{ marginTop: j === 0 ? '16px' : '24px' }}>
-                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.05rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '8px' }}>{sub.subtitle}</h3>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.05rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '8px' }}>{sub.subtitle}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.85 }}>{sub.content}</p>
               </div>
             ))}

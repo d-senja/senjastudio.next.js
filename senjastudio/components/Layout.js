@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Script from 'next/script'
 import { useState, useEffect } from 'react'
 
 // ── QUALIFYING MODAL ──────────────────────────────────────────
@@ -35,12 +36,21 @@ function QualifyModal({ isOpen, onClose }) {
 
   const proceed = async () => {
     try {
-      await fetch('https://formspree.io/f/xgogpkzq', {
+      // Via our own API so the Formspree form ID is not in the page source.
+      await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ _subject: 'Senja Studio — Qualifying Answers', answers, source: typeof window !== 'undefined' ? window.location.href : '' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form: 'qualify',
+          website: answers.website,
+          goal: answers.goal,
+          timeline: answers.timeline,
+          pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+        })
       })
-    } catch (e) {}
+    } catch (e) {
+      // Non-fatal: the booking link still opens.
+    }
 
     // Build Calendly URL with prefilled answers
     const params = new URLSearchParams()
@@ -142,7 +152,6 @@ function QualifyModal({ isOpen, onClose }) {
 function Nav({ openModal }) {
   const [dark, setDark] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     // Dark mode: respect system preference, override with localStorage
@@ -161,12 +170,6 @@ function Nav({ openModal }) {
     }
     mq.addEventListener('change', onChange)
     return () => mq.removeEventListener('change', onChange)
-  }, [])
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 300)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const toggleDark = () => {
@@ -225,9 +228,9 @@ function Nav({ openModal }) {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="mobile-menu" style={{ position: 'fixed', top: '65px', left: 0, right: 0, background: 'var(--white)', borderBottom: '1px solid var(--border)', zIndex: 99999, padding: '12px 0', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
+        <div className="mobile-menu" style={{ position: 'fixed', top: '65px', left: 0, right: 0, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 99999, padding: '12px 0', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
           {navLinks.map(l => (
-            <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '14px 24px', fontSize: '0.78rem', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--navy)', textDecoration: 'none', borderBottom: '1px solid var(--border)' }}>
+            <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '14px 24px', fontSize: '0.78rem', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none', borderBottom: '1px solid var(--border)' }}>
               {l.label}
             </Link>
           ))}
@@ -246,6 +249,10 @@ function Nav({ openModal }) {
 }
 
 // ── FOOTER ────────────────────────────────────────────────────
+// Evaluated once at module load. Calling new Date() during render makes the
+// server and client disagree across a year boundary, which is a hydration error.
+const YEAR = new Date().getFullYear()
+
 function Footer() {
   const [locationsOpen, setLocationsOpen] = useState(false)
 
@@ -397,7 +404,7 @@ function Footer() {
       </div>
 
       <div style={{ width: '100%', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: '0.68rem', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>
-        Senja Studio is not authorised and regulated by the FCA. This website is for marketing purposes only. © {new Date().getFullYear()} Senja Studio. All rights reserved.
+        Senja Studio is not authorised and regulated by the FCA. This website is for marketing purposes only. © {YEAR} Senja Studio. All rights reserved.
       </div>
     </footer>
   )
@@ -413,21 +420,31 @@ function WhatsAppWidget({ visible }) {
     // Check if user has already seen the notification this session
     if (sessionStorage.getItem('waNotifSeen')) return
 
+    let fired = false
+    let hideTimer
+
     const handleScroll = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
-      if (scrollPercent >= 60 && !showNotif) {
+      if (fired) return
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight
+      if (scrollable <= 0) return
+      if ((window.scrollY / scrollable) * 100 >= 60) {
+        fired = true
         setShowNotif(true)
         setShowMessage(true)
         sessionStorage.setItem('waNotifSeen', 'true')
-
-        // Hide message after 10 seconds
-        setTimeout(() => setShowMessage(false), 10000)
+        hideTimer = setTimeout(() => setShowMessage(false), 10000)
+        window.removeEventListener('scroll', handleScroll)
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [showNotif])
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(hideTimer)
+    }
+    // Deliberately empty: depending on showNotif tore down and re-attached the
+    // scroll listener on every state change.
+  }, [])
 
   const buildLink = () => {
     const input = document.getElementById('waInput')
@@ -634,6 +651,12 @@ function ScrollRevealObserver() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
+    // The CSS that hides revealable content is gated behind .js-anim, so the
+    // content only ever starts hidden when this observer exists to show it.
+    // Without this, a JS failure left whole sections stuck at opacity: 0.
+    const root = document.documentElement
+    root.classList.add('js-anim')
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -654,7 +677,17 @@ function ScrollRevealObserver() {
     const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-stagger, .scroll-reveal-text')
     revealElements.forEach((el) => observer.observe(el))
 
-    return () => observer.disconnect()
+    // Anything already in view when we mount should be revealed immediately
+    // rather than waiting for a scroll event that may never come.
+    revealElements.forEach((el) => {
+      const rect = el.getBoundingClientRect()
+      if (rect.top < window.innerHeight && rect.bottom > 0) el.classList.add('is-visible')
+    })
+
+    return () => {
+      observer.disconnect()
+      root.classList.remove('js-anim')
+    }
   }, [])
 
   return null
@@ -666,6 +699,7 @@ function ExitIntentLeadMagnet() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
 
   const closePopup = () => {
     setShow(false)
@@ -697,12 +731,15 @@ function ExitIntentLeadMagnet() {
     if (!email) return
 
     setLoading(true)
+    setError('')
 
     try {
+      // 'exit-intent' is not a known lead magnet; the API falls back to the
+      // default guide. Send the real source so the right file goes out.
       const res = await fetch('/api/lead-magnet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'exit-intent' })
+        body: JSON.stringify({ email, source: 'lead-magnet' })
       })
 
       const data = await res.json()
@@ -711,12 +748,20 @@ function ExitIntentLeadMagnet() {
         setSuccess(true)
         sessionStorage.setItem('formSubmitted', 'true')
         if (data.downloadUrl) {
-          window.location.href = data.downloadUrl
+          const link = document.createElement('a')
+          link.href = data.downloadUrl
+          link.download = ''
+          link.rel = 'noopener'
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
         }
-        setTimeout(() => closePopup(), 3000)
+        setTimeout(() => closePopup(), 4000)
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.')
       }
     } catch (err) {
-      // Silent fail
+      setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -800,21 +845,23 @@ function ExitIntentLeadMagnet() {
           </div>
         ) : (
           <>
+            {/* This panel sits on --navy, so every colour here must be light.
+                The heading and body previously used navy-on-navy and were invisible. */}
             <div style={{ fontSize: '2rem', marginBottom: '16px', textAlign: 'center' }}>📋</div>
             <h3 style={{
               fontFamily: 'var(--serif)',
               fontSize: '1.8rem',
               fontWeight: 500,
-              color: 'var(--navy)',
+              color: '#FFFFFF',
               marginBottom: '12px',
               textAlign: 'center',
               lineHeight: 1.3
             }}>
-              Before you go —<br />get the <em style={{ color: 'var(--gold)' }}>free guide</em>
+              Before you go —<br />get the <em style={{ color: 'var(--gold-light)' }}>free guide</em>
             </h3>
             <p style={{
               fontSize: '0.9rem',
-              color: 'rgba(15,11,30,0.7)',
+              color: 'rgba(255,255,255,0.75)',
               marginBottom: '28px',
               textAlign: 'center',
               lineHeight: 1.7
@@ -823,7 +870,9 @@ function ExitIntentLeadMagnet() {
             </p>
 
             <form onSubmit={handleSubmit}>
+              <label htmlFor="exit-intent-email" className="sr-only">Your email address</label>
               <input
+                id="exit-intent-email"
                 type="email"
                 placeholder="Your email address"
                 value={email}
@@ -833,17 +882,17 @@ function ExitIntentLeadMagnet() {
                 style={{
                   width: '100%',
                   padding: '16px 20px',
-                  fontSize: '0.9rem',
-                  border: '1px solid rgba(15,11,30,0.15)',
-                  background: 'rgba(15,11,30,0.05)',
-                  color: '#0F0B1E',
+                  fontSize: '1rem',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  background: 'rgba(255,255,255,0.08)',
+                  color: '#FFFFFF',
                   borderRadius: '4px',
                   marginBottom: '12px',
                   outline: 'none',
                   transition: 'all 0.2s ease'
                 }}
                 onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
-                onBlur={(e) => e.target.style.borderColor = 'rgba(15,11,30,0.15)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.25)'}
               />
 
               <button
@@ -859,9 +908,15 @@ function ExitIntentLeadMagnet() {
                 {loading ? 'Sending...' : 'Get the Free Guide →'}
               </button>
 
+              {error && (
+                <p role="alert" style={{ fontSize: '0.8rem', color: '#FF8A8A', marginTop: '12px', textAlign: 'center' }}>
+                  {error}
+                </p>
+              )}
+
               <p style={{
-                fontSize: '0.7rem',
-                color: 'rgba(255,255,255,0.35)',
+                fontSize: '0.72rem',
+                color: 'rgba(255,255,255,0.55)',
                 marginTop: '12px',
                 textAlign: 'center',
                 lineHeight: 1.6
@@ -924,12 +979,11 @@ function ExitIntentObjection() {
     setLoading(true)
 
     try {
-      await fetch('https://formspree.io/f/xgogpkzq', {
+      await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          _subject: 'Exit Intent Objection Captured',
-          source: 'exit-intent-objection',
+          form: 'objection',
           reason: selectedReason,
           additionalFeedback: additionalFeedback || 'None provided'
         })
@@ -1127,7 +1181,7 @@ function ExitIntentObjection() {
 }
 
 // ── LAYOUT ────────────────────────────────────────────────────
-export default function Layout({ children, title, description, canonical, modalOpen: modalOpenProp, onModalClose }) {
+export default function Layout({ children, title, description, canonical, schema, modalOpen: modalOpenProp, onModalClose }) {
   const [modalOpen, setModalOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -1151,37 +1205,8 @@ export default function Layout({ children, title, description, canonical, modalO
     return () => document.removeEventListener('openModal', handler)
   }, [])
 
-  // Crisp Live Chat Integration
-  useEffect(() => {
-    const CRISP_WEBSITE_ID = 'cc79fcb2-592c-4730-8afd-fbc75420b2a2'
-
-    window.$crisp = []
-    window.CRISP_WEBSITE_ID = CRISP_WEBSITE_ID
-
-    const script = document.createElement('script')
-    script.src = 'https://client.crisp.chat/l.js'
-    script.async = true
-    document.head.appendChild(script)
-
-    return () => {
-      // Cleanup on unmount
-      if (window.$crisp) {
-        window.$crisp.push(['do', 'chat:hide'])
-      }
-    }
-  }, [])
-
-  // Microsoft Clarity Integration
-  useEffect(() => {
-    // Only load Clarity in production
-    if (process.env.NODE_ENV !== 'development') {
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "xua9mh5o25");
-    }
-  }, [])
+  // Crisp and Clarity are loaded via next/script above with strategy
+  // "lazyOnload" — they used to be injected on mount on every route change.
 
   const siteTitle = title
     ? `${title} | Senja Studio`
@@ -1206,47 +1231,32 @@ export default function Layout({ children, title, description, canonical, modalO
         <meta name="twitter:image" content="https://senjastudio.co.uk/images/og-image.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
         <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-        {/* JSON-LD Structured Data */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "LocalBusiness",
-              "name": "Senja Studio",
-              "url": "https://senjastudio.co.uk",
-              "email": "dan@senjastudio.co.uk",
-              "description": "Elite high-converting website design exclusively for independent mortgage brokers worldwide. Delivered in 7 days from £2,500.",
-              "founder": {"@type": "Person", "name": "Dan Senja"},
-              "areaServed": "Worldwide",
-              "address": {"@type": "PostalAddress", "addressLocality": "Nottingham", "addressCountry": "GB"},
-              "priceRange": "££"
-            },
-            {
-              "@type": "Service",
-              "name": "Mortgage Broker Website Design UK",
-              "provider": {"@type": "LocalBusiness", "name": "Senja Studio"},
-              "description": "High-converting websites designed exclusively for independent mortgage brokers worldwide. Compliance-ready, mobile-first, delivered in 7 days.",
-              "offers": {"@type": "Offer", "price": "2500", "priceCurrency": "GBP"},
-              "areaServed": "Worldwide"
-            },
-            {
-              "@type": "FAQPage",
-              "mainEntity": [
-                {"@type": "Question","name": "How much does a mortgage broker website cost?","acceptedAnswer": {"@type": "Answer","text": "Senja Studio offers three tiers: Homepage Build at £1,500 (5 days), Full Website at £2,500 (7 days), and Bespoke builds from £3,500. All include the Care Plan — first month free, then £150/month. Payment is 50% upfront (non-refundable) and 50% on delivery."}},
-                {"@type": "Question","name": "How long does it take to build a mortgage broker website?","acceptedAnswer": {"@type": "Answer","text": "Homepage builds are delivered in 5 working days. Full website builds are delivered in 7 working days. Bespoke builds have a timeline agreed per project."}},
-                {"@type": "Question","name": "Do you build websites for new mortgage brokers?","acceptedAnswer": {"@type": "Answer","text": "Yes — Senja Studio builds websites for both established brokers and those just starting out. A professional, conversion-focused site from day one means you look established immediately."}},
-                {"@type": "Question","name": "Are your websites FCA compliant?","acceptedAnswer": {"@type": "Answer","text": "Yes. All websites include FCA authorisation badges, compliant disclaimer copy, and are structured to meet FCA financial promotion guidelines."}}
-              ]
-            }
-          ]
-        }) }} />
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NNZY23RH3M" />
-        <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NNZY23RH3M');` }} />
+        {/* Fonts and the site-wide Organization/WebSite/Person graph live in
+            _document.js. They used to be duplicated here, which emitted the
+            font stylesheet four times and two competing LocalBusiness
+            entities per page. Page-specific schema comes in via `schema`. */}
+        {schema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        )}
       </Head>
+
+      {/* Analytics loads after the page is interactive rather than blocking it. */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-NNZY23RH3M"
+        strategy="afterInteractive"
+      />
+      <Script id="ga-init" strategy="afterInteractive">
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NNZY23RH3M');`}
+      </Script>
+      <Script id="crisp-chat" strategy="lazyOnload">
+        {`window.$crisp=[];window.CRISP_WEBSITE_ID="cc79fcb2-592c-4730-8afd-fbc75420b2a2";(function(){var d=document,s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`}
+      </Script>
+      <Script id="ms-clarity" strategy="lazyOnload">
+        {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","xua9mh5o25");`}
+      </Script>
 
       <ScrollProgress />
       <ScrollRevealObserver />

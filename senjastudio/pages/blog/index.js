@@ -73,7 +73,7 @@ export default function Blog() {
                   <span className="blog-tag">{post.tag}</span>
                   <span className="blog-date">{post.date}</span>
                 </div>
-                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.2rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '12px', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.2rem', fontWeight: 500, color: 'var(--ink)', marginBottom: '12px', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
                   {post.title}
                 </h3>
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '16px' }}>{post.excerpt}</p>
