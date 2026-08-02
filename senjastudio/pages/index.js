@@ -137,42 +137,54 @@ function Typewriter() {
   )
 }
 
-const BASE_RATES = { r2yr: 4.21, r5yr: 4.08, rtrack: 5.19 }
-
+// Real rates from the Bank of England, via /api/rates. These were previously
+// hardcoded numbers with a random jitter applied every 8 seconds and labelled
+// "Live". The bar now renders nothing at all until real data arrives, so it can
+// never show an invented figure.
 function LiveRates() {
-  const [rates, setRates] = useState(BASE_RATES)
-  const [updated, setUpdated] = useState(0)
+  const [rates, setRates] = useState(null)
   const month = useTimeBasedValue(getMonth, '')
   const slots = useTimeBasedValue(getSlots, 0)
 
   useEffect(() => {
-    const jitter = (n) => +(n + (Math.random() - 0.5) * 0.06).toFixed(2)
-    const interval = setInterval(() => {
-      setRates({ r2yr: jitter(BASE_RATES.r2yr), r5yr: jitter(BASE_RATES.r5yr), rtrack: jitter(BASE_RATES.rtrack) })
-      setUpdated(0)
-    }, 8000)
-    const ticker = setInterval(() => setUpdated(s => s + 1), 1000)
-    return () => { clearInterval(interval); clearInterval(ticker) }
+    let cancelled = false
+    fetch('/api/rates')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (!cancelled && d && d.twoYearFixed) setRates(d) })
+      .catch(() => {})
+    return () => { cancelled = true }
   }, [])
 
-  const timeStr = updated < 60 ? `Updated ${updated}s ago` : `Updated ${Math.floor(updated / 60)}m ago`
+  if (!rates) return null
+
+  // The fixed-rate series are monthly averages published in arrears, so say so
+  // rather than implying a live feed.
+  const asOf = new Date(rates.twoYearFixed.asOf)
+  const asOfLabel = Number.isNaN(asOf.getTime())
+    ? rates.twoYearFixed.asOf
+    : asOf.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
 
   return (
     <div className="live-bar">
       <div className="live-bar-inner">
         <div className="live-rates">
-          <span className="live-dot" aria-hidden="true" />
-          <span className="live-label">Live UK Mortgage Rates</span>
-          <span className="live-rate-item">2yr Fixed <strong>{rates.r2yr}%</strong></span>
-          <span className="live-rate-item">5yr Fixed <strong>{rates.r5yr}%</strong></span>
-          <span className="live-rate-item">Tracker <strong>{rates.rtrack}%</strong></span>
-          <span className="live-updated">{timeStr}</span>
+          <span className="live-label">UK average mortgage rates</span>
+          <span className="live-rate-item">2yr fixed <strong>{rates.twoYearFixed.rate.toFixed(2)}%</strong></span>
+          <span className="live-rate-item">5yr fixed <strong>{rates.fiveYearFixed.rate.toFixed(2)}%</strong></span>
+          {rates.bankRate && (
+            <span className="live-rate-item">Bank Rate <strong>{rates.bankRate.rate.toFixed(2)}%</strong></span>
+          )}
+          <a
+            className="live-updated"
+            href={rates.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Bank of England · {asOfLabel}
+          </a>
         </div>
-        {/* Rendered only once the client has computed the date, so the static
-            HTML never disagrees with the hydrated output. */}
         {month && (
           <div className="live-availability">
-            <span aria-hidden="true">📅</span>
             <span>Currently booking builds for <strong style={{ color: 'var(--burgundy)' }}>{month}</strong></span>
             <span className="live-slots">— <strong style={{ color: 'var(--burgundy)' }}>{slots} slot{slots === 1 ? '' : 's'}</strong> remaining</span>
           </div>
@@ -1299,7 +1311,7 @@ export default function Home() {
   return (
     <Layout
       title={null}
-      description="Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent brokers worldwide. Delivered in 7 days from £2,500."
+      description="Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent brokers worldwide. Websites from £1,500, full builds from £2,500 — delivered in 7 days."
       canonical="/"
       schema={HOME_SCHEMA}
       modalOpen={modalOpen}
@@ -1319,7 +1331,7 @@ export default function Home() {
           </h1>
 
           <p className="hero-sub">
-            <strong>Senja Studio builds mortgage broker websites that win clients.</strong> Not templates. Not generic agency work. Conversion-first sites built exclusively for independent brokers — with segmented CTAs, FCA compliance, and social proof positioned to do one thing: fill your calendar. Delivered in 7 days from £2,500.
+            <strong>Senja Studio builds mortgage broker websites that win clients.</strong> Not templates. Not generic agency work. Conversion-first sites built exclusively for independent brokers — with segmented CTAs, FCA compliance, and social proof positioned to do one thing: fill your calendar. Websites from £1,500, full builds from £2,500 — delivered in 7 days.
           </p>
 
           <div className="hero-actions">
@@ -1358,13 +1370,13 @@ export default function Home() {
       <div className="trust-bar-strip">
         <div className="trust-marquee" id="trustMarquee">
           <div className="trust-marquee-inner">
-            {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £2,500 — fraction of agency cost'].map((t, i) => (
+            {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £1,500 — fraction of agency cost'].map((t, i) => (
               <div key={i} className="trust-strip-item">
                 <span className="trust-strip-icon">✦</span>
                 <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
               </div>
             ))}
-            {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £2,500 — fraction of agency cost'].map((t, i) => (
+            {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £1,500 — fraction of agency cost'].map((t, i) => (
               <div key={`b${i}`} className="trust-strip-item">
                 <span className="trust-strip-icon">✦</span>
                 <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
@@ -1532,7 +1544,7 @@ export default function Home() {
             <div style={{ padding: '16px 20px', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--gold-light)' }} role="columnheader">Senja Studio</div>
           </div>
           {[
-            ['Price', '£3,000 – £8,000', 'From £2,500'],
+            ['Price', '£3,000 – £8,000', 'From £1,500'],
             ['Delivery time', '6 – 12 weeks', '7 days standard'],
             ['Mortgage broker expertise', 'Generic agency', '100% specialist niche'],
             ['Compliance-ready copy', 'Extra cost, if at all', 'Included as standard'],
@@ -1565,7 +1577,7 @@ export default function Home() {
             One extra completion pays for this build. <em>Most brokers recoup within 3 weeks.</em> Every month after that is pure revenue your old site was leaving on the table.
           </div>
           <div className="trust-badges">
-            {[['7', 'Day delivery'], ['£2,500', 'Starting price'], ['50/50', 'Payment split'], ['0', 'Lock-in contracts']].map(([num, label]) => (
+            {[['7', 'Day delivery'], ['£1,500', 'Starting price'], ['50/50', 'Payment split'], ['0', 'Lock-in contracts']].map(([num, label]) => (
               <div key={label} className="trust-badge">
                 <div className="trust-badge-num">{num}</div>
                 <div className="trust-badge-label">{label}</div>
@@ -1597,7 +1609,7 @@ export default function Home() {
           </h2>
           <p>I'm Dan Senja — and I've built this entire agency around one niche. <strong>Independent mortgage brokers, worldwide, exclusively.</strong> Every site I've delivered has been built from scratch by me — not passed to a junior, not pulled from a template. When you work with Senja Studio, you work with the person who actually builds your site.</p>
           <p>Most agencies build sites for restaurants, gyms, and solicitors. I build for one type of business only. Which means I know exactly what your self-employed clients need to see before they pick up the phone. I know what FCA compliance looks like in practice. I know what layout converts a complex case enquiry at 11pm. <strong>That knowledge goes into every single build.</strong></p>
-          <p>Agencies charge £5,000–£8,000 and take three months. I deliver better — <strong style={{ color: 'var(--gold-light)' }}>in 7 days, from £2,500.</strong> Not because I cut corners. Because I've built enough of these to know exactly what works, and I don't waste time on anything that doesn't.</p>
+          <p>Agencies charge £5,000–£8,000 and take three months. I deliver better — <strong style={{ color: 'var(--gold-light)' }}>in 7 days, from £1,500.</strong> Not because I cut corners. Because I've built enough of these to know exactly what works, and I don't waste time on anything that doesn't.</p>
           <div className="meet-dan-stats">
             {/* Structural facts about how the studio works, not client counts.
                 "6 sites delivered" was not true, and "96% mortgage brokers"

@@ -292,7 +292,7 @@ function Footer() {
       <div className="footer-left">
         <Link href="/" className="footer-logo">Senja<span>.</span>Studio</Link>
         <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.25)', marginTop: '6px', lineHeight: 1.6 }}>
-          Mortgage broker website design · Worldwide · From £2,500
+          Mortgage broker website design · Worldwide · Websites from £1,500
         </p>
       </div>
       <div className="footer-right">
@@ -1210,9 +1210,9 @@ export default function Layout({ children, title, description, canonical, schema
 
   const siteTitle = title
     ? `${title} | Senja Studio`
-    : 'Mortgage Broker Website Design | Senja Studio — From £2,500, Delivered in 7 Days'
+    : 'Mortgage Broker Website Design | Senja Studio — From £1,500'
 
-  const siteDesc = description || 'High-converting websites built exclusively for independent mortgage brokers worldwide. Conversion-focused, mobile-first, delivered in 7 days from £2,500.'
+  const siteDesc = description || 'High-converting websites built exclusively for independent mortgage brokers worldwide. Websites from £1,500, full builds from £2,500, delivered in 7 days.'
 
   return (
     <>

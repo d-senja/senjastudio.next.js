@@ -389,7 +389,7 @@ export default function LocationPage({ location, slug }) {
   return (
     <Layout
       title={`Mortgage Broker Website Design ${city}`}
-      description={`Specialist mortgage broker website design for independent advisers in ${city}. Conversion-first, FCA-compliant, delivered in 7 days from £2,500.`}
+      description={`Specialist mortgage broker website design for independent advisers in ${city}. Conversion-first, FCA-compliant. Websites from £1,500, full builds from £2,500.`}
       canonical={`/${slug}`}
     >
       {/* Hero */}
@@ -401,7 +401,7 @@ export default function LocationPage({ location, slug }) {
           The mortgage broker website<br /><em style={{ color: '#E2C46A' }}>{city} independents trust.</em>
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '560px', margin: '0 auto 32px', lineHeight: 1.85 }}>
-          {regionDesc}. Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent advisers — worldwide. Delivered in 7 days from £2,500.
+          {regionDesc}. Senja Studio builds conversion-first, FCA-compliant mortgage broker websites exclusively for independent advisers — worldwide. Websites from £1,500, full builds from £2,500, delivered in 7 days.
         </p>
         <button className="btn-gold" onClick={() => document.dispatchEvent(new CustomEvent('openModal'))}>
           Book a Free Call — It's Free
