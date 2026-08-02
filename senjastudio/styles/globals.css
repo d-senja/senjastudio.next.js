@@ -157,6 +157,15 @@ html {
   }
 }
 
+/* The typewriter line reserves its full height whether or not there is text in
+   it, so an empty phrase between cycles cannot collapse the line and shift the
+   page. */
+.typewriter {
+  display: inline-block;
+  min-height: 1.05em;
+  font-style: italic;
+}
+
 /* Blinking gold cursor for typewriter effect */
 .typewriter-cursor {
   display: inline-block;
@@ -1034,6 +1043,16 @@ nav::after {
 
 /* PRICING */
 .pricing { background: var(--surface); }
+.pricing-grid {
+  display: flex;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  max-width: 1060px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+.pricing-grid > * { flex: 1 1 0; min-width: 0; }
 .pricing-card {
   background: var(--cream);
   padding: 48px 40px;
@@ -1439,21 +1458,35 @@ footer {
 }
 
 /* ── MARQUEE TRUST BAR ─────────────────────────────────────── */
-.trust-marquee { width: 100%; }
-/* Was a 30s infinite scroll. A static row reads as more considered and stops
-   the eye being dragged sideways while trying to read the page. */
+/* A continuous horizontal scroll, on every screen size. It reads as one
+   moving band rather than a stacked list, which is the point of it. The
+   items are rendered twice in the markup so the loop is seamless: the
+   animation travels exactly -50%, at which point copy two sits where copy
+   one started. */
+.trust-marquee {
+  width: 100%;
+  overflow: hidden;
+  /* Fade the ends so items enter and leave rather than being cut off. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
 .trust-marquee-inner {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: nowrap;
+  width: max-content;
+  animation: marqueeScroll 42s linear infinite;
+}
+.trust-marquee:hover .trust-marquee-inner { animation-play-state: paused; }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 .trust-marquee .trust-strip-item {
-  padding: 10px 22px;
-  border-right: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+  padding: 12px 26px;
+  border-right: 1px solid rgba(255,255,255,0.1);
   white-space: nowrap;
 }
-.trust-marquee .trust-strip-item:last-child { border-right: none; }
 /* ── SECTION GOLD DIVIDER ──────────────────────────────────── */
 /* Was `width: 0` waiting for a `.drawn` class that nothing ever added, so the
    divider was permanently invisible. Drawn on scroll-reveal instead. */
@@ -1692,31 +1725,7 @@ footer {
 .sticky-compare-btn:hover {
   filter: brightness(1.1);
   transform: scale(1.02);
-}@media (max-width: 900px) {
-  .sticky-compare {
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px 16px;
-  }
-
-  .sticky-compare-item {
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding: 8px 0;
-    width: 100%;
-  }
-
-  .sticky-compare-item:last-child {
-    border-bottom: none;
-  }
-
-  .sticky-compare-btn {
-    width: 100%;
-    padding: 12px 20px;
-  }
-}
-
-/* RESPONSE BADGE */
+}/* RESPONSE BADGE */
 .response-badge {
   display: inline-flex;
   align-items: center;
@@ -2105,13 +2114,16 @@ footer {
     font-size: 1rem;
   }
   
-  /* Pricing Cards - 1 Column */
+  /* Pricing cards stack. The old rule set grid-template-columns, which does
+     nothing to a flex container — the three cards stayed in a row squeezed
+     into 375px, which is what produced the tall grey block on mobile. */
   .pricing-grid {
-    grid-template-columns: 1fr !important;
+    flex-direction: column;
     gap: 20px;
     border: none;
     background: transparent;
   }
+  .pricing-grid > * { flex: 0 0 auto; }
   
   .pricing-card {
     padding: 32px 24px;
@@ -2246,34 +2258,23 @@ footer {
     width: 100%;
   }
   
-  /* Sticky Compare Bar */
-  .sticky-compare {
-    padding: 12px 16px;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .sticky-compare-item {
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding: 8px 0;
-    width: 100%;
-  }
-  
-  .sticky-compare-item:last-child {
-    border-bottom: none;
-  }
-  
-  .sticky-compare-btn {
-    width: 100%;
-    padding: 14px 20px;
-    min-height: 48px;
-  }
-  
-  /* Trust Badges */
+  /* Sticky price bar: three price columns and a button do not fit in 375px,
+     and stacking them ate a third of the screen. Hidden on mobile — the
+     pricing section itself is only a scroll away. */
+  .sticky-compare { display: none !important; }
+
+  /* The trust strip stays a single scrolling band on mobile. It was wrapping
+     into a stacked list, which loses the point of it entirely. */
+  .trust-marquee-inner { flex-wrap: nowrap; width: max-content; }
+  .trust-marquee .trust-strip-item { padding: 10px 18px; }
+
+  /* Trust Badges — two up. grid-template-columns does nothing to a flex
+     container, which is why these badges never reflowed on mobile. */
   .trust-badges {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+    width: 100%;
   }
   
   .trust-badge {
@@ -2417,6 +2418,7 @@ footer {
   
   /* Trust badges single column */
   .trust-badges {
+    display: grid;
     grid-template-columns: 1fr;
   }
   
@@ -2911,7 +2913,6 @@ footer {
 
   /* Sticky pricing bar and the cookie bar both pin to the bottom; without
      this they overlap and the cookie buttons cannot be reached. */
-  .sticky-compare { padding-bottom: 14px; }
   .cookie-bar.visible ~ .sticky-compare { display: none; }
 
   .qualify-box { max-height: 88vh; }

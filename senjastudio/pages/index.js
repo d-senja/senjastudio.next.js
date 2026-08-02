@@ -67,6 +67,15 @@ const FAQS = [
   { q: 'How is this different from using Wix or Squarespace?', a: "Wix and Squarespace are generic tools built for every business. Senja Studio builds for one industry. That shows up in the layout decisions, the compliance detail, and copy written for the clients you actually want. The result converts at a fundamentally different rate." },
 ]
 
+const TRUST_STRIP = [
+  'Compliance-Ready — every build',
+  '50/50 Payment — no lock-in',
+  'Free 30-Min Audit — no commitment',
+  'Mortgage Brokers Only — worldwide',
+  '7-Day Delivery — standard build',
+  'From £1,500 — fraction of agency cost',
+]
+
 const BLOG_POSTS = [
   { slug: 'why-mortgage-broker-websites-fail-to-convert', title: 'Why Most Mortgage Broker Websites Fail to Convert', excerpt: "Most broker sites have the same three problems. Here's what they are — and exactly how to fix them.", tag: 'Conversion', date: 'July 2025', emoji: '📉' },
   { slug: 'fca-compliant-mortgage-broker-website', title: 'FCA Compliant Mortgage Broker Website: What You Actually Need', excerpt: "The FCA rules that apply to your website — and the simple ways most broker sites get them wrong.", tag: 'FCA Compliance', date: 'July 2025', emoji: '🏛️' },
@@ -912,8 +921,12 @@ export default function Home() {
 
           <ActivityFeed />
 
+          {/* The typewriter sits on its own line. Inline, a longer phrase
+              pushed the headline from three lines to four and back on every
+              cycle, shifting everything below it — the page visibly shook. */}
           <h1 className="hero-headline" id="hero-heading">
-            The mortgage broker website <br />that turns visitors into <Typewriter />
+            The mortgage broker website<br />that turns visitors into<br />
+            <Typewriter />
           </h1>
 
           {/* One idea per sentence, and the reader's problem before our
@@ -958,13 +971,17 @@ export default function Home() {
       {/* ── TRUST MARQUEE ────────────────────────────── */}
       <div className="trust-bar-strip">
         <div className="trust-marquee" id="trustMarquee">
+          {/* Rendered twice so the -50% scroll loops seamlessly. The second
+              copy is decorative and hidden from assistive tech. */}
           <div className="trust-marquee-inner">
-            {['Compliance-Ready — every build','50/50 Payment — no lock-in','Free 30-Min Audit — no commitment','Mortgage Brokers Only — worldwide','7-Day Delivery — standard build','From £1,500 — fraction of agency cost'].map((t, i) => (
-              <div key={i} className="trust-strip-item">
-                <span className="trust-strip-icon">✦</span>
-                <span>{t.split(' — ')[0]}<span style={{opacity:0.4}}> — </span>{t.split(' — ')[1]}</span>
-              </div>
-            ))}
+            {[0, 1].map(copy =>
+              TRUST_STRIP.map((t, i) => (
+                <div key={`${copy}-${i}`} className="trust-strip-item" aria-hidden={copy === 1 ? 'true' : undefined}>
+                  <span className="trust-strip-icon" aria-hidden="true">✦</span>
+                  <span>{t.split(' — ')[0]}<span style={{ opacity: 0.45 }}> — </span>{t.split(' — ')[1]}</span>
+                </div>
+              ))
+            )}
           </div>
         </div>
         <p style={{ fontSize: '0.75rem', color: 'rgba(26,20,40,0.4)', textAlign: 'center', marginTop: '12px' }}>
@@ -1203,7 +1220,11 @@ export default function Home() {
           <strong style={{ color: 'var(--ink)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
         </div>
 
-        <div className="scroll-reveal-stagger" style={{ display: 'flex', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1060px', margin: '0 auto' }}>
+        {/* Needs a real class: the mobile rules were written against
+            `.pricing-grid`, which this markup never used, so on a phone the
+            three cards stayed in a flex row squeezed into 375px — an enormously
+            tall block with the grey container showing through the gaps. */}
+        <div className="pricing-grid scroll-reveal-stagger">
           {[
             { title: 'Homepage Build', price: '£1,500', delivery: 'Delivered in 5 working days', featured: false, features: ['High-converting homepage only', 'Segmented CTAs — self-employed, FTB, complex', 'Google review integration', 'FCA statement and compliance copy', 'GDPR-compliant lead form + cookie consent', 'Mobile-first, fast-loading', '1 round of revisions', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
             { title: 'Full Website', price: '£2,500', delivery: 'Delivered in 7 working days', featured: true, features: ['Homepage + About + Services + Contact', 'Segmented CTAs for each client type', 'Google review integration and social proof', 'Compliance-ready copy and regulatory badges', 'GDPR forms on every page + cookie consent', 'WhatsApp widget and booking integration', 'Mobile-first, fast-loading, SEO ready', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
