@@ -31,6 +31,12 @@ const OFFER_ITEMS = [
   { num: '06', title: 'Mobile-First & Fast', body: 'Over 60% of mortgage searches happen on mobile. Your site loads fast, looks sharp, and converts on every device — phone, tablet, desktop.' },
   { num: '07', title: 'Lender Panel Credibility Block', body: "A \"whole of market access to 90+ lenders\" trust signal — because the breadth of your panel is one of the biggest reasons clients choose an independent broker over a bank." },
   { num: '08', title: '48-Hour DIP Promise Display', body: 'Decision in Principle timelines matter to buyers who are under pressure. If you offer a fast DIP, we make that a visible selling point.' },
+  // Folded in from the old "Broker-Specific Features" section. The other three
+  // items there — lender panel, DIP promise and Google reviews — already
+  // appeared above, so the homepage was making the same points twice.
+  { num: '09', title: 'Live Mortgage Rate Display', body: 'A rate ticker showing 2-year fixed, 5-year fixed and Bank Rate, pulled from Bank of England data. Visitors see real numbers immediately, not a static page. A generic agency would never think to include this.' },
+  { num: '10', title: 'Complex Case Positioning', body: 'Most brokers want more self-employed and complex case clients, but their websites speak only to first-time buyers. We segment the copy and CTAs so complex case clients see themselves addressed and feel confident enough to book.' },
+  { num: '11', title: '£0 Broker Fee Prominence', body: "If you charge no broker fee, that's one of your biggest conversion advantages — and most broker sites bury it. We put it in your stats grid, your hero and your CTA copy so visitors see it before they think about going elsewhere." },
 ]
 
 const PROCESS_STEPS = [
@@ -61,15 +67,6 @@ const FAQS = [
   { q: 'How is this different from using Wix or Squarespace?', a: "Wix and Squarespace are generic tools built for every business. Senja Studio builds specifically for mortgage brokers — with segmented CTAs, FCA compliance, conversion-first layouts, and copy that speaks directly to your client types. The result converts at a fundamentally different rate." },
 ]
 
-const ADDONS = [
-  { tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '£800', monthly: 'Included in Care Plan' },
-  { tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '£1,200', monthly: '+ £100/month' },
-  { tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '£1,000', monthly: '+ £100/month' },
-  { tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '£1,500', monthly: '+ £150/month' },
-  { tag: 'Add-on', title: 'AI Inbound Phone Caller', body: "An AI voice agent that answers your business calls when you're unavailable — qualifying the enquiry, capturing details, and booking a callback.", price: '£1,500', monthly: '+ £120/month' },
-  { tag: 'Add-on', title: 'AI Outbound Phone Caller', body: "An AI voice agent that proactively calls leads from your pipeline — following up on enquiries and booking appointments.", price: '£2,000', monthly: '+ £150/month' },
-]
-
 const BLOG_POSTS = [
   { slug: 'why-mortgage-broker-websites-fail-to-convert', title: 'Why Most Mortgage Broker Websites Fail to Convert', excerpt: "Most broker sites have the same three problems. Here's what they are — and exactly how to fix them.", tag: 'Conversion', date: 'July 2025', emoji: '📉' },
   { slug: 'fca-compliant-mortgage-broker-website', title: 'FCA Compliant Mortgage Broker Website: What You Actually Need', excerpt: "The FCA rules that apply to your website — and the simple ways most broker sites get them wrong.", tag: 'FCA Compliance', date: 'July 2025', emoji: '🏛️' },
@@ -77,6 +74,12 @@ const BLOG_POSTS = [
 ]
 
 // ── COMPONENTS ────────────────────────────────────────────────
+
+// Literal hex, applied inline on a section wrapper. Sections that read as dark
+// panels by design must not follow the theme, and an inline background cannot
+// be repainted by a theme rule.
+const DARK_PANEL = { background: '#0F0B1E', backgroundColor: '#0F0B1E' }
+
 
 // Starts the file download without navigating away, so the success state
 // stays on screen. Assigning to window.location.href replaced the page.
@@ -460,420 +463,6 @@ function AuditSection() {
   )
 }
 
-// ── WEBSITE SCORE QUIZ ────────────────────────────────────────
-
-// Literal hex, applied inline on the section wrapper. The quiz reads as a dark
-// panel by design, so it must not follow the theme — and an inline background
-// cannot be repainted by a theme rule.
-const QUIZ_BG = { background: '#0F0B1E', backgroundColor: '#0F0B1E' }
-
-function WebsiteScoreQuiz() {
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState({})
-  const [showResult, setShowResult] = useState(false)
-
-  const questions = [
-    {
-      id: 'reviews',
-      text: 'Do you have Google reviews visible above the fold on your homepage?',
-      explanation: 'Social proof in the hero section builds immediate trust'
-    },
-    {
-      id: 'booking',
-      text: 'Do you have a Calendly or direct booking link on your site?',
-      explanation: 'Direct booking removes friction and increases conversion'
-    },
-    {
-      id: 'fca',
-      text: 'Is your FCA number visible in the navigation or hero section?',
-      explanation: 'Regulatory compliance signals professionalism and trust'
-    },
-    {
-      id: 'segmented',
-      text: 'Do you have separate CTAs for self-employed clients and first-time buyers?',
-      explanation: 'Segmented CTAs convert 2-3x better than generic ones'
-    },
-    {
-      id: 'speed',
-      text: 'Does your site load in under 3 seconds on mobile?',
-      explanation: 'Every second of delay costs you 7% of conversions'
-    }
-  ]
-
-  const handleAnswer = (value) => {
-    const newAnswers = { ...answers, [questions[currentQuestion].id]: value }
-    setAnswers(newAnswers)
-
-    if (currentQuestion < questions.length - 1) {
-      setTimeout(() => setCurrentQuestion(currentQuestion + 1), 300)
-    } else {
-      setTimeout(() => setShowResult(true), 300)
-    }
-  }
-
-  const calculateScore = () => {
-    const yesCount = Object.values(answers).filter(a => a === true).length
-    return Math.round((yesCount / questions.length) * 100)
-  }
-
-  const getOutcome = (score) => {
-    if (score <= 40) {
-      return {
-        title: 'Your site needs urgent attention',
-        description: 'You\'re missing critical conversion elements that are costing you enquiries every single week. Most of these fixes take under an hour once you know what to look for.',
-        color: '#c53030',
-        pdfUrl: '/downloads/score-report-low.pdf',
-        pdfLabel: 'Download Your Full Report (0-40%)'
-      }
-    } else if (score <= 70) {
-      return {
-        title: 'Your site has real gaps',
-        description: 'You\'re doing some things right, but there are clear opportunities being left on the table. Fixing these gaps could double your conversion rate within a month.',
-        color: '#d69e2e',
-        pdfUrl: '/downloads/score-report-mid.pdf',
-        pdfLabel: 'Download Your Full Report (41-70%)'
-      }
-    } else {
-      return {
-        title: 'You\'re close — let\'s close the gap',
-        description: 'Your site is already doing most things right. The remaining 1-2 changes could be the difference between a good conversion rate and an exceptional one.',
-        color: 'var(--gold)',
-        pdfUrl: '/downloads/score-report-high.pdf',
-        pdfLabel: 'Download Your Full Report (71-100%)'
-      }
-    }
-  }
-
-  const reset = () => {
-    setCurrentQuestion(0)
-    setAnswers({})
-    setShowResult(false)
-  }
-
-  if (showResult) {
-    const score = calculateScore()
-    const outcome = getOutcome(score)
-
-    return (
-      <section className="section" id="website-quiz" style={QUIZ_BG}>
-        <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ marginBottom: '32px' }}>
-            <div style={{
-              width: '140px',
-              height: '140px',
-              margin: '0 auto 24px',
-              borderRadius: '50%',
-              border: `8px solid ${outcome.color}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'rgba(255,255,255,0.05)'
-            }}>
-              <div style={{
-                fontFamily: 'var(--serif)',
-                fontSize: '3rem',
-                fontWeight: 700,
-                color: 'var(--white)'
-              }}>
-                {score}%
-              </div>
-            </div>
-            <h2 style={{
-              fontFamily: 'var(--serif)',
-              fontSize: 'clamp(1.8rem,4vw,2.5rem)',
-              fontWeight: 600,
-              color: 'var(--white)',
-              marginBottom: '16px',
-              lineHeight: 1.2
-            }}>
-              {outcome.title}
-            </h2>
-            <p style={{
-              fontSize: '0.95rem',
-              color: 'rgba(255,255,255,0.7)',
-              lineHeight: 1.8,
-              marginBottom: '32px'
-            }}>
-              {outcome.description}
-            </p>
-          </div>
-
-          <div style={{
-            background: 'rgba(255,255,255,0.08)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '8px',
-            padding: '24px',
-            marginBottom: '32px',
-            textAlign: 'left'
-          }}>
-            <div style={{
-              fontSize: '0.7rem',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-light)',
-              marginBottom: '16px',
-              fontWeight: 500
-            }}>
-              Your Answers:
-            </div>
-            {questions.map((q, i) => (
-              <div key={q.id} style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px',
-                marginBottom: '12px',
-                paddingBottom: '12px',
-                borderBottom: i < questions.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none'
-              }}>
-                <div style={{
-                  fontSize: '1.2rem',
-                  flexShrink: 0,
-                  marginTop: '2px'
-                }}>
-                  {answers[q.id] ? '✓' : '✗'}
-                </div>
-                <div style={{
-                  fontSize: '0.85rem',
-                  color: 'rgba(255,255,255,0.85)',
-                  lineHeight: 1.6
-                }}>
-                  {q.text}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-            <a
-              href={outcome.pdfUrl}
-              download
-              className="btn-gold"
-              style={{ textDecoration: 'none', display: 'inline-block' }}
-            >
-              {outcome.pdfLabel} →
-            </a>
-            <button
-              onClick={reset}
-              style={{
-                background: 'none',
-                border: '1px solid rgba(255,255,255,0.2)',
-                color: 'rgba(255,255,255,0.6)',
-                padding: '12px 24px',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                borderRadius: '4px',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.borderColor = 'var(--gold)'
-                e.target.style.color = 'var(--gold)'
-              }}
-              onMouseOut={(e) => {
-                e.target.style.borderColor = 'rgba(255,255,255,0.2)'
-                e.target.style.color = 'rgba(255,255,255,0.6)'
-              }}
-            >
-              ← Retake Quiz
-            </button>
-          </div>
-
-          <p style={{
-            fontSize: '0.85rem',
-            color: 'rgba(255,255,255,0.4)',
-            marginTop: '32px',
-            lineHeight: 1.7
-          }}>
-            Want us to audit your actual site and tell you exactly what to fix?{' '}
-            <button
-              onClick={() => document.dispatchEvent(new Event('openModal'))}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--gold)',
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                font: 'inherit',
-                padding: 0
-              }}
-            >
-              Book a free call
-            </button>.
-          </p>
-        </div>
-      </section>
-    )
-  }
-
-  const question = questions[currentQuestion]
-  const progress = ((currentQuestion + 1) / questions.length) * 100
-
-  return (
-    <section className="section" id="website-quiz" style={QUIZ_BG}>
-      <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
-          <p className="section-label">5-Question Website Score</p>
-          <h2 style={{
-            fontFamily: 'var(--serif)',
-            fontSize: 'clamp(1.5rem,3.5vw,2.2rem)',
-            fontWeight: 500,
-            color: '#FFFFFF',
-            marginBottom: '16px',
-            lineHeight: 1.25,
-            letterSpacing: '-0.01em'
-          }}>
-            How does your broker site<br /><em style={{ color: 'var(--gold-light)' }}>stack up?</em>
-          </h2>
-          <p style={{
-            fontSize: '0.95rem',
-            color: 'rgba(255,255,255,0.8)',
-            lineHeight: 1.8
-          }}>
-            Answer 5 quick yes/no questions about your current website and get an instant score with a personalised action plan.
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div style={{
-          width: '100%',
-          height: '4px',
-          background: 'rgba(255,255,255,0.1)',
-          borderRadius: '2px',
-          marginBottom: '32px',
-          overflow: 'hidden'
-        }}>
-          <div style={{
-            width: `${progress}%`,
-            height: '100%',
-            background: 'var(--gold)',
-            transition: 'width 0.3s ease',
-            borderRadius: '2px'
-          }} />
-        </div>
-
-        {/* Question Card */}
-        <div style={{
-          backgroundColor: '#1E1A35',
-          border: '1px solid rgba(255,255,255,0.12)',
-          borderRadius: '8px',
-          padding: '40px 32px',
-          marginBottom: '24px'
-        }}>
-          <div style={{
-            fontSize: '0.72rem',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--gold-light)',
-            marginBottom: '16px',
-            fontWeight: 500
-          }}>
-            Question {currentQuestion + 1} of {questions.length}
-          </div>
-
-          <h3 style={{
-            fontFamily: 'var(--serif)',
-            fontSize: '1.4rem',
-            fontWeight: 500,
-            color: '#FFFFFF',
-            marginBottom: '12px',
-            lineHeight: 1.4
-          }}>
-            {question.text}
-          </h3>
-
-          <p style={{
-            fontSize: '0.9rem',
-            color: 'rgba(255,255,255,0.8)',
-            marginBottom: '32px',
-            lineHeight: 1.7
-          }}>
-            {question.explanation}
-          </p>
-
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-            <button
-              onClick={() => handleAnswer(true)}
-              style={{
-                flex: '1',
-                maxWidth: '200px',
-                padding: '18px 32px',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                // Literal, not --ink: this button lives on the always-dark quiz
-                // panel, so it must stay dark-on-gold in either theme.
-                color: '#0F0B1E',
-                background: 'var(--gold)',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                letterSpacing: '0.02em'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              ✓ Yes
-            </button>
-            <button
-              onClick={() => handleAnswer(false)}
-              style={{
-                flex: '1',
-                maxWidth: '200px',
-                padding: '18px 32px',
-                fontSize: '0.9rem',
-                fontWeight: 600,
-                color: 'var(--white)',
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                letterSpacing: '0.02em'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = 'rgba(255,255,255,0.15)'
-                e.target.style.transform = 'translateY(-2px)'
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = 'rgba(255,255,255,0.1)'
-                e.target.style.transform = 'translateY(0)'
-              }}
-            >
-              ✗ No
-            </button>
-          </div>
-        </div>
-
-        {currentQuestion > 0 && (
-          <div style={{ textAlign: 'center' }}>
-            <button
-              onClick={() => setCurrentQuestion(currentQuestion - 1)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'rgba(255,255,255,0.4)',
-                fontSize: '0.75rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                padding: '8px 16px',
-                fontWeight: 500
-              }}
-              onMouseOver={(e) => e.target.style.color = 'var(--gold)'}
-              onMouseOut={(e) => e.target.style.color = 'rgba(255,255,255,0.4)'}
-            >
-              ← Back
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
-  )
-}
-
 // ── ROI CALCULATOR ────────────────────────────────────────────
 function ROICalculator() {
   const [fee, setFee] = useState(850)
@@ -1139,7 +728,9 @@ function LeadMagnetSection() {
 }
 
 // ── FCA CHECKLIST LEAD MAGNET ─────────────────────────────────
-function FCAChecklistSection() {
+// Renders inline inside the FCA compliance section rather than as a standalone
+// section, so the ask sits next to the argument that earns it.
+function FCAChecklistForm() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -1180,36 +771,31 @@ function FCAChecklistSection() {
 
   if (success) {
     return (
-      <section className="section lead-magnet-success" style={{ textAlign: 'center' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px', color: 'var(--gold)', fontWeight: 300 }}>◆</div>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '12px', lineHeight: 1.3 }}>
-            {emailed ? 'Check your inbox' : 'Your download has started'}
-          </h2>
-          <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
-            {emailed
-              ? "Your FCA compliance checklist is downloading now, and a copy is on its way to your inbox. If you don't see it in the next few minutes, check your spam folder."
-              : 'Your FCA compliance checklist is downloading now.'}{' '}
-            <a href="/downloads/fca-compliance-checklist.pdf" download style={{ color: 'var(--gold-light)' }}>
-              Download it again
-            </a>{' '}
-            if it didn&apos;t start.
-          </p>
-        </div>
-      </section>
+      <div style={{ textAlign: 'center' }}>
+        <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, margin: 0 }}>
+          <strong style={{ color: 'var(--gold-light)' }}>
+            {emailed ? 'Check your inbox.' : 'Your download has started.'}
+          </strong>{' '}
+          {emailed
+            ? "The checklist is downloading now, and a copy is on its way to you. If you don't see it in a few minutes, check your spam folder."
+            : 'The checklist is downloading now.'}{' '}
+          <a href="/downloads/fca-compliance-checklist.pdf" download style={{ color: 'var(--gold-light)' }}>
+            Download it again
+          </a>{' '}
+          if it didn&apos;t start.
+        </p>
+      </div>
     )
   }
 
   return (
-    <section className="section" style={{ background: 'var(--navy)' }}>
-      <div style={{ maxWidth: '680px', margin: '0 auto', textAlign: 'center' }}>
-        <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>📋</div>
-        <p className="section-label" style={{ color: 'var(--gold-light)' }}>FREE CHECKLIST</p>
-        <h2 className="lead-magnet-heading" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
-          Is Your Broker Site <em style={{ color: 'var(--gold-light)' }}>FCA Compliant?</em>
-        </h2>
-        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: '32px', maxWidth: '520px', margin: '0 auto 32px' }}>
-          The exact requirements every regulated mortgage broker site must meet — and how to check yours in 10 minutes.
+    <div style={{ textAlign: 'center' }}>
+      <div>
+        <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.35rem', fontWeight: 500, color: '#FFFFFF', marginBottom: '10px', lineHeight: 1.3 }}>
+          Get the <em style={{ color: 'var(--gold-light)' }}>compliance checklist</em> we work from
+        </h3>
+        <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, marginBottom: '24px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
+          Every requirement above, as a checklist you can run against your current site in about ten minutes.
         </p>
 
         <form onSubmit={handleSubmit} style={{ maxWidth: '460px', margin: '0 auto' }}>
@@ -1274,12 +860,12 @@ function FCAChecklistSection() {
             </p>
           )}
 
-          <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', marginTop: '12px', lineHeight: 1.6 }}>
-            No spam. Unsubscribe anytime. Read our <Link href="/privacy-policy" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>privacy policy</Link>.
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '12px', lineHeight: 1.6 }}>
+            No spam. Unsubscribe anytime. Read our <Link href="/privacy-policy" style={{ color: 'var(--gold-light)', textDecoration: 'underline' }}>privacy policy</Link>.
           </p>
         </form>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -1433,7 +1019,7 @@ export default function Home() {
 
       {/* ── WHAT'S INCLUDED ──────────────────────────── */}
       {/* Always dark, in either theme — pinned inline so no theme rule can reach it. */}
-      <section className="section scroll-reveal-text" id="offer" style={QUIZ_BG}>
+      <section className="section scroll-reveal-text" id="offer" style={DARK_PANEL}>
         <p className="section-label">What&apos;s included</p>
         <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF' }}>
           Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
@@ -1486,45 +1072,12 @@ export default function Home() {
         <div style={{ textAlign: 'center' }}>
           <button className="btn-gold" onClick={openModal}>Book a Free Call — See the Compliance Checklist</button>
         </div>
-      </section>
 
-      {/* ── BROKER-SPECIFIC FEATURES ────────────────────── */}
-      <section className="section scroll-reveal-text" id="broker-features" style={{ background: 'var(--surface)' }}>
-        <p className="section-label">Built for mortgage brokers specifically</p>
-        <h2 className="section-heading">
-          Things a generic agency<br />would never think to <em>include.</em>
-        </h2>
-        <div className="scroll-reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="offer-item">
-            <div className="offer-num">→</div>
-            <h3 className="offer-title">Live Mortgage Rate Display</h3>
-            <p className="offer-body">A live rate ticker showing 2-year fixed, 5-year fixed, and tracker rates — updated regularly. Visitors see real numbers immediately, not a static page. Generic agencies would never think to include this. We build it in as standard.</p>
-          </div>
-          <div className="offer-item">
-            <div className="offer-num">→</div>
-            <h3 className="offer-title">Lender Panel Credibility Block</h3>
-            <p className="offer-body">A "whole of market access to 90+ lenders" trust signal — because the breadth of your panel is one of the biggest reasons clients choose an independent broker over a bank. We make this visible and prominent, not buried in the footer.</p>
-          </div>
-          <div className="offer-item">
-            <div className="offer-num">→</div>
-            <h3 className="offer-title">48-Hour DIP Promise Display</h3>
-            <p className="offer-body">Decision in Principle timelines matter to buyers who are under pressure. If you offer a fast DIP, we make that a visible selling point — not just a line in a paragraph, but a stat that stands out in your credentials bar.</p>
-          </div>
-          <div className="offer-item">
-            <div className="offer-num">→</div>
-            <h3 className="offer-title">Complex Case Positioning</h3>
-            <p className="offer-body">Most brokers want more self-employed and complex case clients — but their websites speak only to first-time buyers. We segment the copy and CTAs so complex case clients see themselves specifically addressed and feel confident enough to book.</p>
-          </div>
-          <div className="offer-item">
-            <div className="offer-num">→</div>
-            <h3 className="offer-title">£0 Broker Fee Prominence</h3>
-            <p className="offer-body">If you charge no broker fee, that's one of your biggest conversion advantages — and most broker sites bury it. We put it in your stats grid, your hero section, and your CTA copy so visitors see it before they even think about going elsewhere.</p>
-          </div>
-          <div className="offer-item">
-            <div className="offer-num">→</div>
-            <h3 className="offer-title">Google Reviews Done Properly</h3>
-            <p className="offer-body">Most broker sites either don't show reviews at all or dump them in a row at the bottom. We surface your best review prominently in the hero, use your star rating and count as trust signals in multiple places, and make the social proof work for you throughout the page.</p>
-          </div>
+        {/* The checklist download lives here, next to the compliance argument
+            it belongs to, rather than as its own section fifteen sections
+            further down. */}
+        <div style={{ maxWidth: '640px', margin: '48px auto 0', paddingTop: '40px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <FCAChecklistForm />
         </div>
       </section>
 
@@ -1627,77 +1180,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FOUNDER VIDEO ────────────────────────────── */}
-      <section className="section" id="founder-video" style={{ background: 'var(--navy)', textAlign: 'center' }}>
-        <p className="section-label" style={{ color: 'var(--gold)' }}>From The Founder</p>
-        <h2 style={{
-          fontFamily: 'var(--serif)',
-          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
-          fontWeight: 500,
-          color: 'var(--white)',
-          marginBottom: '48px',
-          lineHeight: 1.3,
-          maxWidth: '800px',
-          margin: '0 auto 48px'
-        }}>
-          Why I built Senja Studio exclusively for mortgage brokers.
-        </h2>
-
-        <div style={{
-          maxWidth: '900px',
-          margin: '0 auto 40px',
-          position: 'relative',
-          aspectRatio: '16 / 9',
-          background: 'var(--royal)',
-          border: '2px solid var(--gold)',
-          borderRadius: '8px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '20px'
-        }}
-        aria-label="Video placeholder - coming soon"
-        >
-          <div style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: '50%',
-            border: '3px solid var(--gold)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '2rem',
-            color: 'var(--gold)'
-          }}
-          aria-hidden="true"
-          >
-            ▶
-          </div>
-          <p style={{
-            fontSize: '0.9rem',
-            color: 'rgba(255,255,255,0.6)',
-            maxWidth: '400px',
-            lineHeight: 1.7
-          }}>
-            Video coming soon — in the meantime, book a free call below.
-          </p>
-        </div>
-
-        <a
-          href="https://calendly.com/dan-senjastudio/lets-talk"
-          className="btn-gold"
-          style={{
-            textDecoration: 'none',
-            display: 'inline-block'
-          }}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          BOOK YOUR FREE CALL →
-        </a>
-      </section>
-
       {/* ── TESTIMONIALS ─────────────────────────────── */}
       <section className="section" id="testimonials">
         <p className="section-label">What brokers say</p>
@@ -1769,120 +1251,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── AI ADD-ONS ───────────────────────────────── */}
-      <section className="section upsells" id="addons">
-        <p className="section-label">AI-powered add-ons</p>
-        <h2 className="section-heading">Supercharge your site with<br /><em>AI automation.</em></h2>
-        <div className="grid-3col" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          {ADDONS.map((addon, i) => (
-            <div key={i} className="upsell-card">
-              <div className="upsell-icon css-diamond"></div>
-              <div className="upsell-tag">{addon.tag}</div>
-              <div className="upsell-title">{addon.title}</div>
-              <div className="upsell-sub">{addon.body}</div>
-              <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 300, color: 'var(--ink)' }}>
-                  {addon.price} <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--sans)' }}>setup</span>
-                </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: '2px' }}>{addon.monthly}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{ textAlign: 'center', marginTop: '32px' }}>
-          <button className="btn-primary" onClick={openModal}>Discuss Add-ons on a Free Call</button>
-        </div>
-      </section>
-
-      {/* ── FULL AI STACK ────────────────────────────── */}
-      <section id="full-ai-stack" style={{ background: 'var(--royal)', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
-        {/* Decorative elements */}
-        <div style={{ position: 'absolute', top: '0', right: '0', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: '0', left: '0', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
-
-        <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative' }}>
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <div style={{ display: 'inline-block', padding: '8px 20px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '30px', marginBottom: '24px' }}>
-              <span style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', fontWeight: 600 }}>Premium Package</span>
-            </div>
-            <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4.5vw,3rem)', fontWeight: 600, color: 'var(--white)', marginBottom: '20px', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-              The Full AI Stack
-            </h2>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, maxWidth: '700px', margin: '0 auto' }}>
-              Every AI agent working together — lead capture, customer support, appointment setting, outreach automation, inbound and outbound calling. <strong style={{ color: 'rgba(255,255,255,0.85)' }}>The complete mortgage broker AI system.</strong>
-            </p>
-          </div>
-
-          <div style={{ background: 'rgba(255,255,255,0.03)', border: '2px solid rgba(212,175,55,0.3)', borderRadius: '16px', padding: '56px 48px', position: 'relative', boxShadow: '0 30px 90px rgba(0,0,0,0.4), 0 0 1px rgba(212,175,55,0.5) inset' }}>
-            {/* Top accent line */}
-            <div style={{ position: 'absolute', top: '0', left: '10%', right: '10%', height: '2px', background: 'linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%)' }} />
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: '56px', alignItems: 'center', marginBottom: '48px' }}>
-              {/* Left: What's included */}
-              <div>
-                <h3 style={{ fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold-light)', marginBottom: '24px', fontWeight: 500 }}>Includes All 6 AI Agents:</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  {[
-                    'AI Lead Capture Chatbot',
-                    'AI Customer Support Agent',
-                    'AI Appointment Setting Agent',
-                    'Automated AI Outreach System',
-                    'AI Inbound Phone Caller',
-                    'AI Outbound Phone Caller'
-                  ].map((name, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '6px', height: '6px', background: 'var(--gold)', borderRadius: '50%', flexShrink: 0 }} />
-                      <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>{name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div style={{ width: '1px', height: '100%', background: 'linear-gradient(180deg, transparent 0%, rgba(212,175,55,0.3) 50%, transparent 100%)' }} />
-
-              {/* Right: Pricing */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ marginBottom: '32px' }}>
-                  <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>Setup Fee</div>
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£4,999</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--gold)', fontWeight: 500 }}>Save £3,000 vs buying separately</div>
-                </div>
-
-                <div style={{ paddingTop: '32px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '12px' }}>Monthly</div>
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: '3.5rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1, marginBottom: '8px' }}>£499<span style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.5)' }}>/mo</span></div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--gold)', fontWeight: 500 }}>Save £120/month vs buying separately</div>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div style={{ textAlign: 'center', paddingTop: '48px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-              <button
-                className="btn-gold"
-                onClick={openModal}
-                style={{
-                  fontSize: '0.85rem',
-                  padding: '18px 48px',
-                  boxShadow: '0 8px 24px rgba(212,175,55,0.3)',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={(e) => e.target.style.boxShadow = '0 12px 32px rgba(212,175,55,0.4)'}
-                onMouseOut={(e) => e.target.style.boxShadow = '0 8px 24px rgba(212,175,55,0.3)'}
-              >
-                Book a Call to Discuss the Full Stack →
-              </button>
-              <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '16px', lineHeight: 1.7 }}>
-                Not every broker needs all six agents. We'll help you choose the right stack for your business on the call.
-              </p>
-            </div>
-
-            {/* Bottom accent line */}
-            <div style={{ position: 'absolute', bottom: '0', left: '10%', right: '10%', height: '2px', background: 'linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%)' }} />
-          </div>
-        </div>
-      </section>
+      {/* AI add-ons moved to their own page — they are a separate business
+          line and were taking 115 lines between pricing and process. */}
+      <div style={{ background: 'var(--cream2)', padding: '48px 24px', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
+        <p style={{ fontSize: '0.95rem', color: 'var(--muted)', lineHeight: 1.8, maxWidth: '620px', margin: '0 auto 20px' }}>
+          Want the site to qualify leads, answer questions and book calls on its own?{' '}
+          <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>Six AI add-ons</strong> plug into any build.
+        </p>
+        <Link href="/ai-add-ons" className="btn-primary" style={{ textDecoration: 'none' }}>
+          Explore AI add-ons
+        </Link>
+      </div>
 
       {/* ── PROCESS ──────────────────────────────────── */}
       <section className="section" id="process" style={{ background: 'var(--cream2)' }}>
@@ -1949,17 +1328,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── LEAD MAGNET ──────────────────────────────── */}
-      <LeadMagnetSection />
-
-      {/* ── FCA CHECKLIST ────────────────────────────── */}
-      <FCAChecklistSection />
-
       {/* ── AI AUDIT ─────────────────────────────────── */}
+      {/* There used to be four lead-capture sections stacked back to back here
+          — guide, FCA checklist, audit and quiz. Four asks in a row dilute each
+          other. The FCA checklist now sits inside the compliance section where
+          it is contextually relevant, and the quiz has its own page. What is
+          left is one tool and one download. */}
       <AuditSection />
 
-      {/* ── WEBSITE SCORE QUIZ ───────────────────────── */}
-      <WebsiteScoreQuiz />
+      {/* ── LEAD MAGNET ──────────────────────────────── */}
+      <LeadMagnetSection />
 
       {/* ── FINAL CTA ────────────────────────────────── */}
       <section className="cta-final" id="cta">

@@ -298,6 +298,8 @@ function Footer() {
       <div className="footer-right">
         <Link href="/blog" className="footer-link">Blog</Link>
         <Link href="/examples" className="footer-link">Examples</Link>
+        <Link href="/ai-add-ons" className="footer-link">AI Add-Ons</Link>
+        <Link href="/website-score" className="footer-link">Score Your Site</Link>
         <Link href="/glossary" className="footer-link">Glossary</Link>
         <Link href="/referral" className="footer-link">Referral Programme</Link>
         <Link href="/privacy-policy" className="footer-link">Privacy Policy</Link>
