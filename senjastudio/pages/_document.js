@@ -94,18 +94,11 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Google Fonts. Loaded once, here, so it lands in the real document
-            head. NOTE: next/font/google would self-host these and remove the
-            render-blocking third-party request, but it silently emitted zero
-            @font-face rules in this environment — shipping that would have
-            dropped the site to Georgia. Worth revisiting on a machine where
-            the build can reach fonts.googleapis.com. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
-          rel="stylesheet"
-        />
+        {/* Fonts are self-hosted from /public/fonts and declared in
+            styles/fonts.css — no request to fonts.googleapis.com. The two
+            faces above the fold are preloaded so text paints immediately. */}
+        <link rel="preload" href="/fonts/playfair-display-400-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/inter-300-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"

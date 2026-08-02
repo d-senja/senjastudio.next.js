@@ -1,6 +1,7 @@
-/* Fonts are loaded via <link rel="preconnect"> + <link rel="stylesheet"> in
-   pages/_document.js. An @import here would add a fourth, render-blocking
-   request that cannot start until this stylesheet has itself downloaded. */
+/* Self-hosted @font-face rules. See styles/fonts.css and public/fonts/.
+   Bundled into the same stylesheet at build time, so there is no extra
+   request and nothing to fetch from fonts.googleapis.com. */
+@import './fonts.css';
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
