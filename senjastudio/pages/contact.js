@@ -72,7 +72,7 @@ export default function Contact() {
           margin: '0 auto',
           lineHeight: 1.85
         }}>
-          This page is for general enquiries and questions. To book a free 30-minute call and discuss your project directly, use the Calendly link below.
+          For questions about a build, pricing or timelines. If you would rather just talk it through, book the free 30-minute review instead — you get a specific list of what to fix either way.
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export default function Contact() {
                   color: 'rgba(255,255,255,0.78)',
                   lineHeight: 1.7
                 }}>
-                  Your message has been received. We typically respond within 2 hours during UK business hours.
+                  Dan reads every message himself and usually replies the same working day.
                 </p>
               </div>
             ) : (
@@ -323,7 +323,7 @@ export default function Contact() {
                 lineHeight: 1.75,
                 marginBottom: '24px'
               }}>
-                Book a free 30-minute call. We'll review your current site, show you live examples, and tell you exactly what your next site should look like.
+                Thirty minutes with Dan. We go through your current site, what is stopping enquiries, and what a build would actually involve. No deck, no follow-up sequence.
               </p>
               <a
                 href="https://calendly.com/dan-senjastudio/lets-talk"

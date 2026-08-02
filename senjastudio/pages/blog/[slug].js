@@ -29,6 +29,14 @@ const POSTS = {
       { type: 'h2', text: 'What to do about it' },
       { type: 'p', text: 'These three problems — generic CTAs, buried social proof, and poor mobile performance — account for the majority of the conversion gap between a broker site that generates consistent enquiries and one that doesn\'t. Each is fixable. None of them require a complete rebuild if you\'re working with someone who knows what they\'re doing.' },
       { type: 'p', text: 'If you\'d like an honest assessment of how your current site performs against these three criteria, book a free 30-minute call. We\'ll look at your site together and tell you exactly what we\'d change.' },
+      { type: 'h2', text: "Problem 4: The site never says who it is not for" },
+      { type: 'p', text: "Most broker sites try to sound available to everyone, which reads as available to no one in particular. A page that says \"whole of market advice for all your mortgage needs\" gives a self-employed applicant with two years of accounts nothing to grab onto. A page that says \"if you have been trading under three years and a high street lender has already said no, that is the case we take most often\" tells that person they are in the right place — and tells someone who is not that they should look elsewhere. Both outcomes are good. Enquiries you cannot help cost you time and cost the client a week." },
+      { type: 'h2', text: "Problem 5: There is no path for the person who is not ready yet" },
+      { type: 'p', text: "A serious share of the people reading a broker site are six weeks away from being able to act. They are saving a deposit, waiting on a probation period, or gathering another year of accounts. Most broker sites offer them one option: book a call they are not ready for. So they leave, and by the time they are ready they have forgotten the name." },
+      { type: 'p', text: "A guide, a checklist or a short email sequence gives that person a reason to hand over an address and a reason for you to be the name they remember. This is the single cheapest thing most broker sites are missing, and it is the difference between a site that only converts the ready and one that also converts the nearly ready." },
+      { type: 'h2', text: "How to check your own site in ten minutes" },
+      { type: 'p', text: "Open your homepage on your phone, not your laptop. Start a timer. Can you tell, within ten seconds and without scrolling, what kind of client this broker specialises in? Is there a review or a star rating visible in that first screen? Is there one obvious next action, or four competing ones? Can you find the FCA number without using the browser's find function? Is there anything to do other than \"contact us\" — a guide, a calculator, a checklist?" },
+      { type: 'p', text: "Every no on that list is a specific, fixable leak. None of them require a rebuild. Most of them are a copy and layout decision that somebody made by default rather than on purpose." },
     ]
   },
 
@@ -54,6 +62,15 @@ const POSTS = {
       { type: 'h2', text: 'What we include in every build' },
       { type: 'p', text: 'At Senja Studio, every site we build includes: the FCA authorisation statement in the footer of every page, compliant disclaimer copy reviewed against MCOB requirements, GDPR-compliant lead forms with explicit consent language, a properly implemented cookie consent banner, and a privacy policy covering all data collection on the site.' },
       { type: 'p', text: 'We review all copy for financial promotion compliance before any site goes live. If a client wants to make a claim that could create a compliance issue, we flag it and rewrite the copy to be compliant before launch.' },
+      { type: 'h2', text: "Social media and third-party content count too" },
+      { type: 'p', text: "The financial promotion rules do not stop at your homepage. A LinkedIn post promoting your services, a Facebook advert, a testimonial you reshare and a page a marketing agency wrote for you are all promotions. The firm is responsible for them whether or not the firm wrote them. This is where brokers most often get caught out, because the website gets reviewed carefully and everything else gets posted in a hurry." },
+      { type: 'h2', text: "Where broker sites most often slip" },
+      { type: 'p', text: "In practice the same handful of issues recur. Rate figures left on a page months after they stopped being available. A testimonial that implies a guaranteed outcome — \"they got me approved when nobody else would\" reads as a promise, whether or not it was meant as one. Comparative claims against high street lenders with nothing on file to back them. An authorisation statement in 8pt grey on a light grey footer, technically present and practically invisible. And appointed representatives displaying their own name without naming the principal firm." },
+      { type: 'h2', text: "Keeping a record is part of the requirement" },
+      { type: 'p', text: "Compliance is not only about what the page says today. You are expected to be able to show what it said when it was published and who signed it off. A dated record of each version of your promotional copy, kept somewhere you can actually retrieve it, turns a difficult conversation into a short one." },
+      { type: 'p', text: "In practice this is straightforward: keep a PDF of each significant version of your key pages with the date and the reviewer's name. It takes minutes and it is the difference between answering a question and reconstructing a year of edits from memory." },
+      { type: 'h2', text: "A note on what this article is" },
+      { type: 'p', text: "This is general guidance on website content, written by a studio that builds broker sites — not compliance advice, and not a substitute for it. Senja Studio is not authorised or regulated by the FCA. Confirm your own obligations with your compliance officer or your network before you publish. What we can tell you is what we build in as standard and what we flag before a site goes live." },
     ]
   },
 
@@ -79,6 +96,15 @@ const POSTS = {
       { type: 'h2', text: 'What to ask any provider' },
       { type: 'p', text: 'Before commissioning a website, ask: Have you built mortgage broker sites before? Do you write the copy or do I? How do you handle FCA financial promotion compliance? What\'s your mobile performance score on a typical build? Who actually builds the site — you or a subcontractor?' },
       { type: 'p', text: 'The answers will tell you a great deal about what you\'re actually buying.' },
+      { type: 'h2', text: "The costs that are not in the quote" },
+      { type: 'p', text: "Quotes cover the build. They rarely cover what the site costs to own. Hosting and a domain are small. The real costs are the ones that arrive later: who writes the copy, who adds the new Google reviews each month, who updates a rate or a product change, who fixes it when the contact form quietly stops delivering, and who is responsible when a compliance detail needs to change." },
+      { type: 'p', text: "If the answer to all of those is \"you\", the cheap quote was not cheap. If the answer is \"an hourly rate\", ask what a typical month looks like in hours before you sign." },
+      { type: 'h2', text: "What you should actually own at the end" },
+      { type: 'p', text: "Ask three questions before you commit. Who owns the domain — it should be registered to you, not to the agency. Who owns the code and the content, and can you take it elsewhere without a negotiation. And what happens if you stop paying the monthly fee: does the site stay up, go read-only, or come down." },
+      { type: 'p', text: "Plenty of cheap builds are cheap because the ownership sits with the builder. That is a reasonable business model and it is not always disclosed. It only becomes a problem on the day you want to leave." },
+      { type: 'h2', text: "How to judge a quote in five minutes" },
+      { type: 'p', text: "Ask to see two broker sites they have built and, for each, what they changed and why. Ask who writes the copy. Ask how financial promotion wording is handled, and listen for whether they have thought about it before. Ask what happens after launch, in hours per month and pounds. Ask what the site costs you to leave." },
+      { type: 'p', text: "A provider who answers all five without hesitating is worth paying more for. A provider who has not considered the compliance question is quoting for a brochure, whatever the number says." },
     ]
   },
 
@@ -103,6 +129,14 @@ const POSTS = {
       { type: 'h2', text: 'When a generic agency makes sense' },
       { type: 'p', text: 'There are situations where a generic agency is the right choice. If you need a complex bespoke web application, a custom CRM integration, or a large multi-site build — a full-service agency has the team structure for that. If you have specific brand requirements that need a large design team, a big agency makes sense.' },
       { type: 'p', text: 'For an independent mortgage broker who wants a high-converting, FCA-compliant, mobile-first site that generates consistent enquiries — a specialist will almost always deliver a better result, faster, for less money.' },
+      { type: 'h2', text: "The questions that separate the two" },
+      { type: 'p', text: "You do not need to take anyone's word for which you are dealing with. Ask what a self-employed applicant needs to see on a homepage that a PAYE applicant does not. Ask how they would handle a financial promotion claim a client wants to make that is not supportable. Ask what they would put above the fold and what they would cut." },
+      { type: 'p', text: "A specialist answers from experience and disagrees with you occasionally. A generalist asks what you would like it to say. Neither answer is dishonest — they reflect genuinely different jobs — but only one of them saves you from having to be the expert on your own website." },
+      { type: 'h2', text: "Where a generalist is genuinely the better choice" },
+      { type: 'p', text: "This is not a case for specialists in every situation. If you need a complex web application, a CRM integration with unusual requirements, a multi-brand rollout or a large design system, a full-service agency has the team structure for it and a one-person studio does not. If your brand work is a project in itself, you want people who do brand work." },
+      { type: 'p', text: "The case for a specialist is narrow and specific: a single conversion-focused site for an independent broker, built quickly, by someone who already understands the client types and the regulatory context. Inside that box the specialist wins on almost every axis. Outside it, they should tell you so." },
+      { type: 'h2', text: "The question underneath the question" },
+      { type: 'p', text: "What most brokers are really asking is whether the extra knowledge shows up in the result. It shows up in small decisions made without being asked — which client type gets the first enquiry path, where the reviews sit, what the disclaimer says, what gets left out. Individually none of them are dramatic. Together they are the difference between a site that looks professional and one that produces enquiries." },
     ]
   },
 
@@ -131,6 +165,13 @@ const POSTS = {
       { type: 'h2', text: '8. Cookie consent that actually works' },
       { type: 'p', text: 'A banner with only an "Accept" button, or one that sets cookies before the visitor makes a choice, is not PECR-compliant. You need genuine accept/decline options, and your analytics should only run after consent is given. This isn\'t just compliance — it\'s trust.' },
       { type: 'highlight', title: 'Quick audit:', text: 'Open your site right now and check it against this list. If you\'re missing three or more of these elements, book a free call. We\'ll show you exactly what a properly built broker site looks like — and what it converts at.' },
+      { type: 'h2', text: "9. A reason to come back if they are not ready" },
+      { type: 'p', text: "Most broker sites give a visitor exactly one option: book now. For the sizeable group who are months away from being able to act, that is no option at all. A guide, a checklist or a short email sequence gives them a reason to leave an address and gives you a reason to still be in their inbox when they are ready." },
+      { type: 'h2', text: "10. Copy that says who you are not for" },
+      { type: 'p', text: "\"Whole of market advice for all your mortgage needs\" is true and it is useless. It gives no one a reason to think you are the right person for their situation. Naming the cases you take most often — and, quietly, the ones you do not — makes the right client feel recognised and stops the wrong enquiries arriving. Both save you time." },
+      { type: 'h2', text: "Where to start if you only fix one" },
+      { type: 'p', text: "Segmented enquiry paths. Not because the others do not matter, but because it is the change that touches everything else: it forces you to decide who the site is for, which then dictates the copy, the reviews you feature and the wording of the call to action. Most of the other items on this list follow naturally once that decision is made." },
+      { type: 'p', text: "If you want an honest read on which of these your own site is missing, that is what the free thirty-minute review is for. You leave with the list whether or not you work with us." },
     ]
   },
 }

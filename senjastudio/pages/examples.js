@@ -15,7 +15,7 @@ export default function Examples() {
           Mortgage broker websites<br />built to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.78)', maxWidth: '540px', margin: '0 auto', lineHeight: 1.8 }}>
-          Every site built by Senja Studio is conversion-first, FCA-compliant, and delivered in 7 days. See the standard we hold ourselves to.
+          Real builds, not mockups. Below is what we changed and why — the layout decisions, the enquiry paths and the compliance work behind each one.
         </p>
       </div>
 
@@ -37,7 +37,7 @@ export default function Examples() {
                 Whitfield Mortgage Advisory
               </h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--muted)', lineHeight: 1.7, maxWidth: '600px' }}>
-                A full conversion-first homepage built for an independent mortgage adviser. Segmented CTAs for self-employed, first-time buyer, and complex case clients. Google reviews in the hero. FCA authorisation statement, WhatsApp integration, and live rate display built in from day one.
+                A homepage built for an independent adviser in Nottingham. Separate enquiry paths for self-employed, first-time buyer and complex cases, so each visitor lands on copy written for their situation. Reviews sit in the first screen rather than a testimonials section. FCA authorisation, WhatsApp and a live rate display are built in, not added later.
               </p>
               <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
                 {['Conversion-first layout', 'Segmented CTAs', 'FCA compliant', 'Mobile-first', 'WhatsApp integration'].map(tag => (

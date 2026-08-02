@@ -73,7 +73,7 @@ export default function Referral() {
           fontStyle: 'italic',
           lineHeight: 1.6
         }}>
-          Every referral that becomes a client puts money in your pocket.
+          One introduction. £250 when they sign.
         </p>
         <p style={{
           fontSize: '0.9rem',
@@ -82,7 +82,7 @@ export default function Referral() {
           margin: '0 auto',
           lineHeight: 1.85
         }}>
-          Refer an independent mortgage broker to Senja Studio. If they become a paying client, you earn £250 cash paid via bank transfer within 7 days of their deposit clearing. No limit on referrals.
+          If you know an independent mortgage broker whose website is holding them back, introduce us. If they become a client you get £250 by bank transfer within 7 working days of their deposit clearing. No cap, and no obligation on either of you.
         </p>
       </div>
 
@@ -100,12 +100,12 @@ export default function Referral() {
             {
               num: '01',
               title: 'Share your unique link',
-              body: 'Sign up below and receive your unique referral link. Share it with mortgage brokers you know, or introduce Dan directly via email introduction. Either works.'
+              body: 'Sign up and you get a tracking link. Use it, or just introduce Dan by email and mention the name — both are tracked the same way.'
             },
             {
               num: '02',
               title: 'The broker becomes a client',
-              body: 'The broker books a free call, discusses their project, and becomes a paying client by making their 50% deposit payment. We track all referrals by link or by name.'
+              body: 'They book a call and decide in their own time. Nothing is owed to anyone unless they go ahead and pay their deposit.'
             },
             {
               num: '03',
@@ -199,7 +199,7 @@ export default function Referral() {
             maxWidth: '700px',
             margin: '32px auto 0'
           }}>
-            If you work with independent mortgage brokers and you know someone who needs a better website, this programme puts cash in your pocket for the introduction. Simple as that.
+            If mortgage brokers already trust your judgement on anything, an introduction costs you one email and is worth £250 if it lands. That is the whole programme.
           </p>
         </div>
       </div>
@@ -224,7 +224,7 @@ export default function Referral() {
           marginBottom: '40px',
           lineHeight: 1.8
         }}>
-          Sign up below and we'll send you your unique referral link and tracking details within 24 hours.
+          We will send your tracking link within 24 hours. No agreement to sign and nothing to pay.
         </p>
 
         {submitted ? (
