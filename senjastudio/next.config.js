@@ -29,11 +29,8 @@ const nextConfig = {
         ],
       },
       {
-        // Fingerprinted build assets never change under the same URL.
-        source: '/_next/static/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-      },
-      {
+        // Note: don't add a rule for /_next/static — Next already sets
+        // immutable caching there and overriding it breaks dev behaviour.
         source: '/downloads/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=86400' }],
       },

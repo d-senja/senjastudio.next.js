@@ -103,7 +103,7 @@ export default function Examples() {
           You could be next.<br /><em style={{ color: 'var(--gold-light)' }}>Seriously.</em>
         </h2>
         <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.45)', maxWidth: '500px', margin: '0 auto 36px', lineHeight: 1.8 }}>
-          Every broker on this page started with a call. 30 minutes. No commitment. By the end you'll know exactly what your site needs — and whether we're the right fit to build it.
+          Every build starts with a call. 30 minutes, no commitment. By the end you&apos;ll know exactly what your site needs — and whether we&apos;re the right fit to build it.
         </p>
         <button className="btn-gold" onClick={() => document.dispatchEvent(new CustomEvent('openModal'))}>
           Book Your Free Call

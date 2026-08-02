@@ -1599,7 +1599,11 @@ export default function Home() {
           <p>Most agencies build sites for restaurants, gyms, and solicitors. I build for one type of business only. Which means I know exactly what your self-employed clients need to see before they pick up the phone. I know what FCA compliance looks like in practice. I know what layout converts a complex case enquiry at 11pm. <strong>That knowledge goes into every single build.</strong></p>
           <p>Agencies charge £5,000–£8,000 and take three months. I deliver better — <strong style={{ color: 'var(--gold-light)' }}>in 7 days, from £2,500.</strong> Not because I cut corners. Because I've built enough of these to know exactly what works, and I don't waste time on anything that doesn't.</p>
           <div className="meet-dan-stats">
-            {[['6', 'Sites delivered'], ['96%', 'Mortgage brokers'], ['50/50', 'Payment split']].map(([num, label]) => (
+            {/* Structural facts about how the studio works, not client counts.
+                "6 sites delivered" was not true, and "96% mortgage brokers"
+                contradicted the four places that say we build exclusively for
+                brokers — 96% means 4% are something else. */}
+            {[['100%', 'Mortgage brokers'], ['7 days', 'Standard delivery'], ['50/50', 'Payment split']].map(([num, label]) => (
               <div key={label} className="meet-dan-stat">
                 <div className="meet-dan-stat-num">{num}</div>
                 <div className="meet-dan-stat-label">{label}</div>

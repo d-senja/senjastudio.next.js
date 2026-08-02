@@ -94,7 +94,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Google Fonts — lives here so it's in the real document head, not per-page */}
+        {/* Google Fonts. Loaded once, here, so it lands in the real document
+            head. NOTE: next/font/google would self-host these and remove the
+            render-blocking third-party request, but it silently emitted zero
+            @font-face rules in this environment — shipping that would have
+            dropped the site to Georgia. Worth revisiting on a machine where
+            the build can reach fonts.googleapis.com. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
