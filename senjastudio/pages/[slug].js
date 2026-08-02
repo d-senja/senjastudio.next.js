@@ -573,7 +573,7 @@ export default function LocationPage({ location, slug }) {
           Mortgage broker website design {city}
         </span>
         <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,4vw,3.5rem)', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.1, marginBottom: '16px', letterSpacing: '-0.02em' }}>
-          The mortgage broker website<br /><em style={{ color: '#E2C46A' }}>{city} independents trust.</em>
+          The mortgage broker website<br /><em style={{ color: '#E2C46A' }}>built for {city}.</em>
         </h1>
         {/* The old copy asserted "FCA-compliant" on every page, including the
             USA, Australia, Dubai and Germany, where the FCA has no
@@ -592,7 +592,7 @@ export default function LocationPage({ location, slug }) {
           Why brokers in {city} choose Senja Studio
         </span>
         <h2 className="section-heading">
-          Built for the way {city}<br />mortgage clients <em>actually search.</em>
+          Built for the way clients in {city}<br /><em>actually search.</em>
         </h2>
         <div className="grid-2col" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           {[
@@ -620,14 +620,14 @@ export default function LocationPage({ location, slug }) {
             Compliance in {country}
           </span>
           <h2 className="section-heading">
-            What a {city} broker site<br />has to <em>get right.</em>
+            What a broker site in {city}<br />has to <em>get right.</em>
           </h2>
           <p style={{ fontSize: '1rem', color: 'var(--muted)', lineHeight: 1.9, marginBottom: '24px' }}>
             {regulator.note}
           </p>
           <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: '20px', margin: '32px 0' }}>
             <p style={{ fontSize: '0.95rem', color: 'var(--ink)', lineHeight: 1.85, margin: 0 }}>
-              <strong>On every page we build for a {city} broker:</strong> {regulator.display}.
+              <strong>On every page we build for a broker in {city}:</strong> {regulator.display}.
             </p>
           </div>
           <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.8, margin: 0 }}>
@@ -640,7 +640,7 @@ export default function LocationPage({ location, slug }) {
 
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '72px 24px' }}>
         <span className="section-label" style={{ display: 'block', textAlign: 'center', marginBottom: '16px' }}>
-          How {city} clients search
+          How clients in {city} search
         </span>
         <h2 className="section-heading">
           Built around what they<br />actually <em>type in.</em>
@@ -662,7 +662,7 @@ export default function LocationPage({ location, slug }) {
 
       {/* FAQs */}
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '72px 48px' }}>
-        <h2 className="section-heading">Questions from {city}<br />mortgage brokers</h2>
+        <h2 className="section-heading">Questions from brokers<br />in {city}</h2>
         <div style={{ border: '1px solid var(--border)' }}>
           {faqs.map((faq, i) => (
             <details key={i} className="faq-item">

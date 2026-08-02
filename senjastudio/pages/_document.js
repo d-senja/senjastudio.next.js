@@ -8,7 +8,7 @@ export default function Document() {
         "@type": "LocalBusiness",
         "name": "Senja Studio",
         "url": "https://senjastudio.co.uk",
-        "description": "Mortgage broker website design agency building conversion-first, FCA-compliant websites exclusively for independent mortgage brokers worldwide. Websites from £1,500, full builds from £2,500, delivered in 7 days.",
+        "description": "Website design studio working exclusively with independent mortgage brokers, in the UK and internationally. Conversion-first builds with the local regulator's requirements handled. Websites from £1,500, full builds from £2,500, delivered in 7 days.",
         "priceRange": "££",
         "email": "dan@senjastudio.co.uk",
         "areaServed": "Worldwide",
@@ -86,7 +86,7 @@ export default function Document() {
           "name": "Senja Studio"
         },
         "email": "dan@senjastudio.co.uk",
-        "description": "Specialist in mortgage broker website design, building conversion-first, FCA-compliant websites for independent brokers"
+        "description": "Specialist in mortgage broker website design, building conversion-first websites for independent brokers"
       }
     ]
   }
