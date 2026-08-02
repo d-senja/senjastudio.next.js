@@ -18,7 +18,7 @@ const NICHE_CARDS = [
 const WHO_CARDS = [
   { title: 'Brokers Just Starting Out', body: "Your first impression is everything. Starting with a professional, FCA-compliant site from day one means you look established immediately — and clients choose you over brokers who've been going for years but haven't invested online." },
   { title: 'Established Brokers Leaking Leads', body: "You're getting traffic but not enough enquiries. Your current site looks dated, loads slowly, and doesn't speak to the client types you actually want. A conversion-first rebuild pays for itself within weeks." },
-  { title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build sites with segmented CTAs that speak directly to them so they self-identify and book rather than bounce." },
+  { title: 'Complex Case Specialists', body: "Self-employed clients, adverse credit, unusual income — these are your best clients and the hardest to reach. We build separate entry points for each, so the right client recognises themselves and makes contact instead of bouncing." },
   { title: 'Brokers Running Ads', body: "Running Google or Facebook ads to a generic site is burning money. Every £1 you spend on traffic needs a site that converts it. If the page you send that traffic to doesn't speak to the client you're targeting, you pay for the click and lose the enquiry." },
 ]
 
@@ -42,7 +42,7 @@ const OFFER_ITEMS = [
 const PROCESS_STEPS = [
   { num: '01', day: 'Day 0', title: 'Free 30-min call', body: "I pull up your site and tell you exactly what's costing you leads — specific problems, specific fixes. No pitch deck, no generic advice. If I can't show you something useful in 30 minutes, you've lost nothing." },
   { num: '02', day: 'Day 0', title: 'Invoice & brief', body: "50% invoice sent. Once paid, you receive a short project brief — your brand, your clients, your positioning. Takes around 30 minutes to fill in properly. That's all we need to get started." },
-  { num: '03', day: 'Days 1–5', title: 'The build', body: "I build your site from scratch — conversion-first layout, segmented CTAs for every client type, your Google reviews positioned to close leads, FCA compliance throughout. You send me the brief. I handle everything else." },
+  { num: '03', day: 'Days 1–5', title: 'The build', body: "I build your site from scratch — the layout, the separate paths for each client type, your reviews placed where they do the most work, and the compliance detail. You send me the brief. I handle everything else." },
   { num: '04', day: 'Day 5–6', title: 'Review & revisions', body: "You get a preview link. Two rounds of revisions — anything you want changed, we change it. Once you're happy, we move to launch." },
   { num: '05', day: 'Day 7', title: 'Live & launched', body: "Final 50% invoice. Site goes live on your domain. I handle all the deployment — you don't need to touch GitHub, Vercel, or DNS. It just appears." },
   { num: '06', day: 'Ongoing', title: 'Care Plan kicks in', body: "Your first month is free. After that, £150/month covers up to 2 hours of changes — new reviews added, copy refreshed, tweaks and updates whenever you need them." },
@@ -64,7 +64,7 @@ const FAQS = [
   { q: "Do I need to provide content, copy, or photos?", a: "No. We write all the copy, structure the page, and work with whatever brand assets you have. If you have a headshot, great. If not, we work with what's available. Everything you need to provide is covered in the project brief." },
   { q: "What's the Care Plan and what does it include?", a: "The Care Plan at £150/month comes with every build — your first month is free. It covers up to 2 hours of changes per month — adding new Google reviews, updating rates, refreshing copy, small design tweaks. Work beyond 2 hours is billed at £75/hour, agreed in advance." },
   { q: 'Will I own the website?', a: "Yes. You own everything — the code, the content, the files. There's no platform lock-in. If you ever want to move the site elsewhere, take it. Everything is yours." },
-  { q: 'How is this different from using Wix or Squarespace?', a: "Wix and Squarespace are generic tools built for every business. Senja Studio builds specifically for mortgage brokers — with segmented CTAs, FCA compliance, conversion-first layouts, and copy that speaks directly to your client types. The result converts at a fundamentally different rate." },
+  { q: 'How is this different from using Wix or Squarespace?', a: "Wix and Squarespace are generic tools built for every business. Senja Studio builds for one industry. That shows up in the layout decisions, the compliance detail, and copy written for the clients you actually want. The result converts at a fundamentally different rate." },
 ]
 
 const BLOG_POSTS = [
@@ -340,10 +340,10 @@ function AuditSection() {
           <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🤖</div>
           <p className="section-label">Free AI Website Audit</p>
           <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem,3.5vw,2.2rem)', fontWeight: 500, color: 'var(--ink)', marginBottom: '16px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
-            Get an instant conversion audit<br />of <em style={{ color: 'var(--gold)' }}>your broker site</em>
+            See what your site looks like<br />to a <em style={{ color: 'var(--gold)' }}>mortgage client</em>
           </h2>
           <p style={{ fontSize: '0.9rem', color: 'var(--muted)', lineHeight: 1.8, maxWidth: '580px', margin: '0 auto' }}>
-            Enter your website URL and our AI will analyze your homepage for the 5 biggest conversion issues — CTA clarity, trust signals, FCA compliance, mobile UX, and more. <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>2 free audits per day.</strong>
+            Paste your URL. We read your actual homepage and come back with the five specific things costing you enquiries — CTA clarity, trust signals, compliance display and mobile experience. <strong style={{ color: 'var(--ink)', fontWeight: 600 }}>2 free audits per day.</strong>
           </p>
         </div>
 
@@ -453,7 +453,7 @@ function AuditSection() {
                 className="btn-gold"
                 onClick={() => document.dispatchEvent(new Event('openModal'))}
               >
-                Book a Free 30-Minute Call with Dan
+                Book a free 30-minute review
               </button>
             </div>
           </div>
@@ -545,10 +545,10 @@ function ROICalculator() {
       {/* BOTTOM CTA BAR */}
       <div style={{ maxWidth: '940px', margin: '1px auto 0', background: 'var(--navy)', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
         <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, margin: 0 }}>
-          <strong style={{ color: 'var(--white)' }}>Your site is live in 7 days.</strong> A single well-placed case more than justifies the investment. Ready to see what's possible?
+          <strong style={{ color: 'var(--white)' }}>Your site is live in seven days.</strong> On these numbers, the build pays for itself in a handful of cases.
         </p>
         <button className="btn-gold" onClick={() => document.dispatchEvent(new Event('openModal'))} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
-          Book a free call with Dan →
+          Book a free review →
         </button>
       </div>
       <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '0.7rem', color: 'var(--muted)' }}>
@@ -988,9 +988,9 @@ export default function Home() {
 
       {/* ── WHY SPECIALIST ───────────────────────────── */}
       <section className="section why-niche" id="why-niche">
-        <p className="section-label">Why we build exclusively for mortgage brokers</p>
+        <p className="section-label">Why specialism matters</p>
         <h2 className="section-heading" id="niche-heading">
-          The most effective mortgage broker website design <br />comes from <em>deep specialism.</em>
+          A generic agency has to learn your<br />business. We <em>already know it.</em>
         </h2>
         <div className="niche-grid">
           {NICHE_CARDS.map((card, i) => (
@@ -1005,9 +1005,9 @@ export default function Home() {
 
       {/* ── WHO IT'S FOR ─────────────────────────────── */}
       <section className="section who-section" id="who">
-        <p className="section-label">Built specifically for brokers like you.</p>
+        <p className="section-label">Who we work with</p>
         <h2 className="section-heading" id="who-heading">
-          Is this the right fit<br />for <em>your firm?</em>
+          Where a better site<br />actually <em>changes the numbers.</em>
         </h2>
         <div className="who-grid">
           {WHO_CARDS.map((card, i) => (
@@ -1025,17 +1025,17 @@ export default function Home() {
       <section className="section scroll-reveal-text" id="offer" style={DARK_PANEL}>
         <p className="section-label">What&apos;s included</p>
         <h2 className="section-heading" id="offer-heading" style={{ color: '#FFFFFF' }}>
-          Everything your site needs to <em style={{ color: 'var(--gold-light)' }}>win clients.</em>
+          What every build includes <em style={{ color: 'var(--gold-light)' }}>as standard.</em>
         </h2>
         <CardStackCarousel items={OFFER_ITEMS} />
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <button className="btn-gold" onClick={openModal}>See What We'd Build for You</button>
+          <button className="btn-gold" onClick={openModal}>Talk through your build</button>
         </div>
       </section>
 
       {/* ── FCA COMPLIANCE ───────────────────────────── */}
       <section className="section scroll-reveal-text" id="compliance" style={{ background: 'var(--navy)' }}>
-        <p className="section-label" style={{ color: 'var(--gold-light)' }}>Regulatory compliance — built in, not bolted on</p>
+        <p className="section-label">Compliance</p>
         <h2 className="section-heading" style={{ color: 'var(--white)' }}>
           Most agencies hand you a site<br />and leave you to <em style={{ color: 'var(--gold-light)' }}>figure out compliance yourself.</em>
         </h2>
@@ -1073,7 +1073,7 @@ export default function Home() {
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <button className="btn-gold" onClick={openModal}>Book a Free Call — See the Compliance Checklist</button>
+          <button className="btn-gold" onClick={openModal}>Talk through compliance on a call</button>
         </div>
 
         {/* The checklist download lives here, next to the compliance argument
@@ -1086,9 +1086,9 @@ export default function Home() {
 
       {/* ── AGENCY COMPARISON ────────────────────────── */}
       <section className="section" id="why">
-        <p className="section-label">Why Senja Studio</p>
+        <p className="section-label">The comparison</p>
         <h2 className="section-heading">
-          What you actually get vs<br /><em>a typical agency.</em>
+          What you actually get,<br />line by <em>line.</em>
         </h2>
         {/* Scrolls horizontally on narrow screens rather than squeezing three
             columns into 375px. */}
@@ -1130,7 +1130,7 @@ export default function Home() {
       <div className="social-trust">
         <div className="social-trust-inner">
           <div className="social-trust-text">
-            One extra completion pays for this build. <em>Most brokers recoup within 3 weeks.</em> Every month after that is pure revenue your old site was leaving on the table.
+            A site is the one asset that works while you sleep. <em>It should earn its cost back in cases, not clicks.</em>
           </div>
           <div className="trust-badges">
             {[['7', 'Day delivery'], ['£1,500', 'Starting price'], ['50/50', 'Payment split'], ['0', 'Lock-in contracts']].map(([num, label]) => (
@@ -1178,7 +1178,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <button className="btn-gold" onClick={openModal} style={{ marginTop: '24px', padding: '19px 32px' }}>Book a Free Call with Dan</button>
+          <button className="btn-gold" onClick={openModal} style={{ marginTop: '24px', padding: '19px 32px' }}>Book a call with Dan</button>
           </div>
         </div>
       </section>
@@ -1186,7 +1186,7 @@ export default function Home() {
       {/* ── TESTIMONIALS ─────────────────────────────── */}
       <section className="section" id="testimonials">
         <p className="section-label">What brokers say</p>
-        <h2 className="section-heading">The results speak<br />for <em>themselves.</em></h2>
+        <h2 className="section-heading">What brokers say<br />after <em>launch.</em></h2>
         <div className="testimonials-grid">
           {TESTIMONIALS.map((t, i) => (
             <article key={i} className="testi-card">
@@ -1203,7 +1203,7 @@ export default function Home() {
       <section className="section pricing scroll-reveal-text" id="pricing">
         <div className="section-gold-line" />
         <p className="section-label">Transparent pricing</p>
-        <h2 className="section-heading">No hidden fees. No surprises.<br /><em>Just results.</em></h2>
+        <h2 className="section-heading">Three tiers. Fixed prices.<br /><em>No surprises.</em></h2>
 
         <div className="scroll-reveal" style={{ textAlign: 'left', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)' }}>
           <strong style={{ color: 'var(--ink)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
@@ -1269,9 +1269,9 @@ export default function Home() {
       {/* ── PROCESS ──────────────────────────────────── */}
       <section className="section" id="process" style={{ background: 'var(--cream2)' }}>
         <div className="section-gold-line" />
-        <p className="section-label">What happens next</p>
+        <p className="section-label">The process</p>
         <h2 className="section-heading">
-          From first call to live site in <em>7 days.</em> Here's how.
+          From first call to live site<br />in <em>seven days.</em>
         </h2>
         <div className="grid-3col" style={{ maxWidth: '1060px', margin: '0 auto' }}>
           {PROCESS_STEPS.map((step, i) => (
@@ -1284,14 +1284,14 @@ export default function Home() {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '32px' }}>
-          <button className="btn-primary" onClick={openModal}>Start the Process — Book a Free Call</button>
+          <button className="btn-primary" onClick={openModal}>Start with a free review</button>
         </div>
       </section>
 
       {/* ── FAQ ──────────────────────────────────────── */}
       <section className="section" id="faq">
         <p className="section-label">Common questions</p>
-        <h2 className="section-heading">Everything you need to<br /><em>know before booking.</em></h2>
+        <h2 className="section-heading">The questions brokers<br />actually <em>ask us.</em></h2>
         <div style={{ maxWidth: '740px', margin: '0 auto', border: '1px solid var(--border)' }}>
           {FAQS.map((item, i) => (
             <details key={i} className="faq-item">
@@ -1307,7 +1307,7 @@ export default function Home() {
       {/* ── BLOG PREVIEW ─────────────────────────────── */}
       <section className="section" id="blog" style={{ background: 'var(--cream2)' }}>
         <p className="section-label">From the journal</p>
-        <h2 className="section-heading">Guides for mortgage brokers<br />who want to <em>convert more.</em></h2>
+        <h2 className="section-heading">What we’ve learned building<br />sites for <em>this one industry.</em></h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', maxWidth: '1100px', margin: '0 auto 36px' }}>
           {BLOG_POSTS.map(post => (
             <Link key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration: 'none', background: 'var(--surface)', display: 'block' }}>
@@ -1353,13 +1353,13 @@ export default function Home() {
           </div>
           <p className="section-label" style={{ color: 'var(--gold-light)' }}>Ready to build?</p>
           <h2 className="cta-heading">
-            Your competitors booked<br />a call. <em>Will you?</em>
+            Find out what your site is<br />costing you. <em>For free.</em>
           </h2>
           <p className="cta-sub">
-            Book a free 30-minute call. We'll pull up your current site, tell you exactly what's costing you leads, and show you a live example of what a properly built broker site looks like. Most brokers leave the call and book the same day. No obligation — but you'll understand why they do.
+            Thirty minutes, on a call with Dan. We pull up your current site, go through what's stopping enquiries, and show you what a properly built broker site does differently. You leave with a specific list of fixes whether or not you work with us.
           </p>
           <button className="btn-gold" onClick={openModal} style={{ marginBottom: '16px' }}>
-            Book Your Free Call — See the Difference
+            Book your free 30-minute review
           </button>
           <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.25)', marginTop: '8px' }}>
             dan@senjastudio.co.uk · senjastudio.co.uk
