@@ -72,6 +72,12 @@ const nextConfig = {
         source: '/downloads/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=86400' }],
       },
+      {
+        // The founder video is a large file that changes rarely, and browsers
+        // request it in ranges as it plays — cache it hard.
+        source: '/videos/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000' }],
+      },
     ]
   },
 }

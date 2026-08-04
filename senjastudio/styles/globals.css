@@ -998,6 +998,106 @@ nav::after {
   color: rgba(255,255,255,0.75);
   font-weight: 500;
 }
+/* FOUNDER VIDEO
+   Sits immediately after Meet Dan. Deliberately a light panel: social trust and
+   Meet Dan are both --royal, so a third dark block in a row would read as one
+   long slab. --cream2 picks the alternating rhythm back up before testimonials. */
+.founder-video { background: var(--cream2); }
+.founder-video-sub {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 620px;
+  margin: 0 auto 48px;
+}
+.founder-video-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+/* The frame carries the aspect ratio, not the <video>, so the box is reserved
+   before the file loads and nothing on the page jumps. */
+.founder-video-frame {
+  position: relative;
+  width: 100%;
+  background: var(--royal);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 28px rgba(15,11,30,0.12);
+  overflow: hidden;
+}
+.founder-video-player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* contain, not cover: a video that isn't exactly the frame ratio gets
+     letterboxed against the dark frame rather than cropped. */
+  object-fit: contain;
+  background: var(--royal);
+}
+/* Same gold slug as the Meet Dan photo, so the two read as a pair — but pinned
+   to the top, because the browser draws its own control bar along the bottom
+   edge and the two overlapped there. */
+.founder-video-tag {
+  position: absolute;
+  top: 0; left: 0;
+  background: var(--gold);
+  color: #0F0B1E;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  pointer-events: none;
+}
+.founder-video-notes h3 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.founder-video-notes ul {
+  list-style: none;
+  margin-bottom: 24px;
+}
+.founder-video-notes li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.founder-video-notes li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 9px;
+  width: 7px; height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+.founder-video-notes p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .founder-video-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 720px;
+  }
+  .founder-video-notes .btn-primary { width: 100%; }
+}
+
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2854,6 +2954,9 @@ footer {
   .offer-item p,
   .offer-body,
   .meet-dan-content p,
+  .founder-video-sub,
+  .founder-video-notes li,
+  .founder-video-notes p,
   .testi-quote,
   .pricing-features li,
   .faq-a,

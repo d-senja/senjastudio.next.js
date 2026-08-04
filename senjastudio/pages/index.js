@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import Link from 'next/link'
@@ -878,6 +880,82 @@ function FCAChecklistForm() {
   )
 }
 
+// ── FOUNDER VIDEO ─────────────────────────────────────────────
+// The video file is dropped into /public/videos by hand, not committed by a
+// code change, so this whole section is conditional: getStaticProps below looks
+// for the file at build time and passes null when it isn't there. No file, no
+// section — the page never renders a broken player while the video is still
+// being filmed. Drop the file in, deploy, and the section appears.
+function FounderVideo({ video, openModal }) {
+  // Filmed landscape or vertical, the frame adapts once the browser reports the
+  // real dimensions. Until then it holds a 16:9 box, so nothing shifts on load.
+  const [ratio, setRatio] = useState(null)
+  const isPortrait = ratio !== null && ratio < 1
+
+  return (
+    <section className="section founder-video" id="founder-video">
+      <p className="section-label">In his own words</p>
+      <h2 className="section-heading">
+        You&apos;ve read how I work.<br />Here it is <em>out loud.</em>
+      </h2>
+      <p className="founder-video-sub">
+        You&apos;re about to hand your website — the thing that decides whether a stranger calls you or the broker above you in the search results — to someone you&apos;ve never met. Two minutes of me talking is a fairer way to judge that than another page of copy.
+      </p>
+
+      <div className="founder-video-grid">
+        <div
+          className="founder-video-frame"
+          style={{
+            aspectRatio: ratio ? String(ratio) : '16 / 9',
+            // A vertical video would otherwise run to well over a thousand
+            // pixels tall in a 660px column. Held to a reel width instead.
+            maxWidth: isPortrait ? '420px' : undefined,
+            marginInline: isPortrait ? 'auto' : undefined,
+          }}
+        >
+          <video
+            className="founder-video-player"
+            controls
+            playsInline
+            // Metadata only: enough for the real aspect ratio and the first
+            // frame, without pulling the whole file down for every visitor.
+            preload="metadata"
+            poster={video.poster || undefined}
+            onLoadedMetadata={(e) => {
+              const { videoWidth: w, videoHeight: h } = e.currentTarget
+              if (w && h) setRatio(w / h)
+            }}
+          >
+            {video.webm && <source src={video.webm} type="video/webm" />}
+            {video.mp4 && <source src={video.mp4} type="video/mp4" />}
+            {video.captions && (
+              <track kind="captions" src={video.captions} srcLang="en" label="English" default />
+            )}
+            <p>
+              Your browser can&apos;t play this video.{' '}
+              <a href={video.mp4 || video.webm} download>Download it instead</a>.
+            </p>
+          </video>
+          <div className="founder-video-tag">Dan Senja · Founder</div>
+        </div>
+
+        <div className="founder-video-notes">
+          <h3>What I cover</h3>
+          <ul>
+            <li>Why I build for mortgage brokers and nobody else — and what that changes about your site.</li>
+            <li>What the seven days actually look like, from the brief landing to the site going live.</li>
+            <li>Where broker sites quietly lose enquiries, and what we do differently on every build.</li>
+          </ul>
+          <p>
+            No script, no crew, no agency voiceover. If you&apos;d rather ask the questions yourself, that&apos;s a thirty-minute call — I pull up your current site and tell you exactly what it&apos;s costing you.
+          </p>
+          <button className="btn-primary" onClick={openModal}>Book a free 30-minute review</button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ── PAGE ──────────────────────────────────────────────────────
 
 // FAQPage schema belongs only on the page that actually shows the FAQ.
@@ -899,7 +977,7 @@ const HOME_SCHEMA = {
   ],
 }
 
-export default function Home() {
+export default function Home({ founderVideo }) {
   const [modalOpen, setModalOpen] = useState(false)
   const openModal = (e) => { if (e) e.preventDefault(); setModalOpen(true) }
 
@@ -1194,6 +1272,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FOUNDER VIDEO ────────────────────────────── */}
+      {/* Directly under the bio: the bio makes the argument, the video puts a
+          voice to it, and the testimonials below then let clients speak. Only
+          renders once the file exists in /public/videos. */}
+      {founderVideo && <FounderVideo video={founderVideo} openModal={openModal} />}
+
       {/* ── TESTIMONIALS ─────────────────────────────── */}
       <section className="section" id="testimonials">
         <p className="section-label">What brokers say</p>
@@ -1386,6 +1470,43 @@ export default function Home() {
       </section>
     </Layout>
   )
+}
+
+// ── FOUNDER VIDEO FILE LOOKUP (build time only) ───────────────
+//
+// Everything below runs on the server during `next build` and is stripped from
+// the browser bundle along with the fs/path imports, because nothing outside
+// getStaticProps references it.
+//
+// Expected files in /public/videos — only the .mp4 is required:
+//   founder.mp4          the video itself
+//   founder.webm         optional smaller alternative, served first if present
+//   founder-poster.jpg   optional still frame shown before play (.png/.webp too)
+//   founder.vtt          optional subtitles
+const VIDEO_DIR = path.join(process.cwd(), 'public', 'videos')
+
+function findFounderVideo() {
+  if (!fs.existsSync(VIDEO_DIR)) return null
+
+  const pick = (names) => {
+    const found = names.find((name) => fs.existsSync(path.join(VIDEO_DIR, name)))
+    return found ? `/videos/${found}` : null
+  }
+
+  const mp4 = pick(['founder.mp4'])
+  const webm = pick(['founder.webm'])
+  if (!mp4 && !webm) return null
+
+  return {
+    mp4,
+    webm,
+    poster: pick(['founder-poster.jpg', 'founder-poster.jpeg', 'founder-poster.png', 'founder-poster.webp']),
+    captions: pick(['founder.vtt']),
+  }
+}
+
+export async function getStaticProps() {
+  return { props: { founderVideo: findFounderVideo() } }
 }
 
 // Client-only for the same reason as ActivityFeed — the page is static HTML.
