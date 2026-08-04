@@ -6,6 +6,127 @@ const rateLimitMap = new Map();
 const RATE_LIMIT = 2;
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+const MAX_URL_LENGTH = 2000;
+
+// Parse an IPv4 literal in any form inet_aton accepts — dotted quad, bare
+// decimal, octal, hex, and the short 2/3-part forms. "127.1", "2130706433" and
+// "0x7f.1" all reach loopback, and a substring blocklist catches none of them.
+// Returns the address as a 32-bit number, or null if this is not an IPv4 literal.
+function parseIPv4(host) {
+  const parts = host.split('.');
+  if (parts.length === 0 || parts.length > 4) return null;
+
+  const nums = [];
+  for (const part of parts) {
+    let n;
+    if (/^0[xX][0-9a-fA-F]+$/.test(part)) n = parseInt(part, 16);
+    else if (/^0[0-7]+$/.test(part)) n = parseInt(part, 8);
+    else if (/^[0-9]+$/.test(part)) n = parseInt(part, 10);
+    else return null;
+    if (!Number.isSafeInteger(n) || n < 0) return null;
+    nums.push(n);
+  }
+
+  // The final part absorbs whatever bytes the earlier ones didn't.
+  const last = nums.pop();
+  if (nums.some((n) => n > 255)) return null;
+  if (last >= 2 ** (8 * (4 - nums.length))) return null;
+
+  return nums.reduce((acc, n, i) => acc + n * 2 ** (8 * (3 - i)), 0) + last;
+}
+
+function isPrivateIPv4(n) {
+  const a = (n >>> 24) & 255;
+  const b = (n >>> 16) & 255;
+
+  if (a === 0) return true;                            // 0.0.0.0/8
+  if (a === 10) return true;                           // private
+  if (a === 127) return true;                          // loopback
+  if (a === 100 && b >= 64 && b <= 127) return true;   // CGNAT 100.64/10
+  if (a === 169 && b === 254) return true;             // link-local, cloud metadata
+  if (a === 172 && b >= 16 && b <= 31) return true;    // private
+  if (a === 192 && b === 168) return true;             // private
+  if (a === 192 && b === 0) return true;               // 192.0.0/24 protocol assignments
+  if (a === 198 && (b === 18 || b === 19)) return true; // benchmarking
+  if (a >= 224) return true;                           // multicast and reserved
+  return false;
+}
+
+// Expand an IPv6 literal to its 8 groups, or null if it isn't one. The URL
+// parser normalises embedded IPv4 to hex — "::ffff:169.254.169.254" comes back
+// as "::ffff:a9fe:a9fe" — so matching on a dotted tail alone misses the mapped
+// metadata address.
+function parseIPv6(host) {
+  let s = host.toLowerCase();
+
+  const tail = s.match(/(\d+\.\d+\.\d+\.\d+)$/);
+  if (tail) {
+    const v4 = parseIPv4(tail[1]);
+    if (v4 === null) return null;
+    s = s.slice(0, tail.index) +
+      ((v4 >>> 16) & 0xffff).toString(16) + ':' + (v4 & 0xffff).toString(16);
+  }
+
+  const halves = s.split('::');
+  if (halves.length > 2) return null;
+
+  const head = halves[0] ? halves[0].split(':') : [];
+  const rest = halves.length === 2 && halves[1] ? halves[1].split(':') : [];
+
+  let groups;
+  if (halves.length === 2) {
+    const fill = 8 - head.length - rest.length;
+    if (fill < 0) return null;
+    groups = [...head, ...Array(fill).fill('0'), ...rest];
+  } else {
+    groups = head;
+  }
+  if (groups.length !== 8) return null;
+
+  const out = [];
+  for (const g of groups) {
+    if (!/^[0-9a-f]{1,4}$/.test(g)) return null;
+    out.push(parseInt(g, 16));
+  }
+  return out;
+}
+
+function isPrivateIPv6(g) {
+  if (g.slice(0, 7).every((x) => x === 0) && (g[7] === 0 || g[7] === 1)) return true; // :: and ::1
+  if ((g[0] & 0xfe00) === 0xfc00) return true;   // unique local fc00::/7
+  if ((g[0] & 0xffc0) === 0xfe80) return true;   // link-local fe80::/10
+  if (g[0] === 0x64 && g[1] === 0xff9b) return true; // NAT64 64:ff9b::/96
+
+  // IPv4-mapped (::ffff:a.b.c.d) and the deprecated IPv4-compatible form.
+  const mapped = g.slice(0, 5).every((x) => x === 0) && g[5] === 0xffff;
+  const compat = g.slice(0, 6).every((x) => x === 0);
+  if (mapped || compat) return isPrivateIPv4((((g[6] << 16) >>> 0) + g[7]) >>> 0);
+
+  return false;
+}
+
+// `hostname` comes from the URL parser, so IPv6 arrives bracketed.
+function isPrivateHost(hostname) {
+  const host = hostname.toLowerCase().replace(/^\[|\]$/g, '');
+
+  if (host === 'localhost' || host.endsWith('.localhost')) return true;
+  if (host.endsWith('.local') || host.endsWith('.internal') || host.endsWith('.home.arpa')) return true;
+
+  const v4 = parseIPv4(host);
+  if (v4 !== null) return isPrivateIPv4(v4);
+
+  if (host.includes(':')) {
+    const v6 = parseIPv6(host);
+    // Fail closed: an address shape we can't read is not one we should fetch.
+    return v6 === null ? true : isPrivateIPv6(v6);
+  }
+
+  // Our own site — auditing ourselves is not the product.
+  if (host === 'senjastudio.co.uk' || host.endsWith('.senjastudio.co.uk')) return true;
+
+  return false;
+}
+
 function checkRateLimit(ip) {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
@@ -31,6 +152,39 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // Validate before rate limiting. This used to run the other way round, so two
+  // typos cost the visitor both of their free audits for the day.
+  const body = req.body && typeof req.body === 'object' ? req.body : {};
+  const rawUrl = typeof body.url === 'string' ? body.url.trim() : '';
+
+  if (!rawUrl) return res.status(400).json({ error: 'Missing URL' });
+  if (rawUrl.length > MAX_URL_LENGTH) {
+    return res.status(400).json({ error: 'That URL is too long. Please enter the homepage address.' });
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return res.status(400).json({ error: 'Please enter a full URL starting with https://' });
+  }
+
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    return res.status(400).json({ error: 'Please enter a full URL starting with https://' });
+  }
+
+  if (isPrivateHost(parsed.hostname)) {
+    return res.status(400).json({ error: 'Invalid URL' });
+  }
+
+  // Credentials in the URL are never useful here and shouldn't reach the
+  // outbound request or the prompt.
+  parsed.username = '';
+  parsed.password = '';
+
+  const url = parsed.href;
+  const domain = parsed.hostname;
+
   const ip =
     req.headers['x-forwarded-for']?.split(',')[0].trim() ||
     req.headers['x-real-ip'] ||
@@ -43,29 +197,8 @@ export default async function handler(req, res) {
     });
   }
 
-  const { url } = req.body;
-  if (!url) return res.status(400).json({ error: 'Missing URL' });
-
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    return res.status(400).json({ error: 'Please enter a full URL starting with https://' });
-  }
-
-  const blocked = [
-    'localhost',
-    '127.0.0.1',
-    '0.0.0.0',
-    '192.168.',
-    '10.0.',
-    'senjastudio.co.uk',
-  ];
-  if (blocked.some((b) => url.includes(b))) {
-    return res.status(400).json({ error: 'Invalid URL' });
-  }
-
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Service not configured' });
-
-  const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '').split('/')[0];
 
   // ── STEP 1: Fetch live page ────────────────────────────────────
   let pageContent = '';
