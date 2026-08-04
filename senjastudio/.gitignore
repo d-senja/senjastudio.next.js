@@ -17,6 +17,14 @@ node_modules
 .DS_Store
 *.pem
 
+# Camera masters. These run to ~100MB, which git keeps forever and GitHub
+# rejects outright over 100MB. Convert to public/videos/founder.mp4 and commit
+# that instead — the original stays on disk, just outside the repo.
+public/videos/*.mov
+public/videos/*.m4v
+public/videos/*.avi
+public/videos/*.mkv
+
 # Debug
 npm-debug.log*
 yarn-debug.log*

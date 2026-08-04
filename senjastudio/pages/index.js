@@ -887,19 +887,22 @@ function FCAChecklistForm() {
 // section — the page never renders a broken player while the video is still
 // being filmed. Drop the file in, deploy, and the section appears.
 function FounderVideo({ video, openModal }) {
-  // Filmed landscape or vertical, the frame adapts once the browser reports the
-  // real dimensions. Until then it holds a 16:9 box, so nothing shifts on load.
-  const [ratio, setRatio] = useState(null)
+  // The real dimensions come from the file itself at build time, so the frame
+  // reserves the exact box on first paint. Reading them in the browser instead
+  // meant the section resized under the reader once the metadata arrived — this
+  // video is 3:2, so that was a ~90px jump mid-page. 16:9 is only the fallback
+  // for a file we couldn't measure.
+  const ratio = video.width && video.height ? video.width / video.height : null
   const isPortrait = ratio !== null && ratio < 1
 
   return (
     <section className="section founder-video" id="founder-video">
       <p className="section-label">In his own words</p>
       <h2 className="section-heading">
-        You&apos;ve read how I work.<br />Here it is <em>out loud.</em>
+        Most broker sites are<br />brochures. <em>Yours won&apos;t be.</em>
       </h2>
       <p className="founder-video-sub">
-        You&apos;re about to hand your website — the thing that decides whether a stranger calls you or the broker above you in the search results — to someone you&apos;ve never met. Two minutes of me talking is a fairer way to judge that than another page of copy.
+        Just over a minute, straight from Dan. Almost every mortgage broker website is a brochure — a tidy list of who you are and what you do, sitting there waiting to be read. Here&apos;s what changes when the whole page is built to turn a visitor into a booked call instead.
       </p>
 
       <div className="founder-video-grid">
@@ -917,14 +920,10 @@ function FounderVideo({ video, openModal }) {
             className="founder-video-player"
             controls
             playsInline
-            // Metadata only: enough for the real aspect ratio and the first
-            // frame, without pulling the whole file down for every visitor.
-            preload="metadata"
+            // The poster carries the first impression, so there is no reason to
+            // spend a visitor's bandwidth on the video until they ask for it.
+            preload={video.poster ? 'none' : 'metadata'}
             poster={video.poster || undefined}
-            onLoadedMetadata={(e) => {
-              const { videoWidth: w, videoHeight: h } = e.currentTarget
-              if (w && h) setRatio(w / h)
-            }}
           >
             {video.webm && <source src={video.webm} type="video/webm" />}
             {video.mp4 && <source src={video.mp4} type="video/mp4" />}
@@ -942,9 +941,9 @@ function FounderVideo({ video, openModal }) {
         <div className="founder-video-notes">
           <h3>What I cover</h3>
           <ul>
-            <li>Why I build for mortgage brokers and nobody else — and what that changes about your site.</li>
-            <li>What the seven days actually look like, from the brief landing to the site going live.</li>
-            <li>Where broker sites quietly lose enquiries, and what we do differently on every build.</li>
+            <li>What a brochure site actually is — and the good chance yours is one without you realising.</li>
+            <li>The difference between a site that describes your service and one built to convert.</li>
+            <li>What we do differently on every build, and where it shows up in your enquiries.</li>
           </ul>
           <p>
             No script, no crew, no agency voiceover. If you&apos;d rather ask the questions yourself, that&apos;s a thirty-minute call — I pull up your current site and tell you exactly what it&apos;s costing you.
@@ -1479,10 +1478,16 @@ export default function Home({ founderVideo }) {
 // getStaticProps references it.
 //
 // Expected files in /public/videos — only the .mp4 is required:
-//   founder.mp4          the video itself
+//   founder.mp4          the video itself, H.264 in an mp4 container
 //   founder.webm         optional smaller alternative, served first if present
 //   founder-poster.jpg   optional still frame shown before play (.png/.webp too)
 //   founder.vtt          optional subtitles
+//
+// A .mov straight off a camera is deliberately not in that list. The codec
+// inside is usually fine, but the QuickTime container is unreliable outside
+// Safari, and camera files run an order of magnitude larger than anything that
+// belongs in a git repo. Convert first — the warning below says so out loud
+// rather than letting the section quietly fail to appear.
 const VIDEO_DIR = path.join(process.cwd(), 'public', 'videos')
 
 function findFounderVideo() {
@@ -1495,13 +1500,86 @@ function findFounderVideo() {
 
   const mp4 = pick(['founder.mp4'])
   const webm = pick(['founder.webm'])
-  if (!mp4 && !webm) return null
+
+  if (!mp4 && !webm) {
+    const strays = fs.readdirSync(VIDEO_DIR).filter((f) => /\.(mov|avi|mkv|m4v|wmv)$/i.test(f))
+    if (strays.length) {
+      console.warn(
+        `\n⚠️  public/videos contains ${strays.join(', ')} but no founder.mp4 — ` +
+        'the founder video section will not render. Convert to mp4 first.\n'
+      )
+    }
+    return null
+  }
 
   return {
     mp4,
     webm,
     poster: pick(['founder-poster.jpg', 'founder-poster.jpeg', 'founder-poster.png', 'founder-poster.webp']),
     captions: pick(['founder.vtt']),
+    ...readMp4Dimensions(mp4),
+  }
+}
+
+// Pulls the display width and height out of an mp4's track header, so the page
+// can reserve the right shape before the browser has fetched a single byte of
+// video. Returns {} for anything it can't read — the component falls back to
+// 16:9 — so a file this doesn't understand degrades quietly rather than
+// breaking the build.
+function readMp4Dimensions(publicPath) {
+  if (!publicPath) return {}
+
+  try {
+    const buf = fs.readFileSync(path.join(process.cwd(), 'public', publicPath.replace(/^\/+/, '')))
+
+    // Walks the box tree looking for the first track header with a non-zero
+    // size — audio tracks carry 0×0, so that lands on the video track.
+    const findTkhd = (start, end) => {
+      let offset = start
+      while (offset + 8 <= end) {
+        let size = buf.readUInt32BE(offset)
+        const type = buf.toString('latin1', offset + 4, offset + 8)
+        let header = 8
+        if (size === 1) {
+          // 64-bit size, stored immediately after the type.
+          size = Number(buf.readBigUInt64BE(offset + 8))
+          header = 16
+        } else if (size === 0) {
+          size = end - offset
+        }
+        if (size < header || offset + size > end) return null
+
+        if (type === 'moov' || type === 'trak') {
+          const found = findTkhd(offset + header, offset + size)
+          if (found) return found
+        } else if (type === 'tkhd') {
+          const body = offset + header
+          const version = buf[body]
+          // Fixed-length fields between the version byte and the 3×3 display
+          // matrix; the v1 header carries 64-bit timestamps, hence the offset.
+          const matrix = body + 4 + (version === 1 ? 32 : 20) + 16
+          const width = buf.readUInt32BE(matrix + 36) / 65536
+          const height = buf.readUInt32BE(matrix + 40) / 65536
+          if (width && height) {
+            // The matrix records rotation. A quarter turn — which is what a
+            // phone held upright writes — puts a=d=0, and the stored width and
+            // height then describe the pre-rotation frame.
+            const a = buf.readInt32BE(matrix)
+            const d = buf.readInt32BE(matrix + 16)
+            const rotated = a === 0 && d === 0
+            return rotated
+              ? { width: Math.round(height), height: Math.round(width) }
+              : { width: Math.round(width), height: Math.round(height) }
+          }
+        }
+        offset += size
+      }
+      return null
+    }
+
+    return findTkhd(0, buf.length) || {}
+  } catch {
+    return {}
   }
 }
 
