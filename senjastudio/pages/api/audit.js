@@ -3,8 +3,8 @@
 // Set ANTHROPIC_API_KEY in Vercel Environment Variables
 
 import { lookup } from 'dns/promises';
+import { checkRateLimit, clientIp } from '../../lib/rate-limit';
 
-const rateLimitMap = new Map();
 const RATE_LIMIT = 2;
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -201,23 +201,6 @@ async function fetchPagePublicOnly(startUrl, signal, headers) {
   return { ok: false, reason: `more than ${MAX_REDIRECTS} redirects` };
 }
 
-function checkRateLimit(ip) {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now - entry.windowStart > WINDOW_MS) {
-    rateLimitMap.set(ip, { count: 1, windowStart: now });
-    return true;
-  }
-
-  if (entry.count >= RATE_LIMIT) {
-    return false;
-  }
-
-  entry.count++;
-  return true;
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://senjastudio.co.uk');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -259,12 +242,8 @@ export default async function handler(req, res) {
   const url = parsed.href;
   const domain = parsed.hostname;
 
-  const ip =
-    req.headers['x-forwarded-for']?.split(',')[0].trim() ||
-    req.headers['x-real-ip'] ||
-    'unknown';
-
-  if (!checkRateLimit(ip)) {
+  const allowed = await checkRateLimit({ name: 'audit', ip: clientIp(req), limit: RATE_LIMIT, windowMs: WINDOW_MS });
+  if (!allowed) {
     return res.status(429).json({
       error:
         "You've used your 2 free audits for today. Book a call for a full manual review — calendly.com/dan-senjastudio/lets-talk",

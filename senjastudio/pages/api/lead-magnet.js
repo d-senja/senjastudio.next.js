@@ -11,6 +11,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { checkRateLimit, clientIp } from '../../lib/rate-limit';
 
 // ── Config ──────────────────────────────────────────────────────
 // The from address MUST be on a domain verified in Resend, or Resend rejects
@@ -23,12 +24,8 @@ const SITE = 'https://senjastudio.co.uk';
 // file by ~33%, so cap the raw file well below that.
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 
-// Best-effort abuse guard. This Map is per-instance and Vercel runs several
-// instances, so it slows down a bot rather than stopping one. It must never
-// be the reason a genuine user silently receives nothing.
 const RATE_LIMIT = 5;
 const WINDOW_MS = 60 * 60 * 1000; // 5 sends per IP per hour
-const rateLimitMap = new Map();
 
 const CONTENT = {
   'lead-magnet': {
@@ -62,26 +59,6 @@ function clean(value, maxLength) {
 // trying to encode RFC 5322. A false rejection costs a real lead.
 function isValidEmail(email) {
   return typeof email === 'string' && email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-}
-
-function checkRateLimit(ip) {
-  const now = Date.now();
-
-  // Opportunistic cleanup so the Map cannot grow without bound on a warm instance.
-  if (rateLimitMap.size > 5000) {
-    for (const [key, entry] of rateLimitMap) {
-      if (now - entry.windowStart > WINDOW_MS) rateLimitMap.delete(key);
-    }
-  }
-
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now - entry.windowStart > WINDOW_MS) {
-    rateLimitMap.set(ip, { count: 1, windowStart: now });
-    return true;
-  }
-  if (entry.count >= RATE_LIMIT) return false;
-  entry.count++;
-  return true;
 }
 
 // Reads the PDF out of public/. Returns null (never throws) when the file is
@@ -189,15 +166,13 @@ export default async function handler(req, res) {
   const downloadUrl = `/downloads/${config.file}`;
   const absoluteDownloadUrl = `${SITE}${downloadUrl}`;
 
-  const ip =
-    req.headers['x-forwarded-for']?.split(',')[0].trim() ||
-    req.headers['x-real-ip'] ||
-    'unknown';
+  const ip = clientIp(req);
 
   // Over the limit: refuse honestly. Previously this returned {success:true}
   // with no email sent and no download URL, which is exactly the "API says it
   // worked but nothing arrives" symptom.
-  if (!checkRateLimit(ip)) {
+  const allowed = await checkRateLimit({ name: 'lead-magnet', ip, limit: RATE_LIMIT, windowMs: WINDOW_MS });
+  if (!allowed) {
     console.warn(`[lead-magnet ${rid}] rate limited ip=${ip} email=${email} source=${source}`);
     return res.status(429).json({
       success: false,

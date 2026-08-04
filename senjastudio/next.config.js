@@ -1,3 +1,40 @@
+const isDev = process.env.NODE_ENV !== 'production'
+
+// Content Security Policy.
+//
+// script-src and style-src both carry 'unsafe-inline', and that is not an
+// oversight. Every component on this site is styled with React's style={{}},
+// which emits inline style attributes, and the GA, Crisp and Clarity loaders in
+// Layout.js are inline <Script> blocks. Removing it needs either per-request
+// nonces — which would force dynamic rendering and give up SSG on 42 static
+// pages — or content hashes, which silently kill analytics the moment someone
+// edits a loader. So the XSS protection here is partial.
+//
+// What it does buy, and what the previous header set did not: nothing can pull
+// a script from an origin not listed below, object/embed is dead, <base> can't
+// be hijacked, and forms can't post anywhere but this origin — which is the
+// difference between an injected tag exfiltrating enquiry data and it failing.
+// frame-ancestors backs up the existing X-Frame-Options for modern browsers.
+const csp = [
+  "default-src 'self'",
+  // 'unsafe-eval' is the Next dev-server bundler only; it is never sent in prod.
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://www.google-analytics.com https://client.crisp.chat https://www.clarity.ms https://*.clarity.ms`,
+  "style-src 'self' 'unsafe-inline' https://client.crisp.chat",
+  "img-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.clarity.ms https://client.crisp.chat https://image.crisp.chat https://storage.crisp.chat",
+  "font-src 'self' data: https://client.crisp.chat",
+  // Sentry, GA, Clarity, Crisp (including its websocket) and Speed Insights.
+  "connect-src 'self' https://*.ingest.de.sentry.io https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://*.clarity.ms https://client.crisp.chat https://storage.crisp.chat wss://client.relay.crisp.chat https://vitals.vercel-insights.com",
+  "frame-src 'self' https://calendly.com https://client.crisp.chat",
+  "media-src 'self' https://client.crisp.chat",
+  "worker-src 'self' blob:",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  'upgrade-insecure-requests',
+].join('; ')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -19,6 +56,7 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: [
+          { key: 'Content-Security-Policy', value: csp },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },

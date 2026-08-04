@@ -8,9 +8,10 @@
 //
 // Env: FORMSPREE_ID (optional, falls back to the studio form)
 
+import { checkRateLimit, clientIp } from '../../lib/rate-limit';
+
 const RATE_LIMIT = 8;
 const WINDOW_MS = 60 * 60 * 1000; // 8 submissions per IP per hour
-const rateLimitMap = new Map();
 
 // Every form on the site, with the fields it is allowed to send.
 const FORMS = {
@@ -51,23 +52,6 @@ const MAX_LENGTHS = {
   pageUrl: 300,
 };
 
-function checkRateLimit(ip) {
-  const now = Date.now();
-  if (rateLimitMap.size > 5000) {
-    for (const [key, entry] of rateLimitMap) {
-      if (now - entry.windowStart > WINDOW_MS) rateLimitMap.delete(key);
-    }
-  }
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now - entry.windowStart > WINDOW_MS) {
-    rateLimitMap.set(ip, { count: 1, windowStart: now });
-    return true;
-  }
-  if (entry.count >= RATE_LIMIT) return false;
-  entry.count++;
-  return true;
-}
-
 function isValidEmail(email) {
   return typeof email === 'string' && email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
@@ -91,12 +75,8 @@ export default async function handler(req, res) {
   const form = FORMS[body.form];
   if (!form) return res.status(400).json({ error: 'Unknown form.' });
 
-  const ip =
-    req.headers['x-forwarded-for']?.split(',')[0].trim() ||
-    req.headers['x-real-ip'] ||
-    'unknown';
-
-  if (!checkRateLimit(ip)) {
+  const allowed = await checkRateLimit({ name: 'contact', ip: clientIp(req), limit: RATE_LIMIT, windowMs: WINDOW_MS });
+  if (!allowed) {
     return res.status(429).json({
       error: "You've sent a few messages already. Please try again later, or email dan@senjastudio.co.uk.",
     });
