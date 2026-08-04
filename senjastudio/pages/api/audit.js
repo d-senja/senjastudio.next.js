@@ -2,11 +2,14 @@
 // Rate limited: 2 requests per IP per 24 hours
 // Set ANTHROPIC_API_KEY in Vercel Environment Variables
 
+import { lookup } from 'dns/promises';
+
 const rateLimitMap = new Map();
 const RATE_LIMIT = 2;
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 const MAX_URL_LENGTH = 2000;
+const MAX_REDIRECTS = 3;
 
 // Parse an IPv4 literal in any form inet_aton accepts — dotted quad, bare
 // decimal, octal, hex, and the short 2/3-part forms. "127.1", "2130706433" and
@@ -127,6 +130,77 @@ function isPrivateHost(hostname) {
   return false;
 }
 
+// A hostname passing isPrivateHost only means it isn't a private *literal* —
+// evil.com can still have an A record pointing at 169.254.169.254. Resolve it
+// and check what we'd actually connect to.
+async function resolvesToPublicHost(hostname) {
+  const bare = hostname.replace(/^\[|\]$/g, '');
+
+  // Literals skip DNS entirely; isPrivateHost has already ruled on them.
+  if (parseIPv4(bare) !== null || bare.includes(':')) return true;
+
+  let addresses;
+  try {
+    addresses = await lookup(bare, { all: true, verbatim: true });
+  } catch {
+    return false; // can't resolve it, so can't vouch for it
+  }
+  if (!addresses.length) return false;
+
+  // Every answer must be public — one private record is enough to be a rebind.
+  return addresses.every(({ address, family }) => {
+    if (family === 4) {
+      const v4 = parseIPv4(address);
+      return v4 !== null && !isPrivateIPv4(v4);
+    }
+    const v6 = parseIPv6(address);
+    return v6 !== null && !isPrivateIPv6(v6);
+  });
+}
+
+// Follow redirects by hand, re-running the full check on every hop. With the
+// default redirect:'follow', a hostile site answers 302 -> http://127.0.0.1/
+// and the entry check never sees it.
+async function fetchPagePublicOnly(startUrl, signal, headers) {
+  let current = startUrl;
+
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    let target;
+    try {
+      target = new URL(current);
+    } catch {
+      return { ok: false, reason: 'unparseable redirect target' };
+    }
+
+    if (target.protocol !== 'http:' && target.protocol !== 'https:') {
+      return { ok: false, reason: `blocked protocol ${target.protocol}` };
+    }
+    if (isPrivateHost(target.hostname)) {
+      return { ok: false, reason: `blocked private host ${target.hostname}` };
+    }
+    if (!(await resolvesToPublicHost(target.hostname))) {
+      return { ok: false, reason: `host resolves to a non-public address: ${target.hostname}` };
+    }
+
+    target.username = '';
+    target.password = '';
+
+    const res = await fetch(target.href, { signal, headers, redirect: 'manual' });
+
+    const location = res.status >= 300 && res.status < 400 ? res.headers.get('location') : null;
+    if (!location) return { ok: true, res };
+
+    // Location may be relative, so resolve it against the hop we just made.
+    try {
+      current = new URL(location, target).href;
+    } catch {
+      return { ok: false, reason: 'unparseable Location header' };
+    }
+  }
+
+  return { ok: false, reason: `more than ${MAX_REDIRECTS} redirects` };
+}
+
 function checkRateLimit(ip) {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
@@ -208,17 +282,20 @@ export default async function handler(req, res) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
 
-    const pageRes = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; SenjaStudioAudit/1.0)',
-        Accept: 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-GB,en;q=0.9',
-      },
+    const attempt = await fetchPagePublicOnly(url, controller.signal, {
+      'User-Agent': 'Mozilla/5.0 (compatible; SenjaStudioAudit/1.0)',
+      Accept: 'text/html,application/xhtml+xml',
+      'Accept-Language': 'en-GB,en;q=0.9',
     });
     clearTimeout(timeout);
 
-    if (pageRes.ok) {
+    // A refused hop isn't a user-facing error — fall through to the generic
+    // audit — but it should be visible in the logs.
+    if (!attempt.ok) console.warn(`[audit] fetch refused for ${domain}: ${attempt.reason}`);
+
+    const pageRes = attempt.ok ? attempt.res : null;
+
+    if (pageRes && pageRes.ok) {
       const html = await pageRes.text();
       pageContent = html
         .replace(/<script[\s\S]*?<\/script>/gi, '')
