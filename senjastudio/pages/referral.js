@@ -204,6 +204,34 @@ export default function Referral() {
         </div>
       </div>
 
+      {/* Note for regulated firms */}
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '72px 48px 0' }}>
+        <div style={{
+          background: 'var(--surface)',
+          padding: '32px 28px',
+          border: '1px solid var(--border)',
+          borderRadius: '8px'
+        }}>
+          <h2 style={{
+            fontFamily: 'var(--serif)',
+            fontSize: '1.3rem',
+            fontWeight: 500,
+            color: 'var(--ink)',
+            marginBottom: '12px',
+            letterSpacing: '-0.01em'
+          }}>
+            If you're a regulated firm
+          </h2>
+          <p style={{
+            fontSize: '0.9rem',
+            color: 'var(--muted)',
+            lineHeight: 1.8
+          }}>
+            Where the referrer is an FCA-regulated firm, the £250 is paid to the firm on invoice rather than to you personally. If you are an Appointed Representative, your network may ask you to declare outside income, so it is worth a quick word with your compliance team. And if a payment is not straightforward for any reason, the same £250 can go to a charity of your choice or as credit against your own project instead.
+          </p>
+        </div>
+      </div>
+
       {/* Signup Form */}
       <div style={{ maxWidth: '640px', margin: '0 auto', padding: '80px 48px' }}>
         <h2 style={{
