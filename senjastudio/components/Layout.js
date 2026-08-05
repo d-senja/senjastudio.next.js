@@ -1254,7 +1254,7 @@ export default function Layout({ children, title, description, canonical, schema
         {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NNZY23RH3M');`}
       </Script>
       <Script id="crisp-chat" strategy="lazyOnload">
-        {`window.$crisp=[];window.CRISP_WEBSITE_ID="cc79fcb2-592c-4730-8afd-fbc75420b2a2";(function(){var d=document,s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`}
+        {`window.$crisp=[];window.CRISP_WEBSITE_ID="3db8a336-34e1-41da-a4ae-108733e360c2";(function(){var d=document,s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`}
       </Script>
       <Script id="ms-clarity" strategy="lazyOnload">
         {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","xua9mh5o25");`}
