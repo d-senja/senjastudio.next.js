@@ -11,23 +11,25 @@
 //     it considers failed, and without this the visitor gets the same reply
 //     twice. SET NX is atomic; GET-then-SET is not.
 //
-// Uses the same Upstash instance as lib/rate-limit.js, so this adds no new
-// infrastructure — only a second pair of key prefixes.
-//
-// Env: UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN
+// Uses the same Redis instance as lib/rate-limit.js, so this adds no new
+// infrastructure — only a second pair of key prefixes. Credentials are
+// resolved there, which accepts both the Vercel Marketplace (KV_*) and
+// upstash.com (UPSTASH_*) variable names.
+
+import { redisCredentials } from './rate-limit'
 
 const TIMEOUT_MS = 2000
 
 function configured() {
-  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
+  return redisCredentials() !== null
 }
 
 async function redis(commands) {
-  const url = process.env.UPSTASH_REDIS_REST_URL.replace(/\/$/, '')
+  const { url, token } = redisCredentials()
   const res = await fetch(`${url}/pipeline`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(commands),

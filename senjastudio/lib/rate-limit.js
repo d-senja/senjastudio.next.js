@@ -7,17 +7,34 @@
 // went cold. It slowed a bot down rather than stopping one, which matters most
 // on /api/audit because every call through it spends Anthropic credits.
 //
-// With UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN set, counters live
-// in Redis and are shared across instances. Without them, this falls back to
-// the old per-instance behaviour, so the routes work unchanged until the
-// integration is provisioned.
+// With Redis REST credentials set, counters live in Redis and are shared
+// across instances. Without them, this falls back to the old per-instance
+// behaviour, so the routes work unchanged until the integration is
+// provisioned.
 //
-// Env (optional, but the limit is only durable once both are set):
-//   UPSTASH_REDIS_REST_URL
-//   UPSTASH_REDIS_REST_TOKEN
+// Env (optional, but the limit is only durable once a pair is set) — either:
+//   KV_REST_API_URL + KV_REST_API_TOKEN                 (Vercel Marketplace)
+//   UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN   (upstash.com direct)
 
 const memory = new Map();
 const UPSTASH_TIMEOUT_MS = 2000;
+
+/**
+ * The Redis REST credentials, under whichever names they arrived as.
+ *
+ * Provisioning Upstash through the Vercel Marketplace injects KV_REST_API_URL
+ * and KV_REST_API_TOKEN; setting it up directly at upstash.com gives you
+ * UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN. Accepting both means the
+ * limiter works either way — checking only the UPSTASH_ names is why this
+ * quietly fell back to per-instance counting after the integration was added.
+ *
+ * Returns null when neither pair is present.
+ */
+export function redisCredentials() {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  return url && token ? { url: url.replace(/\/$/, ''), token } : null;
+}
 
 function checkInMemory(key, limit, windowMs) {
   const now = Date.now();
@@ -44,11 +61,10 @@ function checkInMemory(key, limit, windowMs) {
 // and EXPIRE second risks leaving a key with no TTL if the second call fails,
 // which would lock an IP out permanently.
 async function checkInRedis(key, limit, windowMs) {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const { url, token } = redisCredentials();
   const ttl = Math.ceil(windowMs / 1000);
 
-  const res = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
+  const res = await fetch(`${url}/pipeline`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify([
@@ -77,7 +93,7 @@ async function checkInRedis(key, limit, windowMs) {
 export async function checkRateLimit({ name, ip, limit, windowMs }) {
   const key = `rl:${name}:${ip}`;
 
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  if (redisCredentials()) {
     try {
       return await checkInRedis(key, limit, windowMs);
     } catch (err) {
