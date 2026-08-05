@@ -5,7 +5,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import CardStackCarousel from '../components/CardStackCarousel'
-import HeroTransform from '../components/HeroTransform'
+import HeroTeardown from '../components/HeroTeardown'
 
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
@@ -992,10 +992,10 @@ export default function Home({ founderVideo }) {
     >
       <StickyCompare openModal={openModal} />
 
-      {/* ── SCROLL TRANSFORM ─────────────────────────── */}
-      {/* Sits above the hero and leaves it untouched. Deliberately carries no
-          <h1> — the hero below still owns that. */}
-      <HeroTransform onBookClick={openModal} />
+      {/* ── TEARDOWN ─────────────────────────────────── */}
+      {/* Autoplays on load. Sits above the hero and leaves it untouched.
+          Deliberately carries no <h1> — the hero below still owns that. */}
+      <HeroTeardown onBookClick={openModal} />
 
       {/* ── HERO ─────────────────────────────────────── */}
       <section className="hero-section" id="home">

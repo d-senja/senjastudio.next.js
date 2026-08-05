@@ -11,8 +11,8 @@ import Lenis from 'lenis'
  * Deliberately imports no GSAP. This component is in the _app bundle, so
  * anything it pulls in is downloaded by every page on the site — importing
  * ScrollTrigger here put 50 kB on /blog, /terms and /contact, none of which
- * animate anything. HeroTransform (homepage only) subscribes ScrollTrigger to
- * window.__lenis instead.
+ * animate anything. Nothing on the site subscribes to scroll position any
+ * more either: the homepage hero autoplays on load rather than scrubbing.
  */
 export default function SmoothScroll() {
   useEffect(() => {
@@ -33,16 +33,6 @@ export default function SmoothScroll() {
     // Read by the back-to-top button in Layout.js — window.scrollTo() bypasses
     // Lenis and desyncs it.
     window.__lenis = lenis
-
-    // Lenis moves the scroll position on its own rAF loop, so anything watching
-    // scroll has to be told rather than waiting for a native event. The handler
-    // is looked up per tick instead of being subscribed by the consumer,
-    // because HeroTransform registers it from a useLayoutEffect that runs
-    // *before* this useEffect — subscribing from that side would find no
-    // instance yet.
-    lenis.on('scroll', () => {
-      if (window.__onLenisScroll) window.__onLenisScroll()
-    })
 
     let frame = requestAnimationFrame(function raf(time) {
       lenis.raf(time)

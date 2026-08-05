@@ -1,0 +1,864 @@
+/* ══════════════════════════════════════════════════════════════
+   HERO TEARDOWN — autoplaying bad-site → audit → rebuild
+
+   Three ideas hold this file together:
+
+   1. Both fake sites live on ONE fixed 1200×750 canvas with every child
+      absolutely positioned, then scaled to fit by --fit (set from JS via a
+      ResizeObserver). Nothing inside is in normal flow, so nothing reflows
+      mid-timeline and one number handles every breakpoint.
+
+   2. This file authors the RESOLVED state — new site visible, old site gone,
+      copy in place. The "before" state is opted into by the media query at the
+      foot of the file, which is the SAME query that gates the timeline in
+      HeroTeardown.js. Consequence: mobile, reduced motion and no-JS all render
+      the finished page, and there is nothing to flash.
+
+   3. Colours inside the two fake sites are literal hex, never tokens. These are
+      screenshots of somebody else's website — they must not follow the
+      visitor's light/dark theme.
+   ══════════════════════════════════════════════════════════════ */
+
+.section {
+  position: relative;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: calc(65px + 28px) 24px 40px; /* fixed nav */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+
+/* ── BROWSER FRAME ───────────────────────────────────────────────
+   Load-bearing, not decoration: the chrome and the URL declare "this is
+   somebody else's site" in the first frame, so nobody reads the ugly page as
+   ours. Width is constrained by viewport HEIGHT as well as width, so the whole
+   sequence always fits on one screen. */
+
+.browser {
+  width: min(92vw, calc(58vh * 1.6), 1360px);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  /* The hairline uses the theme token, not a literal: the resolved site is a
+     dark forest, and a dark hairline against a dark page loses the frame edge
+     entirely. This is the one place a token belongs — it is our chrome, not
+     the fake site's. */
+  box-shadow: 0 30px 70px -24px rgba(15, 11, 30, 0.42), 0 0 0 1px var(--border);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 38px;
+  padding: 0 14px;
+  background: #e9e7ee;
+  border-bottom: 1px solid #d6d3de;
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c8c4d2;
+}
+
+.urlBar {
+  position: relative;
+  flex: 1;
+  height: 22px;
+  border-radius: 11px;
+  background: #ffffff;
+  border: 1px solid #d6d3de;
+}
+
+/* Both URLs share one slot, so the resolve is a cross-fade that moves nothing. */
+.urlOld,
+.urlNew {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  font-family: var(--sans);
+  font-size: 11px;
+  color: #6b6875;
+  white-space: nowrap;
+}
+
+.urlWarn {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #f4e3e4;
+  color: #b4232b;
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+}
+
+.urlNew {
+  color: #2c7a4b;
+  opacity: 0;
+}
+
+.urlNew svg {
+  flex-shrink: 0;
+}
+
+/* ── THE CANVAS ──────────────────────────────────────────────── */
+
+.viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 750;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1200px;
+  height: 750px;
+  transform-origin: 0 0;
+  /* The fallbacks are per-breakpoint approximations, used only for the frames
+     before the ResizeObserver reports. JS overwrites --fit with the measured
+     value in the same paint. */
+  transform: scale(var(--fit, 0.3));
+  font-family: var(--sans);
+}
+
+@media (min-width: 768px) {
+  .canvas { transform: scale(var(--fit, 0.62)); }
+}
+
+@media (min-width: 1200px) {
+  .canvas { transform: scale(var(--fit, 0.95)); }
+}
+
+/* ══ THE "BEFORE" SITE ════════════════════════════════════════
+   Believable-bad, not parody. Every complaint the audit makes has to be
+   visibly true here, or the red tags read as marketing. */
+
+.old {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  color: #333333;
+  font-family: Arial, Helvetica, sans-serif;
+  display: none; /* opted back in by the animated media query */
+}
+
+.oTop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1200px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #d8d3c8;
+}
+
+.oLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  color: #7a1f2b;
+}
+
+.oLogo em {
+  display: block;
+  font-style: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  color: #7d7d7d;
+  margin-top: 1px;
+}
+
+.oPhone {
+  font-size: 11px;
+  color: #555555;
+}
+
+.oPhone strong {
+  margin-left: 6px;
+  font-size: 15px;
+  color: #7a1f2b;
+}
+
+/* Twelve links at 11px. The complaint writes itself. */
+.oNav {
+  position: absolute;
+  left: 0;
+  top: 60px;
+  width: 1200px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background: linear-gradient(180deg, #5d6d8d 0%, #3e4c66 100%);
+  font-size: 11px;
+  color: #ffffff;
+}
+
+.oNavItem {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
+.oNavSep {
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.42);
+  margin-right: 6px;
+}
+
+.oStock {
+  position: absolute;
+  left: 24px;
+  top: 106px;
+  width: 1152px;
+  height: 236px;
+  overflow: hidden;
+  border: 1px solid #cfcabd;
+  filter: saturate(0.5) contrast(0.92);
+}
+
+.oStock svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.oHeadline {
+  position: absolute;
+  left: 24px;
+  top: 356px;
+  width: 596px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 29px;
+  font-weight: normal;
+  color: #24313f;
+}
+
+.oBody {
+  position: absolute;
+  left: 24px;
+  top: 406px;
+  width: 596px;
+  height: 172px;
+  column-count: 2;
+  column-gap: 22px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #5a5a5a;
+  overflow: hidden;
+}
+
+.oCol {
+  margin: 0 0 8px;
+}
+
+/* Where a broker's social proof should be. Instead: a news list nobody reads. */
+.oSide {
+  position: absolute;
+  left: 648px;
+  top: 356px;
+  width: 528px;
+  height: 214px;
+  border: 1px solid #dcd7cb;
+  background: #f6f4ef;
+  padding: 12px 16px;
+}
+
+.oSideTitle {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+  color: #7a1f2b;
+  border-bottom: 1px solid #dcd7cb;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.oSideItem {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #0645ad;
+  text-decoration: underline;
+  margin-bottom: 6px;
+}
+
+.oSideItem span {
+  color: #8a8a8a;
+  text-decoration: none;
+}
+
+/* The only conversion path on the entire page. */
+.oLink {
+  position: absolute;
+  left: 24px;
+  top: 592px;
+  width: 232px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #0645ad;
+  text-decoration: underline;
+}
+
+.oFooter {
+  position: absolute;
+  left: 0;
+  top: 662px;
+  width: 1200px;
+  height: 88px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 24px;
+  background: #eeece7;
+  border-top: 1px solid #d5d0c4;
+  font-size: 9px;
+  line-height: 1.6;
+  color: #7d7d7d;
+}
+
+.oCredit {
+  white-space: nowrap;
+  color: #9a9a9a;
+}
+
+/* ══ THE AUDIT ════════════════════════════════════════════════ */
+
+.grid {
+  position: absolute;
+  inset: 0;
+  display: none;
+  opacity: 0;
+  background-image: repeating-linear-gradient(
+      to right,
+      rgba(229, 72, 77, 0.16) 0 1px,
+      transparent 1px 60px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(229, 72, 77, 0.16) 0 1px,
+      transparent 1px 60px
+    );
+  pointer-events: none;
+}
+
+.audit {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  transform: scale(0.97);
+  border: 1.5px solid #e5484d;
+  background: rgba(229, 72, 77, 0.07);
+  border-radius: 2px;
+  /* Declared so the flash tween has a value to interpolate from — GSAP cannot
+     animate out of `filter: none`. */
+  filter: brightness(1);
+  pointer-events: none;
+}
+
+.auditLabel {
+  position: absolute;
+  left: -1.5px;
+  padding: 4px 8px;
+  background: #e5484d;
+  color: #ffffff;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  border-radius: 2px;
+}
+
+.audit[data-side='above'] .auditLabel { bottom: calc(100% + 5px); }
+.audit[data-side='below'] .auditLabel { top: calc(100% + 5px); }
+.audit[data-side='inside'] .auditLabel { top: 10px; left: 10px; }
+
+/* ══ THE SKELETON ═════════════════════════════════════════════ */
+
+.wire {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  border: 1.5px dashed rgba(26, 20, 40, 0.3);
+  background: rgba(26, 20, 40, 0.035);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* ══ THE "AFTER" SITE ═════════════════════════════════════════
+   Forest and brass — a building-society register, chosen partly so this fake
+   client reads as somebody else's brand and never as Senja's own.
+
+   Everything here is set in Inter 300 or Playfair 400, because those are the
+   weights actually self-hosted in /public/fonts. Asking for 600 would fall
+   back to system-ui mid-page. Light weights and wide tracking are doing the
+   work that a heavier weight would normally do, which is also why this reads
+   as considered rather than as a bootstrapped template. */
+
+.new {
+  position: absolute;
+  inset: 0;
+  background: #0c201a;
+  color: #f1ead9;
+}
+
+.nNav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1200px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 56px;
+  border-bottom: 1px solid rgba(184, 144, 75, 0.32);
+}
+
+.nLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--serif);
+  font-size: 21px;
+  letter-spacing: 0.005em;
+}
+
+/* A diamond, not the default circle. */
+.nLogoMark {
+  width: 8px;
+  height: 8px;
+  background: #b8904b;
+  transform: rotate(45deg);
+}
+
+.nNavLinks {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: #8ca79b;
+}
+
+.nNavBtn {
+  padding: 10px 20px;
+  border: 1px solid rgba(184, 144, 75, 0.55);
+  border-radius: 2px;
+  color: #b8904b;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.nEyebrow {
+  position: absolute;
+  left: 56px;
+  top: 122px;
+  width: 520px;
+  font-size: 10px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #b8904b;
+}
+
+.nHeadline {
+  position: absolute;
+  left: 56px;
+  top: 150px;
+  width: 640px;
+  font-family: var(--serif);
+  font-size: 58px;
+  line-height: 1.04;
+  letter-spacing: -0.006em;
+  color: #f1ead9;
+}
+
+/* The one typographic move on the page: a second serif, at a larger optical
+   size because Cormorant runs small against Playfair. */
+.nHeadlineAccent {
+  font-family: var(--serif2);
+  font-style: italic;
+  font-size: 1.14em;
+  color: #b8904b;
+}
+
+.nSub {
+  position: absolute;
+  left: 56px;
+  top: 330px;
+  width: 500px;
+  font-size: 14.5px;
+  font-weight: 300;
+  line-height: 1.62;
+  color: #8ca79b;
+}
+
+.nCtaRow {
+  position: absolute;
+  left: 56px;
+  top: 424px;
+  width: 520px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nCta {
+  padding: 16px 28px;
+  border-radius: 2px;
+  background: #b8904b;
+  color: #0c201a;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.nCtaNote {
+  font-size: 13px;
+  font-weight: 300;
+  color: #8ca79b;
+}
+
+.nAdviser {
+  position: absolute;
+  left: 56px;
+  top: 512px;
+  width: 520px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(241, 234, 217, 0.14);
+}
+
+.nAvatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 144, 75, 0.5);
+  background: #143028;
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #b8904b;
+}
+
+.nAdviserName {
+  display: block;
+  font-size: 13px;
+  font-weight: 300;
+  color: #f1ead9;
+}
+
+.nAdviserRole {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 300;
+  color: #8ca79b;
+}
+
+/* Runs from under the nav down to the rate strip. Stopping short left the
+   right-hand side floating in dead space. */
+.nArt {
+  position: absolute;
+  left: 760px;
+  top: 120px;
+  width: 384px;
+  height: 526px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.nArt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlaps the art's lower-left corner. The only pure white on the page, so
+   it sits forward of everything else without needing a heavier shadow. */
+.nProof {
+  position: absolute;
+  left: 648px;
+  top: 460px;
+  width: 372px;
+  height: 150px;
+  padding: 22px 24px;
+  background: #ffffff;
+  color: #0c201a;
+  border-radius: 3px;
+  box-shadow: 0 26px 54px -20px rgba(0, 0, 0, 0.6);
+}
+
+.nProofStars {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #b8904b;
+}
+
+.nProofQuote {
+  margin-top: 10px;
+  font-family: var(--serif2);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.34;
+}
+
+.nProofAttr {
+  margin-top: 12px;
+  font-size: 9.5px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6b7570;
+}
+
+/* ── the rate strip — the signature ──────────────────────────
+   Occupies the slot the old site gave to a news list last updated in 2011. */
+
+.nRates {
+  position: absolute;
+  left: 0;
+  top: 646px;
+  width: 1200px;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  padding: 0 56px;
+  background: #143028;
+  border-top: 1px solid rgba(184, 144, 75, 0.32);
+  font-variant-numeric: tabular-nums;
+}
+
+.nRatesHead {
+  padding-right: 36px;
+}
+
+.nRatesTitle {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #b8904b;
+}
+
+.nRatesStamp {
+  display: block;
+  margin-top: 5px;
+  font-size: 10.5px;
+  font-weight: 300;
+  color: #8ca79b;
+}
+
+.nRate {
+  padding: 0 34px;
+  border-left: 1px solid rgba(241, 234, 217, 0.14);
+}
+
+.nRateTerm {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #8ca79b;
+}
+
+.nRateNum {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--serif);
+  font-size: 27px;
+  color: #f1ead9;
+}
+
+/* ══ OUR COPY ═════════════════════════════════════════════════ */
+
+.copy {
+  text-align: center;
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.copyLine {
+  margin: 0;
+}
+
+.copyHead {
+  font-family: var(--serif);
+  font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.copyHead em {
+  font-style: italic;
+  color: var(--gold-dark);
+}
+
+.copySub {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--ink);
+  opacity: 0.72;
+}
+
+.cta {
+  margin-top: 20px;
+}
+
+.hint {
+  display: grid;
+  place-items: center;
+  height: 22px;
+}
+
+.hintArrow {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--gold-dark);
+  border-bottom: 2px solid var(--gold-dark);
+  transform: rotate(45deg);
+  animation: htNudge 1.8s ease-in-out infinite;
+}
+
+@keyframes htNudge {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); }
+  50% { transform: rotate(45deg) translate(3px, 3px); }
+}
+
+.replay {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 7px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  opacity: 0.5;
+  font-family: var(--sans);
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.replay:hover {
+  opacity: 1;
+}
+
+/* The five audit points as text, for anyone who never sees them made on
+   screen — mobile, reduced motion, or no JS at all. */
+.staticPoints {
+  list-style: none;
+  margin: 22px auto 0;
+  padding: 0;
+  max-width: 460px;
+  display: grid;
+  gap: 8px;
+}
+
+.staticPoints li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 14px;
+  color: var(--ink);
+  opacity: 0.78;
+}
+
+.staticPoints li::before {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  color: #e5484d;
+  font-size: 12px;
+}
+
+/* ══ THE ANIMATED CASE ════════════════════════════════════════
+   Everything above renders the finished page. This block — and only this
+   block — winds it back to the "before" state. It must stay byte-identical to
+   the matchMedia query in HeroTeardown.js: if the two ever disagree, one side
+   winds the page back and the other never plays it forward. */
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .browser {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+  }
+
+  .old { display: block; }
+  .grid { display: block; }
+  .audit { display: block; }
+  .wire { display: block; }
+
+  .new {
+    opacity: 0;
+    filter: grayscale(1) saturate(0.5);
+  }
+
+  .new > * {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+
+  .copyLine {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .hint { opacity: 0; }
+
+  .staticPoints { display: none; }
+}
