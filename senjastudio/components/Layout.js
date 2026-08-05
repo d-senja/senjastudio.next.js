@@ -594,7 +594,13 @@ function BackToTop({ visible }) {
   return (
     <button
       className="back-to-top visible"
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      // Lenis owns the scroll position when it is running. Calling
+      // window.scrollTo() straight through desyncs it and the page judders.
+      onClick={() =>
+        window.__lenis
+          ? window.__lenis.scrollTo(0)
+          : window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
       aria-label="Back to top"
     >
       ↑

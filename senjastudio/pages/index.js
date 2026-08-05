@@ -5,6 +5,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import CardStackCarousel from '../components/CardStackCarousel'
+import HeroTransform from '../components/HeroTransform'
 
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
@@ -990,6 +991,11 @@ export default function Home({ founderVideo }) {
       onModalClose={() => setModalOpen(false)}
     >
       <StickyCompare openModal={openModal} />
+
+      {/* ── SCROLL TRANSFORM ─────────────────────────── */}
+      {/* Sits above the hero and leaves it untouched. Deliberately carries no
+          <h1> — the hero below still owns that. */}
+      <HeroTransform onBookClick={openModal} />
 
       {/* ── HERO ─────────────────────────────────────── */}
       <section className="hero-section" id="home">
