@@ -113,8 +113,13 @@
   }
 }
 
+/* Smooth anchor scrolling is Lenis's job now (components/SmoothScroll.js,
+   `anchors: true`). Leaving `scroll-behavior: smooth` here as well meant two
+   implementations animating the same scroll position against each other.
+   Reduced-motion visitors get no Lenis instance and therefore no smoothing at
+   all, which is the correct outcome for them. */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* Respect a reduced-motion preference: kill the decorative animation and,

@@ -5,6 +5,7 @@ import React from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import * as Sentry from '@sentry/nextjs'
+import SmoothScroll from '../components/SmoothScroll'
 
 // Initialize Sentry only in production
 if (process.env.NODE_ENV === 'production') {
@@ -164,6 +165,9 @@ export default function App({ Component, pageProps }) {
 
   return (
     <ErrorBoundary>
+      {/* Renders nothing. Skips instantiation entirely under reduced motion,
+          so those visitors keep native scrolling. */}
+      <SmoothScroll />
       <div style={{
         opacity: isTransitioning ? 0 : 1,
         transition: 'opacity 0.3s ease'
