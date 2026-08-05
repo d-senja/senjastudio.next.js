@@ -34,6 +34,11 @@ export default function SmoothScroll() {
     // Lenis and desyncs it.
     window.__lenis = lenis
 
+    // Page-level consumers (SnapToSection) mount below this component in the
+    // tree, so their effects run *first* and find no instance. Announce it
+    // rather than making them poll.
+    window.dispatchEvent(new CustomEvent('lenis:ready'))
+
     let frame = requestAnimationFrame(function raf(time) {
       lenis.raf(time)
       frame = requestAnimationFrame(raf)

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import CardStackCarousel from '../components/CardStackCarousel'
 import HeroTeardown from '../components/HeroTeardown'
+import SnapToSection from '../components/SnapToSection'
 
 // ── DATA ──────────────────────────────────────────────────────
 // Homepage for Senja Studio - mortgage broker website design
@@ -996,6 +997,10 @@ export default function Home({ founderVideo }) {
       {/* Autoplays on load. Sits above the hero and leaves it untouched.
           Deliberately carries no <h1> — the hero below still owns that. */}
       <HeroTeardown onBookClick={openModal} />
+
+      {/* Catches the overshoot between the teardown and the hero below. Renders
+          nothing; desktop and no-reduced-motion only. */}
+      <SnapToSection targetId="home" />
 
       {/* ── HERO ─────────────────────────────────────── */}
       <section className="hero-section" id="home">
