@@ -33,7 +33,8 @@ const blocks = [...CSS.matchAll(/\/\*\s*([a-z-]+)\s*\*\/\s*(@font-face\s*\{[^}]*
 
 (async () => {
   const kept = [];
-  const seen = new Map();
+  const seen = new Map(); // url -> filename on disk
+  let bytes = 0;
 
   for (const [, subset, block] of blocks) {
     if (!KEEP.has(subset)) continue;
@@ -43,14 +44,30 @@ const blocks = [...CSS.matchAll(/\/\*\s*([a-z-]+)\s*\*\/\s*(@font-face\s*\{[^}]*
     const style = /font-style:\s*(\w+)/.exec(block)[1];
     const url = /url\(([^)]+)\)/.exec(block)[1];
 
-    const slug = family.toLowerCase().replace(/\s+/g, '-');
-    const file = `${slug}-${weight}${style === 'italic' ? '-italic' : ''}-${subset}.woff2`;
-    const dest = path.join(OUT_DIR, file);
+    // All three families are VARIABLE fonts, so Google serves one woff2 per
+    // (family, style, subset) and points every weight at it — 28 @font-face
+    // blocks over 7 distinct URLs for Inter alone.
+    //
+    // This used to key the filename off the weight while skipping the download
+    // whenever the URL had been seen before. The first weight of each group got
+    // a file; every other weight got an @font-face rule naming a file that was
+    // never written. That shipped 26 rules against 10 files, and the 16 dangling
+    // ones 404'd in production — every heading and every weight above 300 fell
+    // back to a system font.
+    //
+    // Keying the name off the URL is what makes it correct: one file per
+    // distinct source, reused by every weight that shares it. The browser then
+    // downloads it once and varies the weight axis itself, which is exactly
+    // what Google's own CSS does.
+    let file = seen.get(url);
 
-    if (!seen.has(url)) {
+    if (!file) {
+      const slug = family.toLowerCase().replace(/\s+/g, '-');
+      file = `${slug}-${weight}${style === 'italic' ? '-italic' : ''}-${subset}.woff2`;
       const buf = await get(url);
-      fs.writeFileSync(dest, buf);
-      seen.set(url, buf.length);
+      fs.writeFileSync(path.join(OUT_DIR, file), buf);
+      seen.set(url, file);
+      bytes += buf.length;
       process.stdout.write(`  ${file.padEnd(46)} ${(buf.length / 1024).toFixed(1)} KB\n`);
     }
 
@@ -68,7 +85,20 @@ const blocks = [...CSS.matchAll(/\/\*\s*([a-z-]+)\s*\*\/\s*(@font-face\s*\{[^}]*
    and a render-blocking stylesheet from fonts.googleapis.com. */\n\n`;
 
   fs.writeFileSync(CSS_OUT, header + kept.join('\n\n') + '\n');
-  const total = [...seen.values()].reduce((a, b) => a + b, 0);
-  console.log(`\n  ${seen.size} font files, ${(total / 1024).toFixed(0)} KB total`);
+  console.log(`\n  ${seen.size} font files, ${(bytes / 1024).toFixed(0)} KB total`);
   console.log(`  ${kept.length} @font-face rules -> ${CSS_OUT}`);
+
+  // The bug this script used to have was silent: fonts.css referenced files
+  // that were never written, and nothing failed until production 404'd. Fail
+  // loudly instead.
+  const missing = kept
+    .map((b) => /url\('\/fonts\/([^']+)'\)/.exec(b)[1])
+    .filter((f) => !fs.existsSync(path.join(OUT_DIR, f)));
+
+  if (missing.length) {
+    console.error(`\n  ERROR: ${missing.length} rules reference files that do not exist:`);
+    missing.forEach((f) => console.error(`    ${f}`));
+    process.exit(1);
+  }
+  console.log(`  all ${kept.length} rules resolve to files on disk`);
 })();
