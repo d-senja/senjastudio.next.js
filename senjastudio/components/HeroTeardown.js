@@ -6,9 +6,10 @@ import s from './HeroTeardown.module.css'
 gsap.registerPlugin(useGSAP)
 
 /* ── the audit ───────────────────────────────────────────────────
-   Boxes are in canvas coordinates (the 1200×750 space defined in the CSS
-   header). `side` decides which corner the label hangs off, purely so no two
-   labels collide at any scale. */
+   Boxes are in canvas coordinates. There are two canvases — a 1200×750
+   landscape one for desktop and a 340×600 portrait one for phones — so there
+   are two sets of boxes. `side` decides which corner the label hangs off,
+   purely so no two labels collide at any scale. */
 
 const AUDITS = [
   { key: 'nav', label: '12 nav links', box: [20, 60, 1160, 32], side: 'below' },
@@ -16,6 +17,22 @@ const AUDITS = [
   { key: 'headline', label: 'Headline says nothing', box: [24, 356, 596, 48], side: 'above' },
   { key: 'reviews', label: 'No reviews anywhere', box: [648, 356, 528, 214], side: 'above' },
   { key: 'link', label: 'No way to book a call', box: [24, 592, 232, 28], side: 'above' },
+]
+
+/* Same five complaints, re-pointed at the portrait layout. The stock-photo
+   label is shortened because the full sentence is wider than a 340px canvas.
+
+   Sides differ from desktop for one reason: at 340px a label is a large
+   fraction of the box it belongs to, so an `inside` tag on the nav sat on top
+   of the very links it was counting. The nav hangs its label below and the
+   stock photo takes it at the foot, which keeps every complaint clear of its
+   own evidence and clear of the next label down. */
+const M_AUDITS = [
+  { key: 'nav', label: '12 nav links', box: [4, 52, 332, 62], side: 'below' },
+  { key: 'stock', label: 'Stock photo — 41,000 sites', box: [8, 122, 324, 100], side: 'insideEnd' },
+  { key: 'headline', label: 'Headline says nothing', box: [8, 244, 324, 48], side: 'above' },
+  { key: 'reviews', label: 'No reviews anywhere', box: [8, 380, 324, 96], side: 'above' },
+  { key: 'link', label: 'No way to book a call', box: [8, 500, 212, 22], side: 'above' },
 ]
 
 /* The wireframe the rebuild fills. Each box is positioned to match the new-site
@@ -29,6 +46,126 @@ const WIRES = [
   [648, 460, 372, 150],
   [56, 660, 1088, 76],
 ]
+
+const M_WIRES = [
+  [16, 8, 308, 36],
+  [20, 94, 300, 96],
+  [20, 198, 296, 44],
+  [20, 256, 170, 44],
+  [0, 320, 340, 164],
+  [20, 414, 300, 88],
+  [8, 530, 324, 62],
+]
+
+/* ── shared artwork ──────────────────────────────────────────────
+   Both canvases draw the same two illustrations at different crops. The SVG
+   defs are id-scoped by `suffix` — two copies of `htBrick` in one document
+   would silently share whichever definition parsed first. */
+
+function StockPhoto({ suffix }) {
+  const sky = `htStockSky${suffix}`
+  return (
+    <svg viewBox="0 0 1152 236" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={sky} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#b9c4cf" />
+          <stop offset="100%" stopColor="#8e9aa6" />
+        </linearGradient>
+      </defs>
+      <rect width="1152" height="236" fill={`url(#${sky})`} />
+      {[80, 200, 320, 900, 1020].map((x, i) => (
+        <rect key={x} x={x} y={20 + i * 12} width="86" height="216" fill="#7d8894" opacity="0.5" />
+      ))}
+      <g fill="#4a525c">
+        <circle cx="470" cy="74" r="30" />
+        <path d="M406 236c0-40 28-62 64-62s64 22 64 62z" />
+        <circle cx="690" cy="74" r="30" />
+        <path d="M626 236c0-40 28-62 64-62s64 22 64 62z" />
+      </g>
+      <g stroke="#cfd6dd" strokeWidth="16" strokeLinecap="round" fill="none">
+        <path d="M520 150h120" />
+      </g>
+    </svg>
+  )
+}
+
+/* A Leeds red-brick facade, cropped the way a photograph would be — the
+   roofline and both edges run out of frame, because a whole house centred in a
+   box reads as clip-art rather than a picture. Desktop shows the whole
+   elevation; the mobile band is 164px of a 526px drawing, so it crops to the
+   first floor, where the lit sash is. Cropping by viewBox rather than by
+   alignment matters: the review card covers the band's lower 40%, and a
+   top-aligned full-height crop put the lit window exactly under the card.
+   Swap the <svg> for an <img> the moment there is a licensed photograph. */
+function Facade({ suffix, viewBox }) {
+  const glow = `htGlow${suffix}`
+  const fade = `htFade${suffix}`
+  const brick = `htBrick${suffix}`
+  return (
+    <svg viewBox={viewBox} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id={glow} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#D8AC5E" />
+          <stop offset="100%" stopColor="#9A7433" />
+        </linearGradient>
+        <linearGradient id={fade} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0C201A" stopOpacity="0" />
+          <stop offset="100%" stopColor="#0C201A" stopOpacity="0.62" />
+        </linearGradient>
+        {/* A pattern, not 272 hand-generated paths. Two courses tall so the
+            vertical joints stagger. */}
+        <pattern id={brick} width="56" height="32" patternUnits="userSpaceOnUse">
+          <rect width="56" height="32" fill="#0F241D" />
+          <g stroke="#16332B" strokeWidth="1">
+            <path d="M0 0h56M0 16h56" />
+            <path d="M0 0v16M28 16v16" />
+          </g>
+        </pattern>
+      </defs>
+
+      {/* brickwork, running to all four edges */}
+      <rect width="384" height="526" fill={`url(#${brick})`} />
+
+      {/* first-floor sash windows, stone lintel and sill */}
+      <g>
+        <rect x="38" y="44" width="100" height="12" fill="#24473C" />
+        <rect x="228" y="44" width="100" height="12" fill="#24473C" />
+        <rect x="44" y="56" width="88" height="116" fill={`url(#${glow})`} />
+        <rect x="234" y="56" width="88" height="116" fill="#16332B" />
+        <g stroke="#0F241D" strokeWidth="4">
+          <path d="M88 56v116M44 114h88" />
+          <path d="M278 56v116M234 114h88" />
+        </g>
+        <rect x="38" y="172" width="100" height="10" fill="#24473C" />
+        <rect x="228" y="172" width="100" height="10" fill="#24473C" />
+      </g>
+
+      {/* string course, edge to edge */}
+      <rect x="0" y="208" width="384" height="14" fill="#1C3A31" />
+
+      {/* ground floor — the bay runs out of the left edge. Left unlit: the
+          white review card lands on this corner, and two lit sources
+          underneath it would fight. */}
+      <rect x="-20" y="254" width="170" height="216" fill="#16332B" />
+      <g stroke="#0F241D" strokeWidth="5">
+        <path d="M40 254v216M96 254v216M-20 340h170" />
+      </g>
+
+      {/* door, fanlight lit above it */}
+      <rect x="232" y="246" width="96" height="224" fill="#24473C" />
+      <path d="M240 278a40 40 0 0 1 80 0z" fill={`url(#${glow})`} />
+      <rect x="240" y="286" width="80" height="184" fill="#132A22" />
+      <circle cx="311" cy="392" r="4" fill="#B8904B" />
+      <rect x="222" y="462" width="116" height="8" fill="#24473C" />
+
+      {/* pavement */}
+      <rect y="470" width="384" height="56" fill="#16332B" />
+
+      {/* the review card lands on this corner — calm it down */}
+      <rect y="366" width="384" height="160" fill={`url(#${fade})`} />
+    </svg>
+  )
+}
 
 /* ── the "before" site ───────────────────────────────────────────
    Believable-bad, not parody. Every complaint the audit makes has to be
@@ -45,6 +182,16 @@ const OLD_BODY = [
   'Whether you are a first time buyer taking your first steps onto the property ladder, or an experienced landlord looking to expand an existing portfolio, our experienced team of advisers are on hand to guide you through every stage of the process from start to finish.',
   'We have access to a comprehensive range of products from across the market and are able to source competitive rates on your behalf. Please do not hesitate to contact a member of our team who will be happy to discuss your requirements in more detail at your convenience.',
 ]
+
+const OLD_NEWS = [
+  ['Bank of England holds base rate', '14/03/2019'],
+  ['Stamp duty changes explained', '02/11/2018'],
+  ['Our office will be closed over Easter', '19/04/2018'],
+  ['Welcome to our new website!', '08/06/2011'],
+]
+
+const OLD_SMALLPRINT =
+  'Hartley & Coe Ltd is authorised and regulated by the Financial Conduct Authority. Your home may be repossessed if you do not keep up repayments on your mortgage. Calls may be recorded for training purposes.'
 
 function OldSite() {
   return (
@@ -78,27 +225,7 @@ function OldSite() {
           generic and instantly recognisable as licensed, which is easier to
           guarantee in SVG than to find in a real image. */}
       <div className={s.oStock}>
-        <svg viewBox="0 0 1152 236" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <linearGradient id="htStockSky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#b9c4cf" />
-              <stop offset="100%" stopColor="#8e9aa6" />
-            </linearGradient>
-          </defs>
-          <rect width="1152" height="236" fill="url(#htStockSky)" />
-          {[80, 200, 320, 900, 1020].map((x, i) => (
-            <rect key={x} x={x} y={20 + i * 12} width="86" height="216" fill="#7d8894" opacity="0.5" />
-          ))}
-          <g fill="#4a525c">
-            <circle cx="470" cy="74" r="30" />
-            <path d="M406 236c0-40 28-62 64-62s64 22 64 62z" />
-            <circle cx="690" cy="74" r="30" />
-            <path d="M626 236c0-40 28-62 64-62s64 22 64 62z" />
-          </g>
-          <g stroke="#cfd6dd" strokeWidth="16" strokeLinecap="round" fill="none">
-            <path d="M520 150h120" />
-          </g>
-        </svg>
+        <StockPhoto suffix="" />
       </div>
 
       <div className={s.oHeadline}>Welcome to Hartley &amp; Coe Mortgages</div>
@@ -112,12 +239,7 @@ function OldSite() {
       {/* Where a broker's social proof should be. Instead: a news list. */}
       <div className={s.oSide}>
         <div className={s.oSideTitle}>Latest News</div>
-        {[
-          ['Bank of England holds base rate', '14/03/2019'],
-          ['Stamp duty changes explained', '02/11/2018'],
-          ['Our office will be closed over Easter', '19/04/2018'],
-          ['Welcome to our new website!', '08/06/2011'],
-        ].map(([title, date]) => (
+        {OLD_NEWS.map(([title, date]) => (
           <div key={title} className={s.oSideItem}>
             {title} <span>&mdash; {date}</span>
           </div>
@@ -127,13 +249,62 @@ function OldSite() {
       <div className={s.oLink}>Click here to contact us &raquo;</div>
 
       <div className={s.oFooter}>
-        <span>
-          Hartley &amp; Coe Ltd is authorised and regulated by the Financial Conduct
-          Authority. Your home may be repossessed if you do not keep up repayments on
-          your mortgage. Calls may be recorded for training purposes.
-        </span>
+        <span>{OLD_SMALLPRINT}</span>
         <span className={s.oCredit}>Site by WebSolutions &copy; 2011</span>
       </div>
+    </div>
+  )
+}
+
+/* The same site as a phone would actually have got it in 2011: nothing is
+   responsive, so the twelve nav links wrap into three dense rows and the body
+   copy shrinks rather than reflowing. The complaints get worse, not milder,
+   which is the point — this is the version most of a broker's traffic sees. */
+function OldSiteMobile() {
+  return (
+    <div className={`${s.old} ${s.oldM}`}>
+      <div className={s.oMTop}>
+        <div className={s.oMLogo}>
+          <svg viewBox="0 0 32 26" width="18" height="15" aria-hidden="true">
+            <path d="M16 2 2 12h4v12h20V12h4z" fill="#7a1f2b" />
+            <rect x="13" y="16" width="6" height="8" fill="#c9c2b4" />
+          </svg>
+          <span>
+            Hartley &amp; Coe
+            <em>Mortgage &amp; Insurance Services</em>
+          </span>
+        </div>
+        <div className={s.oMPhone}>
+          Call us today:<strong>0113 496 0000</strong>
+        </div>
+      </div>
+
+      <div className={s.oMNav}>
+        {OLD_NAV.map(item => (
+          <span key={item} className={s.oMNavItem}>{item}</span>
+        ))}
+      </div>
+
+      <div className={s.oMStock}>
+        <StockPhoto suffix="M" />
+      </div>
+
+      <div className={s.oMHeadline}>Welcome to Hartley &amp; Coe Mortgages</div>
+
+      <div className={s.oMBody}>{OLD_BODY[0]}</div>
+
+      <div className={s.oMSide}>
+        <div className={s.oMSideTitle}>Latest News</div>
+        {OLD_NEWS.slice(1).map(([title, date]) => (
+          <div key={title} className={s.oMSideItem}>
+            {title} <span>&mdash; {date}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className={s.oMLink}>Click here to contact us &raquo;</div>
+
+      <div className={s.oMFooter}>{OLD_SMALLPRINT}</div>
     </div>
   )
 }
@@ -199,74 +370,8 @@ function NewSite() {
         </span>
       </div>
 
-      {/* The hero mass. A Leeds red-brick facade, cropped the way a photograph
-          would be — the roofline and both edges run out of frame, because a
-          whole house centred in a box reads as a clip-art icon rather than a
-          picture. Swap the <svg> for an <img> the moment there is a licensed
-          photograph; nothing else in the layout has to move. */}
       <div className={s.nArt}>
-        <svg viewBox="0 0 384 526" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <linearGradient id="htGlow" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#D8AC5E" />
-              <stop offset="100%" stopColor="#9A7433" />
-            </linearGradient>
-            <linearGradient id="htFade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0C201A" stopOpacity="0" />
-              <stop offset="100%" stopColor="#0C201A" stopOpacity="0.62" />
-            </linearGradient>
-            {/* A pattern, not 272 hand-generated paths. Two courses tall so the
-                vertical joints stagger. */}
-            <pattern id="htBrick" width="56" height="32" patternUnits="userSpaceOnUse">
-              <rect width="56" height="32" fill="#0F241D" />
-              <g stroke="#16332B" strokeWidth="1">
-                <path d="M0 0h56M0 16h56" />
-                <path d="M0 0v16M28 16v16" />
-              </g>
-            </pattern>
-          </defs>
-
-          {/* brickwork, running to all four edges */}
-          <rect width="384" height="526" fill="url(#htBrick)" />
-
-          {/* first-floor sash windows, stone lintel and sill */}
-          <g>
-            <rect x="38" y="44" width="100" height="12" fill="#24473C" />
-            <rect x="228" y="44" width="100" height="12" fill="#24473C" />
-            <rect x="44" y="56" width="88" height="116" fill="url(#htGlow)" />
-            <rect x="234" y="56" width="88" height="116" fill="#16332B" />
-            <g stroke="#0F241D" strokeWidth="4">
-              <path d="M88 56v116M44 114h88" />
-              <path d="M278 56v116M234 114h88" />
-            </g>
-            <rect x="38" y="172" width="100" height="10" fill="#24473C" />
-            <rect x="228" y="172" width="100" height="10" fill="#24473C" />
-          </g>
-
-          {/* string course, edge to edge */}
-          <rect x="0" y="208" width="384" height="14" fill="#1C3A31" />
-
-          {/* ground floor — the bay runs out of the left edge. Left unlit: the
-              white review card lands on this corner, and two lit sources
-              underneath it would fight. */}
-          <rect x="-20" y="254" width="170" height="216" fill="#16332B" />
-          <g stroke="#0F241D" strokeWidth="5">
-            <path d="M40 254v216M96 254v216M-20 340h170" />
-          </g>
-
-          {/* door, fanlight lit above it */}
-          <rect x="232" y="246" width="96" height="224" fill="#24473C" />
-          <path d="M240 278a40 40 0 0 1 80 0z" fill="url(#htGlow)" />
-          <rect x="240" y="286" width="80" height="184" fill="#132A22" />
-          <circle cx="311" cy="392" r="4" fill="#B8904B" />
-          <rect x="222" y="462" width="116" height="8" fill="#24473C" />
-
-          {/* pavement */}
-          <rect y="470" width="384" height="56" fill="#16332B" />
-
-          {/* the review card lands on this corner — calm it down */}
-          <rect y="366" width="384" height="160" fill="url(#htFade)" />
-        </svg>
+        <Facade suffix="" viewBox="0 0 384 526" />
       </div>
 
       <div className={s.nProof}>
@@ -293,29 +398,133 @@ function NewSite() {
   )
 }
 
+/* The portrait rebuild. Same argument, one column: the headline and the call
+   to action are above the fold, the facade is a band rather than a panel, and
+   the rate strip still holds the foot. The adviser row is the one thing
+   dropped — at 340px it costs a fifth of the screen and the review card is
+   already answering "No reviews anywhere". */
+function NewSiteMobile() {
+  return (
+    <div className={`${s.new} ${s.newM}`}>
+      <div className={s.nMNav}>
+        <div className={s.nMLogo}>
+          <span className={s.nLogoMark} />
+          Hartley &amp; Coe
+        </div>
+        <span className={s.nMNavBtn}>Book a call</span>
+      </div>
+
+      <div className={s.nMEyebrow}>Leeds · Whole of market</div>
+
+      <div className={s.nMHeadline}>
+        Know where you stand{' '}
+        <em className={s.nHeadlineAccent}>by Friday.</em>
+      </div>
+
+      <div className={s.nMSub}>
+        Most brokers take three weeks. We&rsquo;ll tell you this week &mdash;
+        including if the answer is no.
+      </div>
+
+      <div className={s.nMCtaRow}>
+        <span className={`${s.nCta} ${s.nMCta}`}>Book a 15-min call</span>
+        <span className={s.nMCtaNote}>No fee. Ever.</span>
+      </div>
+
+      <div className={s.nMArt}>
+        <Facade suffix="M" viewBox="0 26 384 196" />
+      </div>
+
+      <div className={s.nMProof}>
+        <div className={s.nMProofStars} aria-hidden="true">★★★★★</div>
+        <div className={s.nMProofQuote}>
+          “A decision in two days, when our own bank had written us off.”
+        </div>
+        <div className={s.nMProofAttr}>J. Mensah · Headingley</div>
+      </div>
+
+      <div className={s.nMRates}>
+        <div className={s.nMRatesHead}>
+          <span className={s.nMRatesTitle}>Today&rsquo;s best rates</span>
+          <span className={s.nMRatesStamp}>Updated 09:15</span>
+        </div>
+        <div className={s.nMRateRow}>
+          {RATES.map(([term, rate]) => (
+            <div key={term} className={s.nMRate}>
+              <span className={s.nMRateTerm}>{term}</span>
+              <span className={s.nMRateNum}>{rate}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── a canvas ────────────────────────────────────────────────────
+   Layer order is load-bearing and identical at both sizes: old site, audit
+   grid, audit tags, wireframe, new site. */
+
+function Canvas({ cls, audits, wires, Old, New }) {
+  return (
+    <div className={`${s.canvas} ${cls}`}>
+      <Old />
+
+      <div className={s.grid} />
+
+      {audits.map(({ key, label, box, side }) => (
+        <div
+          key={key}
+          className={s.audit}
+          data-side={side}
+          style={{ left: box[0], top: box[1], width: box[2], height: box[3] }}
+        >
+          <span className={s.auditLabel}>{label}</span>
+        </div>
+      ))}
+
+      {wires.map((box, i) => (
+        <div
+          key={i}
+          className={s.wire}
+          style={{ left: box[0], top: box[1], width: box[2], height: box[3] }}
+        />
+      ))}
+
+      <New />
+    </div>
+  )
+}
+
 /* ── the timeline ────────────────────────────────────────────────
    One autoplaying timeline. No ScrollTrigger — the sequence owes nothing to
    where the visitor has scrolled to. Every tween is a transform or an opacity.
 
    The "before" state lives in the CSS media query, not here, so the resolved
-   page is what renders without JS. buildTimeline animates forward from it. */
+   page is what renders without JS. buildTimeline animates forward from it.
 
-function buildTimeline(section) {
-  const q = gsap.utils.selector(section)
+   Canvas-internal targets are queried from `canvas`, not `section`: both
+   canvases are always in the DOM (one of them display:none) and a stagger that
+   swept up the hidden one would spread the visible elements over twice the
+   intended time. */
+
+function buildTimeline(section, canvas, { spread, drop }) {
+  const qs = gsap.utils.selector(section)
+  const qc = gsap.utils.selector(canvas)
 
   const el = {
-    frame: q(`.${s.browser}`),
-    urlOld: q(`.${s.urlOld}`),
-    urlNew: q(`.${s.urlNew}`),
-    grid: q(`.${s.grid}`),
-    audits: q(`.${s.audit}`),
-    wires: q(`.${s.wire}`),
-    old: q(`.${s.old} > *`),
-    newSite: q(`.${s.new}`),
-    newParts: q(`.${s.new} > *`),
-    cta: q(`.${s.nCta}`),
-    copy: q(`.${s.copyLine}`),
-    hint: q(`.${s.hint}`),
+    frame: qs(`.${s.browser}`),
+    urlOld: qs(`.${s.urlOld}`),
+    urlNew: qs(`.${s.urlNew}`),
+    copy: qs(`.${s.copyLine}`),
+    hint: qs(`.${s.hint}`),
+    grid: qc(`.${s.grid}`),
+    audits: qc(`.${s.audit}`),
+    wires: qc(`.${s.wire}`),
+    old: qc(`.${s.old} > *`),
+    newSite: qc(`.${s.new}`),
+    newParts: qc(`.${s.new} > *`),
+    cta: qc(`.${s.nCta}`),
   }
 
   const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
@@ -330,7 +539,8 @@ function buildTimeline(section) {
 
   // ── EJECT — the tags flash, then everything they pointed at is thrown out.
   // Each old element gets its own vector so the exit reads as debris, not as a
-  // single group transition.
+  // single group transition. The vectors are sized to the canvas: 520px off a
+  // 340px-wide phone canvas would clear the frame before the eye caught it.
   tl.to(el.audits, { filter: 'brightness(2.4)', duration: 0.11, yoyo: true, repeat: 1 }, 1.62)
     .to(el.audits, { opacity: 0, scale: 0.94, duration: 0.25 }, 1.82)
     .to(el.grid, { opacity: 0, duration: 0.3 }, 1.82)
@@ -341,8 +551,8 @@ function buildTimeline(section) {
         duration: 0.55,
         ease: 'power2.in',
         stagger: { each: 0.05, from: 'random' },
-        x: () => gsap.utils.random(-520, 520),
-        y: () => gsap.utils.random(340, 760),
+        x: () => gsap.utils.random(-spread, spread),
+        y: () => gsap.utils.random(drop[0], drop[1]),
         rotate: () => gsap.utils.random(-32, 32),
       },
       1.85
@@ -388,13 +598,18 @@ export default function HeroTeardown({ onBookClick }) {
     () => {
       const section = root.current
 
-      // The canvas is a fixed 1200×750 box scaled to fit whatever the frame
-      // ends up being. Measuring beats a media-query ladder: the frame is
-      // constrained by viewport HEIGHT as well as width, so its size is not
-      // predictable from a breakpoint. This runs in every case — the static
-      // fallbacks need the canvas scaled just as much as the animated one does.
+      // Each canvas is a fixed box scaled to fit whatever the frame ends up
+      // being. Measuring beats a media-query ladder: the frame is constrained
+      // by viewport HEIGHT as well as width, so its size is not predictable
+      // from a breakpoint. Both ratios are published every time — CSS picks
+      // the one belonging to the canvas it is showing, and neither the static
+      // fallback nor the animated case has to know which that is.
       const viewport = section.querySelector(`.${s.viewport}`)
-      const fit = () => section.style.setProperty('--fit', viewport.clientWidth / 1200)
+      const fit = () => {
+        const w = viewport.clientWidth
+        section.style.setProperty('--fit', w / 1200)
+        section.style.setProperty('--fit-m', w / 340)
+      }
 
       fit()
       const ro = new ResizeObserver(fit)
@@ -402,18 +617,27 @@ export default function HeroTeardown({ onBookClick }) {
 
       const mm = gsap.matchMedia()
 
-      // Matches the media query in HeroTeardown.module.css exactly. Below 768px,
-      // or when reduced motion is preferred, no timeline is ever built and the
-      // markup stays in its resolved state.
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        tlRef.current = buildTimeline(section)
+      // These two queries must stay byte-identical to the pair in
+      // HeroTeardown.module.css. Reduced motion matches neither, so no
+      // timeline is built and the markup stays in its resolved state.
+      const build = (cls, opts) => () => {
+        tlRef.current = buildTimeline(section, section.querySelector(`.${cls}`), opts)
         tlRef.current.eventCallback('onComplete', () => setCanReplay(true))
 
         return () => {
           tlRef.current = null
           setCanReplay(false)
         }
-      })
+      }
+
+      mm.add(
+        '(max-width: 767px) and (prefers-reduced-motion: no-preference)',
+        build(s.canvasM, { spread: 190, drop: [200, 460] })
+      )
+      mm.add(
+        '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+        build(s.canvasD, { spread: 520, drop: [340, 760] })
+      )
 
       // matchMedia builds its own context, so useGSAP's revert does not reach
       // the timeline inside it. Kill both explicitly.
@@ -448,7 +672,7 @@ export default function HeroTeardown({ onBookClick }) {
             <span className={s.urlBar}>
               <span className={s.urlOld}>
                 <span className={s.urlWarn}>Not secure</span>
-                hartleycoe-mortgages.co.uk/index.html
+                <span className={s.urlText}>hartleycoe-mortgages.co.uk/index.html</span>
               </span>
               <span className={s.urlNew}>
                 <svg viewBox="0 0 12 14" width="9" height="11" aria-hidden="true">
@@ -460,38 +684,26 @@ export default function HeroTeardown({ onBookClick }) {
                   />
                   <rect x="1" y="6" width="10" height="7.5" rx="1.5" fill="currentColor" />
                 </svg>
-                hartleycoe.co.uk
+                <span className={s.urlText}>hartleycoe.co.uk</span>
               </span>
             </span>
           </div>
 
           <div className={s.viewport}>
-            <div className={s.canvas}>
-              <OldSite />
-
-              <div className={s.grid} />
-
-              {AUDITS.map(({ key, label, box, side }) => (
-                <div
-                  key={key}
-                  className={s.audit}
-                  data-side={side}
-                  style={{ left: box[0], top: box[1], width: box[2], height: box[3] }}
-                >
-                  <span className={s.auditLabel}>{label}</span>
-                </div>
-              ))}
-
-              {WIRES.map((box, i) => (
-                <div
-                  key={i}
-                  className={s.wire}
-                  style={{ left: box[0], top: box[1], width: box[2], height: box[3] }}
-                />
-              ))}
-
-              <NewSite />
-            </div>
+            <Canvas
+              cls={s.canvasD}
+              audits={AUDITS}
+              wires={WIRES}
+              Old={OldSite}
+              New={NewSite}
+            />
+            <Canvas
+              cls={s.canvasM}
+              audits={M_AUDITS}
+              wires={M_WIRES}
+              Old={OldSiteMobile}
+              New={NewSiteMobile}
+            />
           </div>
         </div>
 
@@ -525,8 +737,8 @@ export default function HeroTeardown({ onBookClick }) {
       </div>
 
       {/* The audit points as text, for anyone who never sees the animation —
-          mobile, reduced motion, or no JS at all. Visually hidden on desktop,
-          where the same five points are made on screen. */}
+          reduced motion, or no JS at all. Hidden wherever the same five points
+          are made on screen. */}
       <ul className={s.staticPoints}>
         {AUDITS.map(({ key, label }) => (
           <li key={key}>{label}</li>

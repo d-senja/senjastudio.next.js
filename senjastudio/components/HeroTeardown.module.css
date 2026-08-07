@@ -3,16 +3,23 @@
 
    Three ideas hold this file together:
 
-   1. Both fake sites live on ONE fixed 1200×750 canvas with every child
-      absolutely positioned, then scaled to fit by --fit (set from JS via a
+   1. Each fake site lives on ONE fixed canvas with every child absolutely
+      positioned, then scaled to fit by --fit (set from JS via a
       ResizeObserver). Nothing inside is in normal flow, so nothing reflows
-      mid-timeline and one number handles every breakpoint.
+      mid-timeline and one number handles every width.
+
+      There are TWO canvases, because a 1200×750 landscape page scaled into a
+      280px-wide phone frame lands at --fit 0.3 — the body copy renders at 3px
+      and no argument gets made. Mobile gets its own 340×600 portrait canvas
+      instead, with its own layout, its own audit boxes and its own wireframe.
+      Both are always in the DOM; the media query at the foot of this file
+      chooses which one is displayed.
 
    2. This file authors the RESOLVED state — new site visible, old site gone,
       copy in place. The "before" state is opted into by the media query at the
-      foot of the file, which is the SAME query that gates the timeline in
-      HeroTeardown.js. Consequence: mobile, reduced motion and no-JS all render
-      the finished page, and there is nothing to flash.
+      foot of the file, which is the SAME query pair that gates the timeline in
+      HeroTeardown.js. Consequence: reduced motion and no-JS both render the
+      finished page, and there is nothing to flash.
 
    3. Colours inside the two fake sites are literal hex, never tokens. These are
       screenshots of somebody else's website — they must not follow the
@@ -23,10 +30,19 @@
   position: relative;
   background: var(--cream);
   border-bottom: 1px solid var(--border);
-  padding: calc(65px + 28px) 24px 40px; /* fixed nav */
+  padding: calc(65px + 28px) 20px 40px; /* fixed nav */
   display: flex;
+  /* Column, not row. .staticPoints is a sibling of .stage and is only hidden
+     where the animation runs — as a row item next to a width:100% stage it got
+     squeezed to a couple of characters wide and rendered as a vertical strip of
+     single letters down the edge of the page. */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .section { padding-left: 24px; padding-right: 24px; }
 }
 
 .stage {
@@ -36,18 +52,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 26px;
+  gap: 18px;
+}
+
+@media (min-width: 768px) {
+  .stage { gap: 26px; }
 }
 
 /* ── BROWSER FRAME ───────────────────────────────────────────────
    Load-bearing, not decoration: the chrome and the URL declare "this is
    somebody else's site" in the first frame, so nobody reads the ugly page as
    ours. Width is constrained by viewport HEIGHT as well as width, so the whole
-   sequence always fits on one screen. */
+   sequence always fits on one screen — 1.6 is the landscape canvas's aspect
+   ratio, 0.5667 the portrait one's. */
 
 .browser {
-  width: min(92vw, calc(58vh * 1.6), 1360px);
-  border-radius: 12px;
+  width: min(100%, calc(58vh * 0.5667));
+  border-radius: 10px;
   overflow: hidden;
   background: #ffffff;
   /* The hairline uses the theme token, not a literal: the resolved site is a
@@ -57,103 +78,153 @@
   box-shadow: 0 30px 70px -24px rgba(15, 11, 30, 0.42), 0 0 0 1px var(--border);
 }
 
+@media (min-width: 768px) {
+  .browser {
+    width: min(92vw, calc(58vh * 1.6), 1360px);
+    border-radius: 12px;
+  }
+}
+
 .chrome {
   display: flex;
   align-items: center;
-  gap: 14px;
-  height: 38px;
-  padding: 0 14px;
+  gap: 9px;
+  height: 30px;
+  padding: 0 10px;
   background: #e9e7ee;
   border-bottom: 1px solid #d6d3de;
 }
 
 .dots {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-shrink: 0;
 }
 
 .dots i {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #c8c4d2;
+}
+
+@media (min-width: 768px) {
+  .chrome { gap: 14px; height: 38px; padding: 0 14px; }
+  .dots { gap: 6px; }
+  .dots i { width: 10px; height: 10px; }
 }
 
 .urlBar {
   position: relative;
   flex: 1;
-  height: 22px;
-  border-radius: 11px;
+  min-width: 0;
+  height: 18px;
+  border-radius: 9px;
   background: #ffffff;
   border: 1px solid #d6d3de;
 }
 
-/* Both URLs share one slot, so the resolve is a cross-fade that moves nothing. */
+/* Both URLs share one slot, so the resolve is a cross-fade that moves nothing.
+   Which one is showing follows the same rule as everything else in this file:
+   the resolved page is the rebuilt site, so the resolved address bar is the
+   https one. The animated block swaps them back. */
 .urlOld,
 .urlNew {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 10px;
+  gap: 5px;
+  padding: 0 7px;
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 8.5px;
   color: #6b6875;
   white-space: nowrap;
+}
+
+/* The old URL is the longer of the two and it is the one on screen while the
+   frame is narrowest. Truncating it is what a real address bar does. */
+.urlText {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .urlWarn {
   display: inline-flex;
   align-items: center;
-  padding: 1px 6px;
+  flex-shrink: 0;
+  padding: 1px 4px;
   border-radius: 3px;
   background: #f4e3e4;
   color: #b4232b;
-  font-size: 9.5px;
+  font-size: 7.5px;
   letter-spacing: 0.02em;
+}
+
+@media (min-width: 768px) {
+  .urlBar { height: 22px; border-radius: 11px; }
+  .urlOld,
+  .urlNew { gap: 7px; padding: 0 10px; font-size: 11px; }
+  .urlWarn { padding: 1px 6px; font-size: 9.5px; }
+}
+
+.urlOld {
+  opacity: 0;
 }
 
 .urlNew {
   color: #2c7a4b;
-  opacity: 0;
 }
 
 .urlNew svg {
   flex-shrink: 0;
 }
 
-/* ── THE CANVAS ──────────────────────────────────────────────── */
+/* ── THE CANVASES ────────────────────────────────────────────── */
 
 .viewport {
   position: relative;
   width: 100%;
-  aspect-ratio: 1200 / 750;
+  aspect-ratio: 340 / 600;
   overflow: hidden;
   background: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .viewport { aspect-ratio: 1200 / 750; }
 }
 
 .canvas {
   position: absolute;
   top: 0;
   left: 0;
-  width: 1200px;
-  height: 750px;
   transform-origin: 0 0;
-  /* The fallbacks are per-breakpoint approximations, used only for the frames
-     before the ResizeObserver reports. JS overwrites --fit with the measured
-     value in the same paint. */
-  transform: scale(var(--fit, 0.3));
   font-family: var(--sans);
 }
 
+/* The fallbacks are the scale each canvas lands at on a typical device, used
+   only for the frames before the ResizeObserver reports. JS overwrites --fit
+   and --fit-m with the measured values in the same paint. */
+.canvasD {
+  display: none;
+  width: 1200px;
+  height: 750px;
+  transform: scale(var(--fit, 0.62));
+}
+
+.canvasM {
+  width: 340px;
+  height: 600px;
+  transform: scale(var(--fit-m, 0.82));
+}
+
 @media (min-width: 768px) {
-  .canvas { transform: scale(var(--fit, 0.62)); }
+  .canvasD { display: block; }
+  .canvasM { display: none; }
 }
 
 @media (min-width: 1200px) {
-  .canvas { transform: scale(var(--fit, 0.95)); }
+  .canvasD { transform: scale(var(--fit, 0.95)); }
 }
 
 /* ══ THE "BEFORE" SITE ════════════════════════════════════════
@@ -251,7 +322,8 @@
   filter: saturate(0.5) contrast(0.92);
 }
 
-.oStock svg {
+.oStock svg,
+.oMStock svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -315,7 +387,8 @@
   margin-bottom: 6px;
 }
 
-.oSideItem span {
+.oSideItem span,
+.oMSideItem span {
   color: #8a8a8a;
   text-decoration: none;
 }
@@ -357,6 +430,168 @@
   color: #9a9a9a;
 }
 
+/* ── the "before" site, portrait ─────────────────────────────
+   The same page as a phone actually got it in 2011: nothing responsive, so the
+   nav wraps into three dense rows and the type shrinks rather than reflowing.
+   Every complaint gets worse at this size, which is the point. */
+
+.oMTop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 340px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border-bottom: 1px solid #d8d3c8;
+}
+
+.oMLogo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+  line-height: 1.15;
+  color: #7a1f2b;
+}
+
+.oMLogo em {
+  display: block;
+  font-style: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 6px;
+  letter-spacing: 0.03em;
+  color: #7d7d7d;
+  margin-top: 1px;
+}
+
+.oMPhone {
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 6.5px;
+  line-height: 1.3;
+  color: #555555;
+}
+
+.oMPhone strong {
+  display: block;
+  font-size: 11px;
+  color: #7a1f2b;
+}
+
+.oMNav {
+  position: absolute;
+  left: 0;
+  top: 52px;
+  width: 340px;
+  height: 62px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  padding: 0 7px;
+  background: linear-gradient(180deg, #5d6d8d 0%, #3e4c66 100%);
+  font-size: 8px;
+  color: #ffffff;
+}
+
+.oMNavItem {
+  padding: 2px 5px;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.oMStock {
+  position: absolute;
+  left: 8px;
+  top: 122px;
+  width: 324px;
+  height: 100px;
+  overflow: hidden;
+  border: 1px solid #cfcabd;
+  filter: saturate(0.5) contrast(0.92);
+}
+
+.oMHeadline {
+  position: absolute;
+  left: 8px;
+  top: 244px;
+  width: 324px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.24;
+  color: #24313f;
+}
+
+.oMBody {
+  position: absolute;
+  left: 8px;
+  top: 296px;
+  width: 324px;
+  height: 60px;
+  overflow: hidden;
+  font-size: 7.5px;
+  line-height: 1.62;
+  color: #5a5a5a;
+}
+
+.oMSide {
+  position: absolute;
+  left: 8px;
+  top: 380px;
+  width: 324px;
+  height: 96px;
+  border: 1px solid #dcd7cb;
+  background: #f6f4ef;
+  padding: 7px 10px;
+}
+
+.oMSideTitle {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 10px;
+  color: #7a1f2b;
+  border-bottom: 1px solid #dcd7cb;
+  padding-bottom: 4px;
+  margin-bottom: 5px;
+}
+
+.oMSideItem {
+  font-size: 7.5px;
+  line-height: 1.5;
+  color: #0645ad;
+  text-decoration: underline;
+  margin-bottom: 4px;
+}
+
+.oMLink {
+  position: absolute;
+  left: 8px;
+  top: 500px;
+  width: 212px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: #0645ad;
+  text-decoration: underline;
+}
+
+.oMFooter {
+  position: absolute;
+  left: 0;
+  top: 536px;
+  width: 340px;
+  height: 64px;
+  padding: 8px 10px;
+  background: #eeece7;
+  border-top: 1px solid #d5d0c4;
+  font-size: 6.5px;
+  line-height: 1.62;
+  color: #7d7d7d;
+}
+
 /* ══ THE AUDIT ════════════════════════════════════════════════ */
 
 .grid {
@@ -375,6 +610,20 @@
       transparent 1px 60px
     );
   pointer-events: none;
+}
+
+/* 60px rules on a 340px canvas read as five stray lines rather than a grid. */
+.canvasM .grid {
+  background-image: repeating-linear-gradient(
+      to right,
+      rgba(229, 72, 77, 0.16) 0 1px,
+      transparent 1px 34px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(229, 72, 77, 0.16) 0 1px,
+      transparent 1px 34px
+    );
 }
 
 .audit {
@@ -405,9 +654,21 @@
   border-radius: 2px;
 }
 
+/* The mobile canvas scales up by ~0.8 rather than ~0.3, so its labels are set
+   near their rendered size. Anything smaller than this stops being readable at
+   arm's length, which would defeat the point of the section. */
+.canvasM .auditLabel {
+  padding: 3px 6px;
+  font-size: 11px;
+}
+
 .audit[data-side='above'] .auditLabel { bottom: calc(100% + 5px); }
 .audit[data-side='below'] .auditLabel { top: calc(100% + 5px); }
 .audit[data-side='inside'] .auditLabel { top: 10px; left: 10px; }
+.audit[data-side='insideEnd'] .auditLabel { bottom: 10px; left: 10px; }
+
+.canvasM .audit[data-side='inside'] .auditLabel { top: 5px; left: 5px; }
+.canvasM .audit[data-side='insideEnd'] .auditLabel { bottom: 5px; left: 5px; }
 
 /* ══ THE SKELETON ═════════════════════════════════════════════ */
 
@@ -464,6 +725,7 @@
 .nLogoMark {
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   background: #b8904b;
   transform: rotate(45deg);
 }
@@ -613,7 +875,8 @@
   border-radius: 2px;
 }
 
-.nArt svg {
+.nArt svg,
+.nMArt svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -717,6 +980,205 @@
   color: #f1ead9;
 }
 
+/* ── the "after" site, portrait ──────────────────────────────
+   Same argument, one column. Headline and call to action above the fold, the
+   facade as a band rather than a panel, the rate strip still holding the foot.
+   The adviser row is the one thing dropped: at 340px it costs a fifth of the
+   screen and the review card already answers "No reviews anywhere". */
+
+.nMNav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 340px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(184, 144, 75, 0.32);
+}
+
+.nMLogo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--serif);
+  font-size: 15px;
+}
+
+.nMNavBtn {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: 1px solid rgba(184, 144, 75, 0.55);
+  border-radius: 2px;
+  color: #b8904b;
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.nMEyebrow {
+  position: absolute;
+  left: 20px;
+  top: 76px;
+  width: 300px;
+  font-size: 7px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #b8904b;
+}
+
+.nMHeadline {
+  position: absolute;
+  left: 20px;
+  top: 94px;
+  width: 300px;
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.06;
+  letter-spacing: -0.006em;
+  color: #f1ead9;
+}
+
+.nMSub {
+  position: absolute;
+  left: 20px;
+  top: 200px;
+  width: 296px;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: #8ca79b;
+}
+
+.nMCtaRow {
+  position: absolute;
+  left: 20px;
+  top: 256px;
+  width: 300px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nMCta {
+  padding: 11px 14px;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.nMCtaNote {
+  font-size: 9px;
+  font-weight: 300;
+  color: #8ca79b;
+}
+
+.nMArt {
+  position: absolute;
+  left: 0;
+  top: 320px;
+  width: 340px;
+  height: 164px;
+  overflow: hidden;
+}
+
+.nMProof {
+  position: absolute;
+  left: 20px;
+  top: 414px;
+  width: 300px;
+  height: 88px;
+  padding: 12px 14px;
+  background: #ffffff;
+  color: #0c201a;
+  border-radius: 3px;
+  box-shadow: 0 16px 34px -14px rgba(0, 0, 0, 0.6);
+}
+
+.nMProofStars {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #b8904b;
+}
+
+.nMProofQuote {
+  margin-top: 6px;
+  font-family: var(--serif2);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.nMProofAttr {
+  margin-top: 6px;
+  font-size: 7px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6b7570;
+}
+
+.nMRates {
+  position: absolute;
+  left: 0;
+  top: 522px;
+  width: 340px;
+  height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  background: #143028;
+  border-top: 1px solid rgba(184, 144, 75, 0.32);
+  font-variant-numeric: tabular-nums;
+}
+
+.nMRatesHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.nMRatesTitle {
+  font-size: 7px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #b8904b;
+}
+
+.nMRatesStamp {
+  font-size: 7px;
+  font-weight: 300;
+  color: #8ca79b;
+}
+
+.nMRateRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nMRateTerm {
+  display: block;
+  font-size: 6.5px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8ca79b;
+}
+
+.nMRateNum {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: #f1ead9;
+}
+
 /* ══ OUR COPY ═════════════════════════════════════════════════ */
 
 .copy {
@@ -738,7 +1200,7 @@
 
 .copyHead {
   font-family: var(--serif);
-  font-size: clamp(26px, 3.4vw, 40px);
+  font-size: clamp(24px, 3.4vw, 40px);
   line-height: 1.15;
   color: var(--ink);
 }
@@ -750,13 +1212,17 @@
 
 .copySub {
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--ink);
   opacity: 0.72;
 }
 
+@media (min-width: 768px) {
+  .copySub { font-size: 15px; }
+}
+
 .cta {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .hint {
@@ -783,14 +1249,14 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  padding: 7px 13px;
+  padding: 6px 11px;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: transparent;
   color: var(--ink);
   opacity: 0.5;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
@@ -799,8 +1265,12 @@
   opacity: 1;
 }
 
+@media (min-width: 768px) {
+  .replay { padding: 7px 13px; font-size: 12px; }
+}
+
 /* The five audit points as text, for anyone who never sees them made on
-   screen — mobile, reduced motion, or no JS at all. */
+   screen — reduced motion, or no JS at all. */
 .staticPoints {
   list-style: none;
   margin: 22px auto 0;
@@ -828,11 +1298,12 @@
 
 /* ══ THE ANIMATED CASE ════════════════════════════════════════
    Everything above renders the finished page. This block — and only this
-   block — winds it back to the "before" state. It must stay byte-identical to
-   the matchMedia query in HeroTeardown.js: if the two ever disagree, one side
-   winds the page back and the other never plays it forward. */
+   block — winds it back to the "before" state. Its condition must stay the
+   union of the two matchMedia queries in HeroTeardown.js: if the two ever
+   disagree, one side winds the page back and the other never plays it
+   forward. */
 
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   .browser {
     opacity: 0;
     transform: translateY(26px) scale(0.985);
@@ -842,6 +1313,9 @@
   .grid { display: block; }
   .audit { display: block; }
   .wire { display: block; }
+
+  .urlOld { opacity: 1; }
+  .urlNew { opacity: 0; }
 
   .new {
     opacity: 0;

@@ -57,12 +57,37 @@ removed too.
 
 Inherits two proven ideas from `HeroTransform`:
 
-1. **Fixed 1200×750 canvas, every child absolutely positioned, scaled to fit.**
+1. **Fixed canvas, every child absolutely positioned, scaled to fit.**
    Nothing inside reflows during the timeline, and one scale value handles every
-   breakpoint. `--fit` is set by a `ResizeObserver` on the frame.
-2. **CSS owns the state, not JS.** The default (mobile / reduced-motion) styles
-   render the resolved page. The animated before-state is opted into by the same
-   media query that gates the timeline, so there is no flash and no-JS still works.
+   width. `--fit` / `--fit-m` are set by a `ResizeObserver` on the frame.
+2. **CSS owns the state, not JS.** The default (reduced-motion) styles render
+   the resolved page. The animated before-state is opted into by the same media
+   query that gates the timeline, so there is no flash and no-JS still works.
+
+## Two canvases
+
+There is a landscape 1200×750 canvas and a portrait 340×600 one. Both are
+always in the DOM; `@media (min-width: 768px)` picks which is displayed, and
+`gsap.matchMedia` builds the timeline against that one.
+
+A single canvas cannot serve both. Scaled to fit a 277px phone frame, the
+landscape canvas lands at `--fit` 0.3: the rebuilt site's body copy renders at
+3px and the nav links at 3.7px, so the section makes no argument at all on the
+device most of a broker's traffic arrives on. The portrait canvas lands at
+~0.82, which is why its type is authored near its rendered size.
+
+Consequences worth knowing:
+
+- Canvas-internal tweens are scoped to the **canvas element**, not the section.
+  A `stagger` that swept up the hidden canvas too would spread the visible
+  elements over twice the intended time.
+- The ejection vectors are a parameter, not a constant. 520px of debris off a
+  340px-wide canvas clears the frame before the eye catches it.
+- The five audit tags hang off different sides on mobile. At 340px a label is a
+  large fraction of the box it belongs to, and an `inside` tag on the nav sat on
+  top of the twelve links it was counting.
+- The portrait rebuild drops the adviser row. At 340px it costs a fifth of the
+  screen, and the review card is already answering *No reviews anywhere*.
 
 The timeline is a single `gsap.timeline()` — no ScrollTrigger, no Lenis coupling.
 Every tween is a transform or opacity.
@@ -72,11 +97,16 @@ Every tween is a transform or opacity.
 - The whole frame is `aria-hidden`. It is a picture of a website, not a website,
   and contains nothing focusable.
 - No `<h1>` — the real hero below still owns it.
-- Below 768px or under `prefers-reduced-motion`, no timeline is built and the
-  markup stays resolved.
+- Under `prefers-reduced-motion` no timeline is built, the markup stays resolved,
+  and the five audit points appear as text beneath it.
 - A `↻ Replay` control lets anyone watch it again.
 
-## Out of scope
+## Known trap
 
-A bespoke mobile before/after treatment. Mobile currently falls back to the
-resolved site plus the audit points as text.
+`.section` is a flex container with two children: `.stage` and the
+`.staticPoints` fallback list. It must stay `flex-direction: column`. As a
+**row** — which it was originally, when `.staticPoints` was hidden everywhere
+the section was visible — the list is squeezed to a couple of characters wide
+next to a `width: 100%` stage and renders as a vertical strip of single letters
+down the edge of the page, 900px tall, which then sets the section height and
+centres the frame in a screenful of dead space.
