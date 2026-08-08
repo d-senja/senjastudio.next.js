@@ -6,7 +6,7 @@ import Link from 'next/link'
 // are a separate business line from "we build mortgage broker websites", and
 // putting them here lets the homepage make one argument properly.
 const ADDONS = [
-  { tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '\u00a3800', monthly: 'Included in Care Plan' },
+  { tag: 'Most Popular', title: 'AI Lead Capture Chatbot', body: "An AI assistant that qualifies mortgage leads 24/7 — asking the right questions, capturing contact details, and booking calls while you sleep.", price: '\u00a3800', monthly: 'Included in the optional Care Plan' },
   { tag: 'Add-on', title: 'AI Customer Support Agent', body: "An AI that handles common mortgage questions from existing and prospective clients around the clock.", price: '\u00a31,200', monthly: '+ \u00a3100/month' },
   { tag: 'Add-on', title: 'AI Appointment Setting Agent', body: "An AI that follows up with leads who didn't book, reactivates cold contacts, and fills your calendar.", price: '\u00a31,000', monthly: '+ \u00a3100/month' },
   { tag: 'Add-on', title: 'Automated AI Outreach System', body: "A fully automated outreach pipeline that scrapes leads, generates personalised emails, and sends them on autopilot.", price: '\u00a31,500', monthly: '+ \u00a3150/month' },

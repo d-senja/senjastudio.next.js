@@ -49,7 +49,7 @@ const PROCESS_STEPS = [
   { num: '03', day: 'Days 1–5', title: 'The build', body: "I build your site from scratch — the layout, the separate paths for each client type, your reviews placed where they do the most work, and the compliance detail. You send me the brief. I handle everything else." },
   { num: '04', day: 'Day 5–6', title: 'Review & revisions', body: "You get a preview link. Two rounds of revisions — anything you want changed, we change it. Once you're happy, we move to launch." },
   { num: '05', day: 'Day 7', title: 'Live & launched', body: "Final 50% invoice. Site goes live on your domain. I handle all the deployment — you don't need to touch GitHub, Vercel, or DNS. It just appears." },
-  { num: '06', day: 'Ongoing', title: 'Care Plan kicks in', body: "Your first month is free. After that, £150/month covers up to 2 hours of changes — new reviews added, copy refreshed, tweaks and updates whenever you need them." },
+  { num: '06', day: 'Ongoing', title: 'Care Plan, if you want it', body: "Optional and never automatic — the site is yours either way. If you take it, £150/month covers up to 2 hours of changes, and the first month is free." },
 ]
 
 const TESTIMONIALS = [
@@ -60,20 +60,21 @@ const TESTIMONIALS = [
 
 const FAQS = [
   { q: 'Do you handle regulatory compliance on the site?', a: "We build regulatory compliance into every site as standard — not as an afterthought. This includes an authorisation statement, compliant disclaimer copy, GDPR-compliant lead forms with explicit consent language, and cookie consent built correctly. We review all copy for FCA financial promotion compliance before anything goes live." },
-  { q: 'How much does a mortgage broker website cost?', a: "We offer three tiers. Homepage only: £1,500, delivered in 5 days. Full website (homepage + about + services + contact): £2,500, delivered in 7 days. Bespoke multi-page builds from £3,500 with timeline agreed per project. All builds include the first month of the Care Plan free." },
+  { q: 'How much does a mortgage broker website cost?', a: "Three tiers. Homepage only: £1,500, delivered in 5 days. Full website (homepage + about + services + contact): £2,500, delivered in 7 days. Website + Leads: £3,500/month — the full website built in the first month, then 10 qualified mortgage appointments booked into your diary every month after. The Care Plan is a separate optional extra at £150/month; no build requires it." },
   { q: 'Do you build websites for brokers just starting out?', a: "Absolutely. Starting with a professional, FCA-compliant, conversion-focused site means you look established from day one — and clients choose you over brokers who've been around for years but never invested in their online presence." },
   { q: 'Are your websites FCA compliant?', a: "Yes. Every build includes FCA authorisation badge placement, compliant disclaimer copy, and layouts structured to meet financial promotion requirements. We review all claims and copy before launch." },
-  { q: "What do you actually build — is it just a homepage?", a: "We offer three tiers. The Homepage Build is one high-converting page — which is where most visitors decide whether to contact you. The Full Website adds About, Services, and Contact pages. The Bespoke tier covers custom multi-page architectures." },
+  { q: "What do you actually build — is it just a homepage?", a: "We offer three tiers. The Homepage Build is one high-converting page — which is where most visitors decide whether to contact you. The Full Website adds About, Services, and Contact pages. Website + Leads is the Full Website plus a monthly outbound system that books 10 qualified mortgage appointments into your diary every month." },
   { q: "What if I don't like the design?", a: "Every build includes 2 rounds of revisions. Before we start, we send you a project brief covering your brand colours, positioning, and preferences. Revisions are included — additional rounds beyond the two are billed at £75/hour." },
   { q: "Do I need to provide content, copy, or photos?", a: "No. We write all the copy, structure the page, and work with whatever brand assets you have. If you have a headshot, great. If not, we work with what's available. Everything you need to provide is covered in the project brief." },
-  { q: "What's the Care Plan and what does it include?", a: "The Care Plan at £150/month comes with every build — your first month is free. It covers up to 2 hours of changes per month — adding new Google reviews, updating rates, refreshing copy, small design tweaks. Work beyond 2 hours is billed at £75/hour, agreed in advance." },
+  { q: "Is the Care Plan optional, and what does it include?", a: "It's optional. No build requires it and nothing starts automatically — you decide whether you want it. If you do, it's £150/month with your first month free, covering up to 2 hours of changes: adding new Google reviews, updating rates, refreshing copy, small design tweaks. Work beyond 2 hours is billed at £75/hour, agreed in advance. Once started it runs for a minimum of three months, then you can cancel any time with 30 days' notice." },
+  { q: "Can I buy leads without buying a website?", a: "Yes. Starter Leads is £1,500/month for 10 booked mortgage appointments. Pay Per Appointment is £175 each with a minimum of 5 to start, and no monthly retainer. Both are outbound systems — qualified buyers actively looking in the next 90 days, booked straight into your diary, with a dedicated sending domain and a weekly performance report. No ads and no cold calling on your end." },
   { q: 'Will I own the website?', a: "Yes. You own everything — the code, the content, the files. There's no platform lock-in. If you ever want to move the site elsewhere, take it. Everything is yours." },
   { q: 'How is this different from using Wix or Squarespace?', a: "Wix and Squarespace are generic tools built for every business. Senja Studio builds for one industry. That shows up in the layout decisions, the compliance detail, and copy written for the clients you actually want. The result converts at a fundamentally different rate." },
 ]
 
 const TRUST_STRIP = [
   'Compliance-Ready — every build',
-  '50/50 Payment — no lock-in',
+  '50/50 Payment — no build lock-in',
   'Free 30-Min Audit — no commitment',
   'Mortgage Brokers Only — worldwide',
   '7-Day Delivery — standard build',
@@ -1210,7 +1211,10 @@ export default function Home({ founderVideo }) {
             ['GDPR-compliant forms', 'Generic forms, no consent copy', 'Consent language built in'],
             ['Cookie consent banner', 'Fake banner or none at all', 'Real accept/reject, legally compliant'],
             ['Financial promotion copy review', 'Not their problem', 'We flag compliance risks before launch'],
-            ['Lock-in contract', 'Long retainer required', 'You own everything. No lock-in.']
+            // Scoped to the build on purpose. The monthly lead services are
+            // opt-in and separate; the claim being made here is that nothing
+            // holds your site hostage, which stays true either way.
+            ['Website lock-in', 'Retainer required to keep it up', 'You own the site outright. Leave any time.']
           ].map(([feature, bad, good], i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr', borderTop: '1px solid var(--border)', background: 'var(--surface)' }} role="row">
               <div style={{ padding: '14px 20px', fontSize: '0.78rem', color: 'var(--ink)', fontWeight: 400, borderRight: '1px solid var(--border)', lineHeight: 1.5 }} role="cell">{feature}</div>
@@ -1232,7 +1236,7 @@ export default function Home({ founderVideo }) {
             A site is the one asset that works while you sleep. <em>It should earn its cost back in cases, not clicks.</em>
           </div>
           <div className="trust-badges">
-            {[['7', 'Day delivery'], ['£1,500', 'Starting price'], ['50/50', 'Payment split'], ['0', 'Lock-in contracts']].map(([num, label]) => (
+            {[['7', 'Day delivery'], ['£1,500', 'Starting price'], ['50/50', 'Payment split'], ['0', 'Build lock-in']].map(([num, label]) => (
               <div key={label} className="trust-badge">
                 <div className="trust-badge-num">{num}</div>
                 <div className="trust-badge-label">{label}</div>
@@ -1308,7 +1312,7 @@ export default function Home({ founderVideo }) {
       <section className="section pricing scroll-reveal-text" id="pricing">
         <div className="section-gold-line" />
         <p className="section-label">Transparent pricing</p>
-        <h2 className="section-heading">Three tiers. Fixed prices.<br /><em>No surprises.</em></h2>
+        <h2 className="section-heading">Three tiers. Clear prices.<br /><em>No surprises.</em></h2>
 
         <div className="scroll-reveal" style={{ textAlign: 'left', background: 'var(--cream2)', borderLeft: '3px solid var(--gold)', maxWidth: '680px', margin: '0 auto 32px', padding: '14px 24px', fontSize: '0.78rem', color: 'var(--muted)' }}>
           <strong style={{ color: 'var(--ink)' }}>⏱ Important:</strong> The 7-day delivery applies to website builds only. AI add-ons are scoped and timed separately. All timelines confirmed in writing before work begins.
@@ -1320,12 +1324,12 @@ export default function Home({ founderVideo }) {
             tall block with the grey container showing through the gaps. */}
         <div className="pricing-grid scroll-reveal-stagger">
           {[
-            { title: 'Homepage Build', price: '£1,500', delivery: 'Delivered in 5 working days', featured: false, features: ['High-converting homepage only', 'Segmented CTAs — self-employed, FTB, complex', 'Google review integration', 'FCA statement and compliance copy', 'GDPR-compliant lead form + cookie consent', 'Mobile-first, fast-loading', '1 round of revisions', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
-            { title: 'Full Website', price: '£2,500', delivery: 'Delivered in 7 working days', featured: true, badge: 'Most Popular', features: ['Homepage + About + Services + Contact', 'Segmented CTAs for each client type', 'Google review integration and social proof', 'Compliance-ready copy and regulatory badges', 'GDPR forms on every page + cookie consent', 'WhatsApp widget and booking integration', 'Mobile-first, fast-loading, SEO ready', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
+            { title: 'Homepage Build', price: '£1,500', delivery: 'Delivered in 5 working days', featured: false, features: ['High-converting homepage only', 'Segmented CTAs — self-employed, FTB, complex', 'Google review integration', 'FCA statement and compliance copy', 'GDPR-compliant lead form + cookie consent', 'Mobile-first, fast-loading', '1 round of revisions', '50% upfront (non-refundable) · 50% on delivery', 'Optional Care Plan — £150/mo, first month free'] },
+            { title: 'Full Website', price: '£2,500', delivery: 'Delivered in 7 working days', featured: true, badge: 'Most Popular', features: ['Homepage + About + Services + Contact', 'Segmented CTAs for each client type', 'Google review integration and social proof', 'Compliance-ready copy and regulatory badges', 'GDPR forms on every page + cookie consent', 'WhatsApp widget and booking integration', 'Mobile-first, fast-loading, SEO ready', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Optional Care Plan — £150/mo, first month free'] },
             // A retainer, not a one-off — hence `per`. The note spells out what
             // the recurring half of the fee buys, because a £3,500 number sitting
             // next to two fixed build prices otherwise reads as a third build fee.
-            { title: 'Website + Leads', price: '£3,500', per: '/month', delivery: 'Delivered in 7 working days, then monthly', note: 'Website built in first month. Leads delivered every month after.', dark: true, badge: 'Best Value', features: ['Everything in Full Website', '10 qualified mortgage appointments per month', 'Leads booked directly into your diary', 'Dedicated sending domain and outreach setup', 'Weekly performance report', 'No ads, no cold calling on your end', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
+            { title: 'Website + Leads', price: '£3,500', per: '/month', delivery: 'Delivered in 7 working days, then monthly', note: 'Website built in first month. Leads delivered every month after.', dark: true, badge: 'Best Value', features: ['Everything in Full Website', '10 qualified mortgage appointments per month', 'Leads booked directly into your diary', 'Dedicated sending domain and outreach setup', 'Weekly performance report', 'No ads, no cold calling on your end', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Optional Care Plan — £150/mo, first month free'] },
           ].map((card) => (
             <div key={card.title} className={`pricing-card${card.featured ? ' featured' : ''}${card.dark ? ' dark' : ''}`}>
               {card.badge && <div className="pricing-badge">{card.badge}</div>}

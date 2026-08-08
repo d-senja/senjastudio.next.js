@@ -50,20 +50,61 @@ export default function Document() {
       },
       {
         "@type": "Service",
-        "name": "Bespoke Website",
+        "name": "Website + Leads",
         "provider": {
           "@type": "LocalBusiness",
           "name": "Senja Studio"
         },
-        "description": "Custom multi-page mortgage broker website tailored to specific requirements",
+        "description": "Full mortgage broker website built in the first month, then 10 qualified mortgage appointments booked into your diary every month after",
+        // UnitPriceSpecification with a monthly referenceQuantity, not a bare
+        // price — these three are recurring, and a flat "price" would be read
+        // as a one-off build fee in search results.
         "offers": {
           "@type": "Offer",
-          "price": "3500",
           "priceCurrency": "GBP",
           "priceSpecification": {
-            "@type": "PriceSpecification",
-            "minPrice": "3500",
-            "priceCurrency": "GBP"
+            "@type": "UnitPriceSpecification",
+            "price": "3500",
+            "priceCurrency": "GBP",
+            "referenceQuantity": { "@type": "QuantitativeValue", "value": 1, "unitCode": "MON" }
+          }
+        }
+      },
+      {
+        "@type": "Service",
+        "name": "Starter Leads",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Senja Studio"
+        },
+        "description": "Outbound appointment setting for mortgage brokers — 10 qualified appointments booked into your diary each month, no website required",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "GBP",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "1500",
+            "priceCurrency": "GBP",
+            "referenceQuantity": { "@type": "QuantitativeValue", "value": 1, "unitCode": "MON" }
+          }
+        }
+      },
+      {
+        "@type": "Service",
+        "name": "Pay Per Appointment",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Senja Studio"
+        },
+        "description": "Qualified mortgage appointments billed individually with no monthly retainer, minimum 5 to start",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "GBP",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "175",
+            "priceCurrency": "GBP",
+            "unitText": "appointment"
           }
         }
       },
