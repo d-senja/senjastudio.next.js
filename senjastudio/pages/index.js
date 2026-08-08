@@ -297,7 +297,7 @@ function StickyCompare({ openModal }) {
 
   return (
     <div className={`sticky-compare${visible ? ' visible' : ''}`}>
-      {[['Homepage', '£1,500'], ['Full Site', '£2,500'], ['Bespoke', 'From £3,500']].map(([label, price]) => (
+      {[['Homepage', '£1,500'], ['Full Site', '£2,500'], ['Site + Leads', '£3,500/mo']].map(([label, price]) => (
         <div key={label} className="sticky-compare-item">
           <span className="sticky-compare-label">{label}</span>
           <span className="sticky-compare-price">{price}</span>
@@ -1321,23 +1321,65 @@ export default function Home({ founderVideo }) {
         <div className="pricing-grid scroll-reveal-stagger">
           {[
             { title: 'Homepage Build', price: '£1,500', delivery: 'Delivered in 5 working days', featured: false, features: ['High-converting homepage only', 'Segmented CTAs — self-employed, FTB, complex', 'Google review integration', 'FCA statement and compliance copy', 'GDPR-compliant lead form + cookie consent', 'Mobile-first, fast-loading', '1 round of revisions', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
-            { title: 'Full Website', price: '£2,500', delivery: 'Delivered in 7 working days', featured: true, features: ['Homepage + About + Services + Contact', 'Segmented CTAs for each client type', 'Google review integration and social proof', 'Compliance-ready copy and regulatory badges', 'GDPR forms on every page + cookie consent', 'WhatsApp widget and booking integration', 'Mobile-first, fast-loading, SEO ready', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
-            { title: 'Bespoke Build', price: 'From £3,500', delivery: 'Timeline agreed per project', featured: false, features: ['Everything in Full Website', 'Custom multi-page architecture', 'Any AI add-ons from our suite', 'Mortgage calculator or rate comparison tool', 'Advanced analytics and conversion tracking', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
+            { title: 'Full Website', price: '£2,500', delivery: 'Delivered in 7 working days', featured: true, badge: 'Most Popular', features: ['Homepage + About + Services + Contact', 'Segmented CTAs for each client type', 'Google review integration and social proof', 'Compliance-ready copy and regulatory badges', 'GDPR forms on every page + cookie consent', 'WhatsApp widget and booking integration', 'Mobile-first, fast-loading, SEO ready', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
+            // A retainer, not a one-off — hence `per`. The note spells out what
+            // the recurring half of the fee buys, because a £3,500 number sitting
+            // next to two fixed build prices otherwise reads as a third build fee.
+            { title: 'Website + Leads', price: '£3,500', per: '/month', delivery: 'Delivered in 7 working days, then monthly', note: 'Website built in first month. Leads delivered every month after.', dark: true, badge: 'Best Value', features: ['Everything in Full Website', '10 qualified mortgage appointments per month', 'Leads booked directly into your diary', 'Dedicated sending domain and outreach setup', 'Weekly performance report', 'No ads, no cold calling on your end', '2 rounds of revisions included', '50% upfront (non-refundable) · 50% on delivery', 'Care Plan — first month free, then £150/mo'] },
           ].map((card) => (
-            <div key={card.title} className={`pricing-card${card.featured ? ' featured' : ''}`}>
-              {card.featured && <div className="pricing-badge">Most Popular</div>}
+            <div key={card.title} className={`pricing-card${card.featured ? ' featured' : ''}${card.dark ? ' dark' : ''}`}>
+              {card.badge && <div className="pricing-badge">{card.badge}</div>}
               <div className="pricing-title">{card.title}</div>
-              <div className="pricing-price">{card.price}</div>
+              <div className="pricing-price">
+                {card.price}{card.per && <span className="pricing-per">{card.per}</span>}
+              </div>
               {/* Colour lives in .pricing-delivery / .pricing-card.featured .pricing-delivery */}
-              <div className="pricing-delivery">{card.delivery}</div>
+              <div className="pricing-meta">
+                <div className="pricing-delivery">{card.delivery}</div>
+                {card.note && <p className="pricing-note">{card.note}</p>}
+              </div>
               <ul className="pricing-features">
                 {card.features.map((f, i) => <li key={i}>{f}</li>)}
               </ul>
-              <button className={card.featured ? 'btn-gold' : 'btn-primary'} onClick={openModal} style={{ width: '100%' }}>
+              <button className={card.featured || card.dark ? 'btn-gold' : 'btn-primary'} onClick={openModal} style={{ width: '100%' }}>
                 Book a Free Call
               </button>
             </div>
           ))}
+        </div>
+
+        {/* ── LEAD GENERATION ─────────────────────────────
+            Standalone offer for brokers who already have a site. It lives
+            inside the pricing section, reusing .pricing-grid and the card
+            classes, so it reads as a continuation of the same price list
+            rather than a separate block bolted underneath. */}
+        <div className="leadgen-block">
+          <div className="section-gold-line" />
+          <p className="section-label">Lead generation</p>
+          <h2 className="section-heading">Just need <em>leads?</em></h2>
+          <p className="leadgen-sub">
+            We build outbound appointment systems for mortgage brokers — qualified buyers booked straight into your diary. No website required.
+          </p>
+
+          <div className="pricing-grid leadgen-grid scroll-reveal-stagger">
+            {[
+              { title: 'Starter Leads', price: '£1,500', per: '/month', features: ['10 booked mortgage appointments per month', 'Qualified buyers only (actively looking in next 90 days)', 'Dedicated sending domain set up for you', 'Leads booked directly into your Calendly', 'Weekly performance report', 'Cancel anytime after month 1'] },
+              { title: 'Pay Per Appointment', price: '£175', per: 'per appointment', features: ['No monthly retainer', 'Pay only for appointments delivered', 'Qualified buyers only', 'Minimum 5 appointments to start', 'Booked directly into your diary', 'Best for brokers testing the service'] },
+            ].map((card) => (
+              <div key={card.title} className="pricing-card">
+                <div className="pricing-title">{card.title}</div>
+                <div className="pricing-price">
+                  {card.price}<span className="pricing-per">{card.per}</span>
+                </div>
+                <ul className="pricing-features">
+                  {card.features.map((f, i) => <li key={i}>{f}</li>)}
+                </ul>
+                <button className="btn-primary" onClick={openModal} style={{ width: '100%' }}>
+                  Book a Free Call
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
         <AvailabilityLine />

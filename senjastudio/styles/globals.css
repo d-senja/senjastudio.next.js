@@ -1175,17 +1175,21 @@ nav::after {
   border-color: rgba(201,168,76,0.3);
 }
 
-/* The featured card is always dark, in either theme — pinned to a literal hex
-   so no theme variable can repaint it. */
-.pricing-card.featured {
+/* Dark cards are dark in either theme — pinned to a literal hex so no theme
+   variable can repaint them. `.featured` additionally lifts itself out of the
+   row; `.dark` is the same paint job without the lift, so two dark cards can
+   sit side by side without their scaled edges colliding in the 1px gutter. */
+.pricing-card.featured,
+.pricing-card.dark {
   background: #0F0B1E;
   position: relative;
   overflow: hidden;
-  transform: scale(1.03);
   box-shadow: 0 12px 36px rgba(15,11,30,0.15), 0 0 0 1px rgba(201,168,76,0.15);
 }
+.pricing-card.featured { transform: scale(1.03); }
 
-.pricing-card.featured:hover {
+.pricing-card.featured:hover,
+.pricing-card.dark:hover {
   border-color: #1a5c3a;
   box-shadow: 0 12px 40px rgba(26,92,58,0.25), 0 0 0 1px #1a5c3a;
 }
@@ -1210,7 +1214,8 @@ nav::after {
   color: var(--ink);
   margin-bottom: 14px;
 }
-.pricing-card.featured .pricing-title { color: #FFFFFF; }
+.pricing-card.featured .pricing-title,
+.pricing-card.dark .pricing-title { color: #FFFFFF; }
 .pricing-price {
   font-family: var(--serif);
   font-size: 3.8rem;
@@ -1220,17 +1225,46 @@ nav::after {
   margin-bottom: 6px;
   letter-spacing: -0.04em;
 }
-.pricing-card.featured .pricing-price { color: #FFFFFF; }
+.pricing-card.featured .pricing-price,
+.pricing-card.dark .pricing-price { color: #FFFFFF; }
+
+/* "/month", "per appointment" — the billing unit riding alongside the number.
+   Everything about the display price has to be reset here, or the suffix
+   inherits 3.8rem of tight-tracked serif. */
+.pricing-per {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-left: 5px;
+  white-space: nowrap;
+}
+.pricing-card.featured .pricing-per,
+.pricing-card.dark .pricing-per { color: rgba(255,255,255,0.72); }
+
+/* Delivery line plus the optional note under it. The gap below the pair lives
+   on the wrapper so adding a note does not double the spacing. */
+.pricing-meta { margin-bottom: 28px; }
 
 /* "Delivered in N working days". On the dark featured card this must stay
    clearly legible — near-white, not a low-opacity tint. */
 .pricing-delivery {
   font-size: 0.78rem;
-  margin-bottom: 28px;
   display: block;
   color: var(--muted);
 }
-.pricing-card.featured .pricing-delivery { color: rgba(255,255,255,0.92); }
+.pricing-card.featured .pricing-delivery,
+.pricing-card.dark .pricing-delivery { color: rgba(255,255,255,0.92); }
+
+.pricing-note {
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.pricing-card.featured .pricing-note,
+.pricing-card.dark .pricing-note { color: rgba(255,255,255,0.7); }
 
 .pricing-features {
   list-style: none;
@@ -1250,7 +1284,29 @@ nav::after {
   line-height: 1.56;
 }
 .pricing-features li::before { content: '✓'; color: var(--gold); font-weight: 600; flex-shrink: 0; }
-.pricing-card.featured .pricing-features li { color: rgba(255,255,255,0.82); }
+.pricing-card.featured .pricing-features li,
+.pricing-card.dark .pricing-features li { color: rgba(255,255,255,0.82); }
+
+/* LEAD GENERATION — a second price list inside the pricing section, reusing
+   .pricing-grid and .pricing-card so it inherits the stacking behaviour and
+   card chrome rather than duplicating either. */
+.leadgen-block { margin-top: 88px; }
+.leadgen-block .section-heading { margin-bottom: 18px; }
+.leadgen-sub {
+  max-width: 660px;
+  margin: 0 auto 44px;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--muted);
+}
+/* Two cards, not three — without this they stretch to the 1060px the
+   three-tier grid is sized for and the copy floats in whitespace. */
+.leadgen-grid { max-width: 720px; }
+/* These cards carry no delivery line, so the price needs its own breathing
+   room before the feature list starts. */
+.leadgen-grid .pricing-price { margin-bottom: 28px; }
 .faq-item { border-bottom: 1px solid var(--border); background: var(--surface); }
 .faq-item:last-child { border-bottom: none; }
 .faq-q {
@@ -2235,24 +2291,28 @@ footer {
     border: 1px solid var(--border);
   }
   
-  .pricing-card.featured {
+  .pricing-card.featured,
+  .pricing-card.dark {
     transform: scale(1);
     border: 2px solid var(--gold);
   }
-  
+
   .pricing-title {
     font-size: 1.2rem;
   }
-  
+
   .pricing-price {
     font-size: 2.8rem;
   }
-  
+
   .pricing-delivery,
   .pricing-per {
     font-size: 0.8rem;
   }
-  
+
+  .leadgen-block { margin-top: 56px; }
+  .leadgen-sub { font-size: 0.88rem; margin-bottom: 28px; }
+
   .pricing-features li {
     font-size: 0.85rem;
   }
