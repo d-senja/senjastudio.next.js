@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Nothing under /api/ is a page. Keeping crawlers out of it saves crawl budget
+# and avoids error-status URLs turning up in Search Console coverage reports.
+Disallow: /api/
+
+Sitemap: https://senjastudio.co.uk/sitemap.xml

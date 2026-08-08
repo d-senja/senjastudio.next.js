@@ -711,9 +711,13 @@ export default function LocationPage({ location, slug }) {
   )
 }
 
+// Exported so pages/sitemap.xml.js can list every location without keeping a
+// second copy of this list that would drift the moment a city is added.
+export const LOCATION_SLUGS = Object.keys(LOCATIONS)
+
 export async function getStaticPaths() {
   return {
-    paths: Object.keys(LOCATIONS).map(slug => ({ params: { slug } })),
+    paths: LOCATION_SLUGS.map(slug => ({ params: { slug } })),
     fallback: false,
   }
 }

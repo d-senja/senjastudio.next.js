@@ -319,10 +319,13 @@ export default function BlogPost({ post, slug }) {
   )
 }
 
+// Exported for pages/sitemap.xml.js — see the note in pages/[slug].js.
+export const POST_SLUGS = Object.keys(POSTS)
+
 // Tell Next.js which slugs exist
 export async function getStaticPaths() {
   return {
-    paths: Object.keys(POSTS).map(slug => ({ params: { slug } })),
+    paths: POST_SLUGS.map(slug => ({ params: { slug } })),
     fallback: false,
   }
 }
